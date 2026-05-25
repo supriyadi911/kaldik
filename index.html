@@ -1027,7 +1027,13 @@
         const SCRIPT_URL = ""; 
 
         // 1. DATA PENGGUNA, OTENTIKASI & DATABASE AWAL 
-        let appUsers = JSON.parse(localStorage.getItem('kaldik_users')) || [];
+        // SETTING AKUN ADMIN DEFAULT: supriyadi / 291188
+        let defaultUsers = [
+            { id: 1, username: 'supriyadi', password: '291188', school: 'SD Negeri 1 Merdeka', role: 'admin' },
+            { id: 2, username: 'guru_contoh', password: '123', school: 'SD Negeri 2 Teladan', role: 'user' }
+        ];
+
+        let appUsers = JSON.parse(localStorage.getItem('kaldik_users')) || defaultUsers;
         let currentUser = JSON.parse(localStorage.getItem('kaldik_current_user')) || null;
         let customEvents = JSON.parse(localStorage.getItem('custom_events')) || {};
 
@@ -1071,7 +1077,9 @@
             return new Promise((resolve, reject) => {
                 setTimeout(() => {
                     if (action === 'login') {
-                        if (appUsers.length === 0) appUsers = [{ id: 1, username: 'admin', password: 'password', school: 'SD Negeri 1 Merdeka', role: 'admin' }];
+                        // Memastikan akun admin default ada jika array kosong
+                        if (appUsers.length === 0) appUsers = defaultUsers; 
+                        
                         const u = appUsers.find(x => x.username === payload.username && x.password === payload.password && x.role === payload.role);
                         if(u) resolve(u); else reject(new Error('Kredensial salah'));
                     }
@@ -1752,12 +1760,21 @@
 
         // --- MANAJEMEN USER ADMIN ---
         async function loadAndRenderAdminUserTable() {
-            const users = await apiCall('getUsers', {});
+            let users = [];
+            if(SCRIPT_URL) {
+                users = await apiCall('getUsers', {});
+            } else {
+                users = appUsers; // Mode Lokal
+            }
+            
             if (users) {
                 appUsers = users;
                 const tbody = document.getElementById('user-table-body');
                 tbody.innerHTML = '';
                 appUsers.forEach(u => {
+                    // Menonaktifkan tombol hapus untuk akun supriyadi agar tidak terhapus tidak sengaja
+                    const disableDelete = (u.username === 'supriyadi') ? 'disabled' : '';
+                    
                     tbody.innerHTML += `
                     <tr>
                         <td style="padding: 10px; border-bottom: 1px solid var(--border-color); font-weight: bold;">${u.username}</td>
@@ -1766,7 +1783,7 @@
                         <td style="padding: 10px; border-bottom: 1px solid var(--border-color); text-align: center;"><span class="badge" style="background:${u.role==='admin'?'var(--color-holiday-light)':'var(--color-primary-light)'}; color:${u.role==='admin'?'var(--color-holiday)':'var(--color-primary)'};">${u.role.toUpperCase()}</span></td>
                         <td style="padding: 10px; border-bottom: 1px solid var(--border-color); text-align: center;">
                             <button class="btn btn-warning" onclick="editUser(${u.id})" style="padding: 4px 8px; font-size: 11px;"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn btn-danger" onclick="reqDeleteUser(${u.id})" style="padding: 4px 8px; font-size: 11px;" ${u.username === 'supriyadi' ? 'disabled' : ''}><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn btn-danger" onclick="reqDeleteUser(${u.id})" style="padding: 4px 8px; font-size: 11px;" ${disableDelete}><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>`;
                 });
