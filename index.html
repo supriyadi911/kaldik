@@ -57,14 +57,15 @@
         .sidebar-header h2 { font-size: 18px; font-weight: 700; line-height: 1.2; }
         .sidebar-menu { padding: 10px 0; flex: 1; overflow-y: auto; }
         .menu-title-group { padding: 15px 24px 5px; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
-        .menu-item { padding: 10px 24px; display: flex; align-items: center; gap: 15px; color: var(--text-muted); font-weight: 500; cursor: pointer; border-left: 4px solid transparent; }
+        .menu-item { padding: 10px 24px; display: flex; align-items: center; gap: 15px; color: var(--text-muted); font-weight: 500; cursor: pointer; border-left: 4px solid transparent; position: relative; }
         .menu-item:hover { background-color: var(--color-primary-light); color: var(--color-primary); }
         .menu-item.active { background-color: var(--color-primary-light); color: var(--color-primary); border-left-color: var(--color-primary); }
         .menu-item i { width: 20px; text-align: center; font-size: 16px; }
-        .menu-item.locked { opacity: 0.6; position: relative; }
+        .menu-item.locked { opacity: 0.6; }
         .menu-item.locked:hover { background-color: transparent; color: var(--text-muted); cursor: pointer; }
 
         /* ================= HEADER ================= */
+        header { background-color: var(--bg-content); padding: 16px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 90; }
         .header-left { display: flex; align-items: center; gap: 15px; }
         .menu-toggle { display: none; font-size: 24px; background: none; color: var(--text-main); }
         .academic-year { background-color: var(--color-primary-light); color: var(--color-primary); padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 14px; }
@@ -176,7 +177,7 @@
         .form-group label { display: block; margin-bottom: 6px; font-size: 14px; font-weight: 600; color: var(--text-muted); }
         .form-control { width: 100%; padding: 10px 15px; border: 1px solid var(--border-color); border-radius: 8px; background-color: var(--bg-body); color: var(--text-main); font-size: 14px; }
         .form-control:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
-        .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; border: none; }
+        .btn { padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; border: none; cursor: pointer;}
         .btn-primary { background-color: var(--color-primary); color: white; }
         .btn-primary:hover { background-color: #0369a1; }
         .btn-danger { background-color: var(--color-holiday-light); color: var(--color-holiday); }
@@ -210,79 +211,155 @@
         .list-date { min-width: 125px; font-size: 13px; font-weight: 700; color: var(--color-primary); }
         .list-desc { font-size: 14px; font-weight: 500; }
 
+        /* Popup Login Split Styles */
+        .login-wrapper { display: flex; flex-direction: row; width: 100%; min-height: 480px; }
+        .login-left { padding: 50px 40px; flex: 1; display: flex; flex-direction: column; justify-content: center; background: var(--bg-content); }
+        .login-right { padding: 50px 40px; flex: 1; background: linear-gradient(135deg, var(--color-primary), #1e3a8a); color: white; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; }
+        .login-right::before { content: ''; position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; }
+        .login-right::after { content: ''; position: absolute; bottom: -30px; left: -30px; width: 100px; height: 100px; background: rgba(255,255,255,0.05); border-radius: 50%; }
+        .login-right h3 { font-size: 26px; margin-bottom: 15px; color: white; font-weight: 800; line-height: 1.3; position: relative; z-index: 1;}
+        .login-right p { font-size: 14px; line-height: 1.6; margin-bottom: 25px; opacity: 0.9; position: relative; z-index: 1;}
+        .promo-price { font-size: 28px; font-weight: 800; margin-bottom: 25px; color: #fef08a; background: rgba(0,0,0,0.25); padding: 12px 20px; border-radius: 12px; display: inline-block; text-align: center; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; z-index: 1;}
+        .promo-bank { background: white; color: var(--text-main); padding: 20px; border-radius: 12px; font-size: 14px; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); position: relative; z-index: 1; }
+        .promo-bank strong { display: block; color: var(--color-primary); font-size: 22px; margin: 8px 0; font-weight: 800; letter-spacing: 1px;}
+        .btn-wa { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 14px; background: #25D366; color: white; text-align: center; font-weight: bold; border-radius: 8px; text-decoration: none; transition: all 0.3s ease; font-size: 15px; box-shadow: 0 4px 10px rgba(37, 211, 102, 0.3); position: relative; z-index: 1;}
+        .btn-wa:hover { background: #128C7E; color: white; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(37, 211, 102, 0.4); }
+
+        /* ================= MOBILE BOTTOM NAV & DRAWER ================= */
+        .mobile-bottom-nav {
+            display: none; position: fixed; bottom: 0; left: 0; width: 100%;
+            background-color: var(--bg-content); box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 998; justify-content: space-around; padding: 10px 5px;
+            border-top: 1px solid var(--border-color); padding-bottom: env(safe-area-inset-bottom, 10px);
+        }
+        .nav-btn {
+            background: none; border: none; outline: none; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 11px; font-weight: 600; font-family: var(--font-family);
+            gap: 5px; padding: 5px; border-radius: 8px; flex: 1;
+        }
+        .nav-btn i { font-size: 20px; transition: 0.3s; }
+        .nav-btn.active { color: var(--color-primary); }
+        .nav-btn.active i { transform: translateY(-2px); }
+
+        .mobile-drawer-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; transition: opacity 0.3s;
+        }
+        .mobile-drawer-overlay.show { display: block; opacity: 1; }
+        .mobile-drawer {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: var(--bg-content); border-radius: 20px 20px 0 0;
+            z-index: 1000; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 15px 25px 30px; box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+        }
+        .mobile-drawer.open { transform: translateY(0); }
+        .drawer-indicator { width: 40px; height: 5px; background: #cbd5e1; border-radius: 10px; margin: 0 auto 15px; }
+        .drawer-title { font-size: 16px; font-weight: 700; margin-bottom: 15px; color: var(--text-main); text-align: left; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;}
+        .drawer-item {
+            display: flex; align-items: center; gap: 15px; padding: 12px 15px;
+            font-size: 14px; font-weight: 600; color: var(--text-main);
+            border-radius: 10px; margin-bottom: 8px; background: var(--bg-body);
+            cursor: pointer; position: relative;
+        }
+        .drawer-item i { width: 24px; text-align: center; color: var(--color-primary); font-size: 16px; }
+        .drawer-item.locked { opacity: 0.6; }
+        .drawer-item:active { background: var(--color-primary-light); }
+
         /* ================= RESPONSIVE & MOBILE ================= */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 95; display: none; }
         @media (max-width: 1024px) { .agenda-container { grid-template-columns: 1fr; } .yearly-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 768px) {
-            /* Transform Sidebar into Sticky Bottom Nav */
-            #sidebar { 
-                top: auto; bottom: 0; left: 0; width: 100%; height: 65px; 
-                flex-direction: row; border-right: none; border-top: 1px solid var(--border-color); 
-                transform: translateX(0) !important; z-index: 999; background: var(--bg-content);
-                box-shadow: 0 -4px 10px rgba(0,0,0,0.05); padding: 0;
-            }
-            .sidebar-header, .menu-title-group { display: none; }
-            .sidebar-menu { 
-                display: flex; flex-direction: row; padding: 0; margin: 0; width: 100%; 
-                overflow-x: auto; overflow-y: hidden; scroll-behavior: smooth;
-                -webkit-overflow-scrolling: touch; scrollbar-width: none;
-            }
-            .sidebar-menu::-webkit-scrollbar { display: none; }
-            .menu-item { 
-                flex: 0 0 auto; min-width: 75px; flex-direction: column; padding: 10px 4px; gap: 4px; 
-                border-left: none; border-top: 3px solid transparent; 
-                font-size: 10px; text-align: center; justify-content: center; position: relative;
-            }
-            .menu-item i { font-size: 18px; width: 100%; margin-bottom: 2px; }
-            .menu-item span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; padding: 0 2px; }
-            .menu-item.active { border-left: none; border-top-color: var(--color-primary); background: transparent; }
+            #sidebar { display: none !important; }
+            .mobile-bottom-nav { display: flex; }
+            #main-content { margin-left: 0; width: 100%; padding-bottom: 90px; }
             
-            /* Main Content Adjustments to Prevent Cutoff */
-            #main-content { margin-left: 0; width: 100%; padding-bottom: 80px; }
-            header { padding: 12px 15px; }
-            .header-left h1 { font-size: 16px !important; }
-            .header-left p { font-size: 11px !important; }
-            .menu-toggle { display: none !important; }
+            header { padding: 10px 12px; }
+            .header-left h1 { font-size: 14px !important; }
+            .header-left p { font-size: 10px !important; }
+            .academic-year { font-size: 11px; padding: 4px 8px; }
+            .btn-icon { width: 32px; height: 32px; font-size: 15px; }
             
-            /* Content Areas */
-            .content-area { padding: 15px; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .stat-card { padding: 15px; flex-direction: column; text-align: center; gap: 8px; }
-            .yearly-grid { grid-template-columns: 1fr; }
+            .content-area { padding: 12px; }
+            .section-header { margin-bottom: 15px; flex-direction: column; align-items: flex-start; gap: 10px; }
+            .section-title { font-size: 18px; }
+            .header-actions { width: 100%; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-start; }
+            .btn { padding: 8px 12px; font-size: 12px; }
+            .card, .month-card { padding: 12px; border-radius: 12px; gap: 8px; }
             
-            /* Modals Adjustments */
-            .login-wrapper { flex-direction: column-reverse; }
-            .login-left, .login-right { padding: 25px 20px; }
-            .modal-content { max-height: 85vh; overflow-y: auto; padding: 20px; }
-            .modal-content.login-modal-content { padding: 0 !important; }
-            
-            /* Matrix & Calendars Fixes */
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+            .stat-card { padding: 10px; gap: 10px; flex-direction: row; text-align: left; border-radius: 12px; }
+            .stat-icon { width: 36px; height: 36px; font-size: 16px; border-radius: 8px; flex-shrink: 0; }
+            .stat-info h4 { font-size: 10px; margin-bottom: 2px; }
+            .stat-info p { font-size: 16px; }
+
+            .yearly-grid { grid-template-columns: 1fr; gap: 12px; }
+            .month-title { font-size: 14px; margin-bottom: 8px; }
+            .calendar-table th { font-size: 10px; padding: 4px 0; }
+            .calendar-table td { font-size: 11px; padding: 4px 0; }
+            .month-event-item { font-size: 9.5px; }
+            .month-event-item strong { min-width: 25px; }
+
+            .calendar-legend { padding: 10px; gap: 8px; margin-bottom: 15px; border-radius: 8px; }
+            .legend-item { font-size: 10px; }
+            .legend-color { width: 10px; height: 10px; }
+
             .kaldik-matrix-wrapper { padding: 10px; border-radius: 8px; }
-            .header-actions { flex-wrap: wrap; justify-content: flex-end; }
-            .header-right { gap: 5px; }
-            .large-calendar td { height: 70px; padding: 5px; }
-            .large-calendar .date-num { font-size: 14px; }
+            .matrix-kop-logo { width: 40px; height: 40px; }
+            .matrix-kop-text { padding: 0 10px; }
+            .matrix-kop-text h2 { font-size: 12px; }
+            .matrix-kop-text h1 { font-size: 14px; margin-bottom: 2px; }
+            .matrix-kop-text p { font-size: 9px; line-height: 1.2; }
+            .matrix-header-title h1 { font-size: 13px; margin-bottom: 4px; }
+            .matrix-header-title p { font-size: 10px; }
+            .kaldik-matrix th, .kaldik-matrix td { font-size: 9px; padding: 2px 1px; }
+
+            .monthly-controls { padding: 10px 15px; margin-bottom: 15px; }
+            .monthly-controls button { font-size: 11px; padding: 6px 10px; }
+            #monthly-title { font-size: 16px; }
+            .large-calendar th { padding: 6px; font-size: 11px; }
+            .large-calendar td { height: 50px; padding: 4px; }
+            .large-calendar .date-num { font-size: 12px; }
             .large-calendar .event-badge { display: none; }
-            .large-calendar td.bg-effective { border-bottom: 4px solid var(--color-effective); }
-            .large-calendar td.bg-holiday { border-bottom: 4px solid var(--color-holiday); }
-            .large-calendar td.bg-exam { border-bottom: 4px solid var(--color-exam); }
-            .large-calendar td.bg-semester { border-bottom: 4px solid var(--color-semester); }
-            .large-calendar td.bg-agenda { border-bottom: 4px solid var(--color-agenda); }
+            .large-calendar td.bg-effective { border-bottom: 3px solid var(--color-effective); }
+            .large-calendar td.bg-holiday { border-bottom: 3px solid var(--color-holiday); }
+            .large-calendar td.bg-exam { border-bottom: 3px solid var(--color-exam); }
+            .large-calendar td.bg-semester { border-bottom: 3px solid var(--color-semester); }
+            .large-calendar td.bg-agenda { border-bottom: 3px solid var(--color-agenda); }
+
+            .form-group { margin-bottom: 12px; }
+            .form-group label { font-size: 12px; margin-bottom: 4px; }
+            .form-control { padding: 8px 12px; font-size: 13px; }
+
+            /* Modals Adjustments */
+            .login-wrapper { flex-direction: column-reverse; min-height: auto; }
+            .login-left { padding: 25px 20px; }
+            .login-right { padding: 25px 20px; }
+            .login-right h3 { font-size: 20px; margin-bottom: 10px; }
+            .login-right p { font-size: 12px; margin-bottom: 15px; line-height: 1.4; }
+            .promo-price { font-size: 22px; padding: 10px 15px; margin-bottom: 15px; border-radius: 8px; }
+            .promo-bank { padding: 15px; margin-bottom: 15px; font-size: 13px; }
+            .promo-bank strong { font-size: 18px; margin: 4px 0; }
+            .btn-wa { padding: 12px; font-size: 13px; }
+            
+            .modal-content { max-height: 85vh; overflow-y: auto; padding: 15px; border-radius: 12px; }
+            .modal-content.login-modal-content { padding: 0 !important; border-radius: 16px; }
+            .modal-close { top: 12px !important; right: 12px !important; left: auto !important; width: 28px; height: 28px; font-size: 14px; background: rgba(0,0,0,0.3) !important; color: white !important; }
         }
         @media (max-width: 480px) {
             .stats-grid { grid-template-columns: 1fr; }
+            .matrix-kop-surat { flex-direction: column; text-align: center; gap: 10px; }
+            .matrix-kop-logo:last-child { display: none; }
         }
 
         .year-select { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background-color: var(--bg-content); color: var(--text-main); font-weight: 600; font-size: 14px; cursor: pointer; outline: none; }
         .year-select:focus { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-light); }
         .header-actions { display: flex; gap: 10px; align-items: center; }
 
-        /* ================= PDF EXPORT STYLES (A4 KOTAK TAJAM & ANTI TERPOTONG) ================= */
+        /* ================= PDF EXPORT STYLES ================= */
         .exporting-pdf { background-color: white !important; color: black !important; overflow: visible !important; }
         .exporting-pdf * { border-radius: 0 !important; } 
-        .exporting-pdf #sidebar, .exporting-pdf header { display: none !important; }
+        .exporting-pdf #sidebar, .exporting-pdf header, .exporting-pdf .mobile-bottom-nav { display: none !important; }
         
-        .exporting-pdf #main-content { margin: 0 !important; width: 1080px !important; max-width: 1080px !important; } 
+        .exporting-pdf #main-content { margin: 0 !important; width: 1080px !important; max-width: 1080px !important; padding-bottom: 0 !important;} 
         .exporting-pdf .content-area { padding: 15px 20px !important; width: 1080px !important; max-width: 1080px !important; display: block !important; background: white !important; margin: 0 auto !important; }
         
         .exporting-pdf .section-header { margin-bottom: 20px !important; justify-content: center !important; }
@@ -322,8 +399,8 @@
 
         @media print {
             body { background-color: white; color: black; }
-            #sidebar, header, .monthly-controls, .calendar-legend, .btn, .overlay, .header-actions { display: none !important; }
-            #main-content { margin: 0; width: 100%; }
+            #sidebar, header, .monthly-controls, .calendar-legend, .btn, .overlay, .header-actions, .mobile-bottom-nav { display: none !important; }
+            #main-content { margin: 0; width: 100%; padding-bottom: 0 !important;}
             .content-area { padding: 0; display: block !important; page-break-after: always;}
             .card, .stat-card, .large-calendar, .month-card, .kaldik-matrix-wrapper { border: 1px solid #000; box-shadow: none; background: white;}
             .large-calendar td { height: 80px !important; }
@@ -341,10 +418,47 @@
         <div>Menyinkronkan Data dengan Google...</div>
     </div>
 
-    <!-- Mobile Overlay -->
-    <div class="overlay" id="mobile-overlay"></div>
+    <!-- Mobile Bottom Navigation (Visible only on Mobile) -->
+    <nav class="mobile-bottom-nav" id="mobile-nav">
+        <button class="nav-btn active" onclick="openDrawer('drawer-utama', this)"><i class="fa-solid fa-house"></i><span>Utama</span></button>
+        <button class="nav-btn" onclick="openDrawer('drawer-operasional', this)"><i class="fa-solid fa-pen-to-square"></i><span>Operasional</span></button>
+        <button class="nav-btn" onclick="openDrawer('drawer-dokumen', this)"><i class="fa-solid fa-file-pdf"></i><span>Dokumen</span></button>
+        <button class="nav-btn" onclick="window.print()"><i class="fa-solid fa-print"></i><span>Output</span></button>
+        <button class="nav-btn" onclick="openDrawer('drawer-pengaturan', this)"><i class="fa-solid fa-gear"></i><span>Pengaturan</span></button>
+    </nav>
 
-    <!-- SIDEBAR -->
+    <!-- Mobile Drawer (Bottom Sheet) -->
+    <div class="mobile-drawer-overlay" id="mobile-drawer-overlay" onclick="closeDrawer()"></div>
+    <div class="mobile-drawer" id="mobile-drawer">
+        <div class="drawer-indicator"></div>
+        
+        <div id="drawer-utama" class="drawer-content" style="display: none;">
+            <h3 class="drawer-title">Menu Utama & Kalender</h3>
+            <div class="drawer-item" onclick="handleDrawerItemClick('view-dashboard')"><i class="fa-solid fa-chart-pie"></i> Dashboard</div>
+            <div class="drawer-item" onclick="handleDrawerItemClick('view-yearly')"><i class="fa-regular fa-calendar-days"></i> Kalender Tahunan</div>
+            <div class="drawer-item" onclick="handleDrawerItemClick('view-semester')"><i class="fa-solid fa-list-check"></i> Jadwal Semester</div>
+            <div class="drawer-item" onclick="handleDrawerItemClick('view-monthly')"><i class="fa-regular fa-calendar-check"></i> Kalender Bulanan</div>
+        </div>
+
+        <div id="drawer-operasional" class="drawer-content" style="display: none;">
+            <h3 class="drawer-title">Operasional Sekolah</h3>
+            <div class="drawer-item auth-required" onclick="handleDrawerItemClick('view-agenda', this)"><i class="fa-solid fa-pen-to-square"></i> Input Kegiatan</div>
+        </div>
+
+        <div id="drawer-dokumen" class="drawer-content" style="display: none;">
+            <h3 class="drawer-title">Dokumen Output</h3>
+            <div class="drawer-item" onclick="handleDrawerItemClick('view-matrix')"><i class="fa-solid fa-table-cells"></i> Preview Kaldik Matriks</div>
+        </div>
+
+        <div id="drawer-pengaturan" class="drawer-content" style="display: none;">
+            <h3 class="drawer-title">Pengaturan Sistem</h3>
+            <div class="drawer-item auth-required" onclick="handleDrawerItemClick('view-settings', this)"><i class="fa-solid fa-sliders"></i> Profil Sekolah</div>
+            <div class="drawer-item auth-required" onclick="handleDrawerItemClick('view-backup', this)"><i class="fa-solid fa-database"></i> Backup & Restore</div>
+            <div class="drawer-item admin-required" onclick="handleDrawerItemClick('view-admin', this)"><i class="fa-solid fa-users-gear"></i> Manajemen User</div>
+        </div>
+    </div>
+
+    <!-- SIDEBAR (Desktop Only) -->
     <aside id="sidebar">
         <div class="sidebar-header">
             <i class="fa-solid fa-school"></i>
@@ -406,7 +520,6 @@
         <!-- HEADER -->
         <header>
             <div class="header-left">
-                <button class="menu-toggle" id="menu-btn"><i class="fa-solid fa-bars"></i></button>
                 <div>
                     <h1 id="header-school-name" style="font-size: 20px; font-weight: 700;">SD Negeri 1 Merdeka</h1>
                     <p style="font-size: 13px; color: var(--text-muted);">Sistem E-Kalender Pendidikan Sekolah Dasar</p>
@@ -524,7 +637,7 @@
                 <h3 style="margin-bottom: 10px;">Amankan Data E-Kalender Anda</h3>
                 <p style="color: var(--text-muted); margin-bottom: 30px;">Fungsi ini (Mode Lokal) mencadangkan data khusus sekolah Anda saat ini (beserta pengaturan & agenda). Berguna bila Google Apps Script belum terhubung.</p>
                 
-                <div style="display: flex; gap: 15px; justify-content: center;">
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                     <button class="btn btn-primary" onclick="exportBackup()"><i class="fa-solid fa-download"></i> Download Backup Lokal</button>
                     <button class="btn btn-warning" onclick="document.getElementById('restore-file').click()"><i class="fa-solid fa-upload"></i> Restore Data Lokal</button>
                     <input type="file" id="restore-file" style="display: none;" accept=".json" onchange="importBackup(event)">
@@ -540,9 +653,9 @@
                     <button class="btn btn-primary" onclick="openUserModal()"><i class="fa-solid fa-user-plus"></i> Tambah User Baru</button>
                 </div>
             </div>
-            <div class="card">
+            <div class="card" style="overflow-x: auto;">
                 <p style="color: var(--text-muted); margin-bottom: 15px; font-size: 13px;">Kelola akun untuk berbagai sekolah di sini. Ketika mereka login, mereka hanya akan menyimpan/mengedit agenda sekolah mereka sendiri.</p>
-                <table class="calendar-table" style="text-align: left; width: 100%;">
+                <table class="calendar-table" style="text-align: left; width: 100%; min-width: 600px;">
                     <thead>
                         <tr>
                             <th style="text-align: left; padding: 10px; border-bottom: 2px solid var(--border-color);">Username</th>
@@ -571,8 +684,8 @@
                 <div class="stat-card"><div class="stat-icon yellow"><i class="fa-solid fa-file-pen"></i></div><div class="stat-info"><h4>Jadwal Ujian</h4><p id="stat-exam">4 Periode</p></div></div>
             </div>
             <div class="agenda-container" style="grid-template-columns: 1fr 1fr;">
-                <div class="card"><h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Kegiatan Akademik (Semester Aktif)</h3><div class="list-group" id="upcoming-events"></div></div>
-                <div class="card"><h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Daftar Hari Libur Nasional & Umum</h3><div class="list-group" id="holiday-list" style="max-height: 300px; overflow-y: auto;"></div></div>
+                <div class="card"><h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 16px;">Kegiatan Akademik (Semester Aktif)</h3><div class="list-group" id="upcoming-events"></div></div>
+                <div class="card"><h3 style="margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; font-size: 16px;">Daftar Hari Libur Nasional & Umum</h3><div class="list-group" id="holiday-list" style="max-height: 300px; overflow-y: auto;"></div></div>
             </div>
         </section>
 
@@ -773,50 +886,50 @@
 
     <!-- Modal Login -->
     <div class="modal-overlay" id="login-modal">
-        <div class="modal-content login-modal-content" style="max-width: 800px; padding: 0; overflow: hidden;">
-            <button class="modal-close" onclick="closeLoginModal()" style="z-index: 10; top: 15px; right: 15px; background: rgba(0,0,0,0.15); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white;"><i class="fa-solid fa-xmark"></i></button>
+        <div class="modal-content login-modal-content" style="max-width: 850px; padding: 0; overflow: hidden; border-radius: 20px;">
+            <button class="modal-close" onclick="closeLoginModal()" style="z-index: 10; top: 15px; left: 15px; right: auto; background: rgba(0,0,0,0.05); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-muted);"><i class="fa-solid fa-xmark"></i></button>
             
             <div class="login-wrapper">
                 <!-- Sisi Kiri: Form Login -->
                 <div class="login-left">
-                    <h3 style="margin-bottom: 10px; text-align: center;"><i class="fa-solid fa-lock text-primary" style="font-size: 30px; margin-bottom: 15px; display: block;"></i> Otorisasi Akses</h3>
-                    <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 25px;">Masuk ke sistem untuk sinkronisasi profil dan agenda.</p>
+                    <h3 style="margin-bottom: 10px; text-align: center; font-size: 22px; font-weight: 800;"><i class="fa-solid fa-shield-halved text-primary" style="font-size: 32px; margin-bottom: 15px; display: block;"></i> Otorisasi Sistem</h3>
+                    <p style="text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 30px;">Masuk menggunakan kredensial Anda untuk mengelola profil, user, dan agenda kalender.</p>
                     <form id="form-login" onsubmit="handleLogin(event)">
                         <div class="form-group">
-                            <label>Username</label>
+                            <label style="font-size: 13px;">Username</label>
                             <input type="text" id="login-username" class="form-control" required placeholder="Masukkan Username">
                         </div>
                         <div class="form-group" style="position: relative;">
-                            <label>Password</label>
+                            <label style="font-size: 13px;">Password</label>
                             <input type="password" id="login-password" class="form-control" required placeholder="Masukkan Password" style="padding-right: 40px;">
                             <i class="fa-solid fa-eye" onclick="togglePasswordVisibility('login-password', this)" style="position: absolute; right: 15px; top: 38px; cursor: pointer; color: var(--text-muted);"></i>
                         </div>
                         <div class="form-group">
-                            <label>Hak Akses (Role)</label>
+                            <label style="font-size: 13px;">Hak Akses (Role)</label>
                             <select id="login-role" class="form-control" required>
                                 <option value="user">User Biasa</option>
                                 <option value="admin">Administrator</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; margin-top: 5px;">Masuk Sistem</button>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; margin-top: 10px; font-size: 15px;"><i class="fa-solid fa-arrow-right-to-bracket"></i> Masuk Sekarang</button>
                     </form>
                 </div>
                 
                 <!-- Sisi Kanan: Penawaran Premium -->
                 <div class="login-right">
                     <h3>🚀 Dapatkan Akses Full Fitur!</h3>
-                    <p>Kelola sistem E-Kalender tanpa batas. Dapatkan fitur eksklusif, laporan kustom, manajemen *user* dan sinkronisasi Cloud dengan meng-upgrade aplikasi Anda.</p>
+                    <p>Tingkatkan pengalaman Anda! Kelola E-Kalender tanpa batas, dapatkan fitur eksklusif, laporan kustom, manajemen user, dan backup Cloud otomatis.</p>
                     
                     <div class="promo-price">Hanya Rp 50.000</div>
                     
                     <div class="promo-bank">
-                        Silakan transfer pembayaran ke:
-                        <strong>BRI 009801023322533</strong>
-                        a.n Supriyadi
+                        <div style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700;">Transfer Pembayaran ke:</div>
+                        <strong>BRI 0098 0102 3322 533</strong>
+                        <div style="font-weight: 600; color: var(--text-main); font-size: 15px;"><i class="fa-solid fa-user-circle text-primary"></i> a.n Supriyadi</div>
                     </div>
                     
                     <a href="https://wa.me/6282371962881?text=Halo%20Admin,%20saya%20ingin%20konfirmasi%20pembayaran%20untuk%20akses%20full%20fitur%20E-Kalender%20Pendidikan.%20Berikut%20lampiran%20bukti%20transfernya:" target="_blank" class="btn-wa">
-                        <i class="fa-brands fa-whatsapp" style="font-size: 16px;"></i> Konfirmasi via WhatsApp
+                        <i class="fa-brands fa-whatsapp" style="font-size: 22px;"></i> Konfirmasi via WhatsApp
                     </a>
                 </div>
             </div>
@@ -963,7 +1076,6 @@
                         if(u) resolve(u); else reject(new Error('Kredensial salah'));
                     }
                     else if (action === 'getSchoolData') {
-                        // Di mode lokal, kita asumsikan 1 device = 1 db. Kecuali kita filter secara logik (opsional).
                         resolve({ settings: appSettings, events: customEvents });
                     }
                     else if (action === 'saveSettings') {
@@ -1918,6 +2030,23 @@
             document.getElementById(targetId).classList.add('active'); 
             const menuBtn = document.querySelector(`[data-target="${targetId}"]`);
             if (menuBtn) menuBtn.classList.add('active');
+            
+            // Hapus status aktif dari semua tombol navigasi seluler lalu aktifkan yang relevan
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => btn.classList.remove('active'));
+            
+            let matchedNavBtn;
+            if (['view-dashboard', 'view-yearly', 'view-semester', 'view-monthly'].includes(targetId)) {
+                matchedNavBtn = document.querySelector('.nav-btn[onclick*="drawer-utama"]');
+            } else if (targetId === 'view-agenda') {
+                matchedNavBtn = document.querySelector('.nav-btn[onclick*="drawer-operasional"]');
+            } else if (targetId === 'view-matrix') {
+                matchedNavBtn = document.querySelector('.nav-btn[onclick*="drawer-dokumen"]');
+            } else if (['view-settings', 'view-backup', 'view-admin'].includes(targetId)) {
+                matchedNavBtn = document.querySelector('.nav-btn[onclick*="drawer-pengaturan"]');
+            }
+            if(matchedNavBtn) matchedNavBtn.classList.add('active');
+
             if (window.innerWidth <= 768) { sidebar.classList.remove('open'); mobileOverlay.classList.remove('show'); }
         }
 
@@ -1979,6 +2108,40 @@
                 iconEl.classList.add('fa-eye');
             }
         }
+
+        // --- SISTEM LACI NAVIGASI BAWAH ---
+        window.openDrawer = function(drawerId, btnElement) {
+            // Tutup semua laci dulu
+            document.querySelectorAll('.drawer-content').forEach(el => el.style.display = 'none');
+            
+            // Tampilkan konten yang diminta
+            document.getElementById(drawerId).style.display = 'block';
+            
+            // Buka laci dan overlay
+            document.getElementById('mobile-drawer').classList.add('open');
+            document.getElementById('mobile-drawer-overlay').classList.add('show');
+            
+            // Set tombol aktif
+            if(btnElement) {
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+        };
+
+        window.closeDrawer = function() {
+            document.getElementById('mobile-drawer').classList.remove('open');
+            document.getElementById('mobile-drawer-overlay').classList.remove('show');
+        };
+
+        window.handleDrawerItemClick = function(targetId, el = null) {
+            if (el && el.classList.contains('locked')) {
+                closeDrawer();
+                openLoginModal();
+            } else {
+                switchView(targetId);
+                closeDrawer();
+            }
+        };
 
         // Initialize Fetch Data on Boot
         async function initializeApp() {
