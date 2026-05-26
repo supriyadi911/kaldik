@@ -49,8 +49,8 @@
         ul { list-style: none; }
         button { cursor: pointer; border: none; outline: none; font-family: inherit; }
         
-        #sidebar { width: 260px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); position: fixed; height: 100vh; z-index: 100; display: flex; flex-direction: column; transform: translateX(0); transition: transform 0.3s ease; }
-        #main-content { margin-left: 260px; width: calc(100% - 260px); display: flex; flex-direction: column; min-height: 100vh; }
+        #sidebar { width: 260px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); position: fixed; height: 100vh; top: 0; left: 0; z-index: 100; display: flex; flex-direction: column; transform: translateX(0); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        #main-content { margin-left: 260px; width: calc(100% - 260px); max-width: calc(100% - 260px); display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; transition: margin-left 0.3s ease, width 0.3s ease; }
 
         .sidebar-header { padding: 24px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border-color); }
         .sidebar-header i { font-size: 28px; color: var(--color-primary); }
@@ -68,6 +68,13 @@
         header { background-color: var(--bg-content); padding: 16px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 90; }
         .header-left { display: flex; align-items: center; gap: 15px; }
         .menu-toggle { display: none; font-size: 24px; background: none; color: var(--text-main); }
+        
+        /* Cloud Status Indicator */
+        .cloud-status { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-muted); cursor: help; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-dot.online { background-color: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); }
+        .status-dot.offline { background-color: #f59e0b; }
+
         .academic-year { background-color: var(--color-primary-light); color: var(--color-primary); padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 14px; }
         .header-right { display: flex; align-items: center; gap: 15px; }
         .btn-icon { width: 40px; height: 40px; border-radius: 50%; background-color: var(--bg-body); color: var(--text-main); display: flex; justify-content: center; align-items: center; font-size: 18px; border: 1px solid var(--border-color); }
@@ -266,15 +273,29 @@
         .drawer-item:active { background: var(--color-primary-light); }
 
         /* ================= RESPONSIVE & MOBILE ================= */
-        @media (max-width: 1024px) { .agenda-container { grid-template-columns: 1fr; } .yearly-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 1024px) { 
+            .agenda-container { grid-template-columns: 1fr; } 
+            .yearly-grid { grid-template-columns: repeat(2, 1fr); } 
+            
+            /* Sidebar becomes a collapsible drawer on Tablets / Small Laptops */
+            .menu-toggle { display: block !important; }
+            #sidebar { transform: translateX(-100%); }
+            #sidebar.open { transform: translateX(0); box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
+            #main-content { margin-left: 0; width: 100%; max-width: 100%; }
+        }
         @media (max-width: 768px) {
             #sidebar { display: none !important; }
+            .menu-toggle { display: none !important; }
             .mobile-bottom-nav { display: flex; }
             #main-content { margin-left: 0; width: 100%; padding-bottom: 90px; }
             
             header { padding: 10px 12px; }
             .header-left h1 { font-size: 14px !important; }
             .header-left p { font-size: 10px !important; }
+            
+            .cloud-status span { display: none; }
+            .cloud-status { padding: 4px; border: none; background: transparent; }
+
             .academic-year { font-size: 11px; padding: 4px 8px; }
             .btn-icon { width: 32px; height: 32px; font-size: 15px; }
             
@@ -526,6 +547,12 @@
                 </div>
             </div>
             <div class="header-right">
+                <!-- Indikator Status Cloud -->
+                <div class="cloud-status" id="cloud-status" title="Mengecek koneksi...">
+                    <div class="status-dot offline" id="status-dot"></div>
+                    <span id="status-text">Mode Lokal</span>
+                </div>
+
                 <span class="academic-year" id="header-academic-year">TA 2025/2026</span>
                 <button class="btn-icon" id="theme-toggle" title="Toggle Dark Mode" style="margin-right: 10px;">
                     <i class="fa-regular fa-moon"></i>
@@ -1024,7 +1051,7 @@
     <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         // MASUKKAN URL GOOGLE APPS SCRIPT ANDA DI SINI
-        const SCRIPT_URL = ""; 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzvVjtZpkwn0Q2d3McufjCrGnnTN2yTAGadldGFS8qaj0SnWFTYyaXOJFBOXnF4R1X9/exec"; 
 
         // 1. DATA PENGGUNA, OTENTIKASI & DATABASE AWAL 
         // SETTING AKUN ADMIN DEFAULT: supriyadi / 291188
@@ -2064,7 +2091,11 @@
             }
             if(matchedNavBtn) matchedNavBtn.classList.add('active');
 
-            if (window.innerWidth <= 768) { sidebar.classList.remove('open'); mobileOverlay.classList.remove('show'); }
+            // Tutup sidebar otomatis jika berada di layar Tablet/HP setelah menu diklik
+            if (window.innerWidth <= 1024) { 
+                sidebar.classList.remove('open'); 
+                mobileOverlay.classList.remove('show'); 
+            }
         }
 
         menuItems.forEach(item => { 
@@ -2163,6 +2194,7 @@
         // Initialize Fetch Data on Boot
         async function initializeApp() {
             updateAuthUI();
+            updateCloudStatus();
             
             if (currentUser && SCRIPT_URL) {
                 try {
@@ -2176,6 +2208,22 @@
 
             loadSettingsForm();
             setAcademicYear(appSettings.academicYear); 
+        }
+
+        function updateCloudStatus() {
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('status-text');
+            const container = document.getElementById('cloud-status');
+            
+            if (SCRIPT_URL && SCRIPT_URL.trim() !== "") {
+                dot.className = 'status-dot online';
+                text.innerText = 'Cloud Terhubung';
+                container.title = "Terhubung ke Google Spreadsheet";
+            } else {
+                dot.className = 'status-dot offline';
+                text.innerText = 'Mode Lokal';
+                container.title = "Berjalan offline (Penyimpanan Lokal Browser)";
+            }
         }
 
         document.addEventListener('DOMContentLoaded', initializeApp);
