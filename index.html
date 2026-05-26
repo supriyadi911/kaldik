@@ -306,22 +306,22 @@
         }
 
         /* ================= PDF EXPORT STYLES ================= */
-        .exporting-pdf { background-color: white !important; color: black !important; overflow: visible !important; width: 1240px !important; min-width: 1240px !important; }
-        .exporting-pdf body { width: 1240px !important; min-width: 1240px !important; }
+        .exporting-pdf { background-color: white !important; color: black !important; width: 1240px !important; min-width: 1240px !important; margin: 0 !important; padding: 0 !important; position: absolute !important; top: 0 !important; left: 0 !important; overflow: visible !important; display: block !important; }
+        .exporting-pdf body { width: 1240px !important; min-width: 1240px !important; margin: 0 !important; padding: 0 !important; position: absolute !important; top: 0 !important; left: 0 !important; }
         .exporting-pdf * { border-radius: 0 !important; } 
         .exporting-pdf #sidebar, .exporting-pdf header, .exporting-pdf .mobile-bottom-nav { display: none !important; }
         
-        .exporting-pdf #main-content { margin: 0 !important; width: 1240px !important; max-width: 1240px !important; min-width: 1240px !important; padding-bottom: 0 !important; overflow: visible !important; } 
-        .exporting-pdf .content-area { padding: 15px 20px !important; width: 1240px !important; max-width: 1240px !important; min-width: 1240px !important; display: block !important; background: white !important; margin: 0 !important; box-sizing: border-box !important; overflow: visible !important; }
+        .exporting-pdf #main-content { margin: 0 !important; padding: 0 !important; width: 1240px !important; max-width: 1240px !important; min-width: 1240px !important; overflow: visible !important; position: absolute !important; top: 0 !important; left: 0 !important; transform: none !important; } 
+        .exporting-pdf .content-area { padding: 0 !important; margin: 0 !important; width: 1240px !important; max-width: 1240px !important; min-width: 1240px !important; display: block !important; background: white !important; box-sizing: border-box !important; overflow: visible !important; position: relative !important; }
         
-        .exporting-pdf .section-header { margin-bottom: 20px !important; justify-content: center !important; }
-        .exporting-pdf .section-title { font-size: 22px !important; text-align: center; width: 100%; color: black !important; margin-bottom: 10px !important;}
+        .exporting-pdf .section-header { margin-bottom: 20px !important; justify-content: center !important; text-align: center !important; width: 100% !important; }
+        .exporting-pdf .section-title { font-size: 22px !important; text-align: center !important; width: 100% !important; color: black !important; margin-bottom: 10px !important;}
         
-        .exporting-pdf .pdf-yearly-page { page-break-inside: avoid !important; page-break-after: always !important; display: flex !important; flex-direction: column; gap: 15px !important; width: 100% !important; }
-        .exporting-pdf .grid-row-3 { display: flex !important; flex-wrap: nowrap !important; justify-content: space-between !important; gap: 10px !important; margin-bottom: 0 !important; page-break-inside: avoid !important; break-inside: avoid !important; width: 100% !important; }
+        .exporting-pdf .pdf-yearly-page { page-break-inside: avoid !important; page-break-after: always !important; display: flex !important; flex-direction: column; gap: 15px !important; width: 100% !important; align-items: center !important; margin: 0 auto !important; }
+        .exporting-pdf .grid-row-3 { display: flex !important; flex-wrap: nowrap !important; justify-content: space-between !important; gap: 10px !important; margin: 0 auto !important; page-break-inside: avoid !important; break-inside: avoid !important; width: 100% !important; }
         
         .exporting-pdf .month-card { width: calc(33.333% - 7px) !important; flex: 0 0 calc(33.333% - 7px) !important; padding: 10px !important; box-shadow: none !important; border: 1px solid #000 !important; background: white !important; page-break-inside: avoid !important; break-inside: avoid !important; }
-        .exporting-pdf .month-title { font-size: 13px !important; margin-bottom: 4px !important; color: black !important; font-weight: 800 !important; }
+        .exporting-pdf .month-title { font-size: 13px !important; margin-bottom: 4px !important; color: black !important; font-weight: 800 !important; text-align: center !important; }
         .exporting-pdf .calendar-table th { padding: 2px 1px !important; font-size: 10px !important; color: black !important; border-bottom: 1px solid #ccc !important; }
         .exporting-pdf .calendar-table td { padding: 3px 1px !important; font-size: 11px !important; color: black !important; }
         
@@ -329,20 +329,22 @@
         .exporting-pdf .month-event-item { font-size: 9px !important; line-height: 1.2 !important; margin-bottom: 0 !important; color: black !important; }
         .exporting-pdf .month-event-item strong { min-width: 40px !important; }
 
-        .exporting-pdf .calendar-legend { padding: 8px 12px !important; margin-bottom: 15px !important; border: 1px solid #000 !important; background: white !important; display: flex !important; justify-content: center !important; }
+        .exporting-pdf .calendar-legend { padding: 8px 12px !important; margin: 0 auto 15px auto !important; border: 1px solid #000 !important; background: white !important; display: flex !important; justify-content: center !important; width: max-content !important; }
         .exporting-pdf .legend-item { font-size: 11px !important; color: black !important; }
         .exporting-pdf .legend-color { width: 12px !important; height: 12px !important; border: 1px solid #000 !important; }
         
-        .exporting-pdf .kaldik-matrix-wrapper { padding: 0 !important; margin: 0 !important; width: 100% !important; box-sizing: border-box !important; overflow: visible !important; border: none !important; }
-        .exporting-pdf .kaldik-matrix { min-width: 100% !important; width: 100% !important; border-collapse: collapse; table-layout: fixed !important; }
+        .exporting-pdf .kaldik-matrix-wrapper { padding: 0 !important; margin: 0 !important; width: 1240px !important; max-width: 1240px !important; min-width: 1240px !important; box-sizing: border-box !important; overflow: visible !important; border: none !important; }
+        .exporting-pdf .kaldik-matrix { min-width: 100% !important; width: 100% !important; border-collapse: collapse; table-layout: fixed !important; margin: 0 auto !important; }
         .exporting-pdf .kaldik-matrix th, .exporting-pdf .kaldik-matrix td { padding: 2px 0px !important; font-size: 9px !important; color: black !important; border: 1px solid #000 !important; overflow: hidden; word-wrap: break-word;}
+        .exporting-pdf .matrix-header-title { width: 100% !important; text-align: center !important; }
         .exporting-pdf .matrix-header-title h1 { font-size: 16px !important; margin-bottom: 4px !important; }
         .exporting-pdf .matrix-header-title p { font-size: 12px !important; margin-bottom: 15px !important; }
         .exporting-pdf .matrix-signature-container { margin-top: 30px !important; font-size: 12px !important; page-break-inside: avoid !important; }
         
+        .exporting-pdf #kaldik-events-table { margin: 15px auto 0 auto !important; width: 100% !important; }
         .exporting-pdf #kaldik-events-table th, .exporting-pdf #kaldik-events-table td { font-size: 12px !important; padding: 6px 4px !important; line-height: 1.3 !important; }
 
-        .exporting-pdf .large-calendar { box-shadow: none !important; border: 1px solid #000 !important; page-break-inside: avoid !important; break-inside: avoid !important;}
+        .exporting-pdf .large-calendar { box-shadow: none !important; border: 1px solid #000 !important; page-break-inside: avoid !important; break-inside: avoid !important; width: 100% !important; margin: 0 auto !important;}
         .exporting-pdf .large-calendar th { padding: 8px !important; font-size: 13px !important; border-bottom: 1px solid #000 !important; border-right: 1px solid #000 !important; color: black !important; }
         .exporting-pdf .large-calendar td { height: 85px !important; padding: 6px !important; border: 1px solid #000 !important; }
         .exporting-pdf .large-calendar .date-num { font-size: 15px !important; margin-bottom: 4px !important; color: black !important; }
@@ -762,10 +764,10 @@
                     
                     <h4 style="margin-top: 25px; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">2. Margin Garis Tepi (mm)</h4>
                     <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div><label style="font-size: 12px; margin-bottom: 2px;">Atas</label><input type="number" id="pdf-margin-top" class="form-control" value="5" onchange="generatePdfPreview()"></div>
-                        <div><label style="font-size: 12px; margin-bottom: 2px;">Bawah</label><input type="number" id="pdf-margin-bottom" class="form-control" value="5" onchange="generatePdfPreview()"></div>
-                        <div><label style="font-size: 12px; margin-bottom: 2px;">Kiri</label><input type="number" id="pdf-margin-left" class="form-control" value="5" onchange="generatePdfPreview()"></div>
-                        <div><label style="font-size: 12px; margin-bottom: 2px;">Kanan</label><input type="number" id="pdf-margin-right" class="form-control" value="5" onchange="generatePdfPreview()"></div>
+                        <div><label style="font-size: 12px; margin-bottom: 2px;">Atas</label><input type="number" id="pdf-margin-top" class="form-control" value="10" onchange="generatePdfPreview()"></div>
+                        <div><label style="font-size: 12px; margin-bottom: 2px;">Bawah</label><input type="number" id="pdf-margin-bottom" class="form-control" value="10" onchange="generatePdfPreview()"></div>
+                        <div><label style="font-size: 12px; margin-bottom: 2px;">Kiri</label><input type="number" id="pdf-margin-left" class="form-control" value="10" onchange="generatePdfPreview()"></div>
+                        <div><label style="font-size: 12px; margin-bottom: 2px;">Kanan</label><input type="number" id="pdf-margin-right" class="form-control" value="10" onchange="generatePdfPreview()"></div>
                     </div>
                     
                     <button class="btn" style="width: 100%; margin-top: 15px; background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main);" onclick="generatePdfPreview()"><i class="fa-solid fa-rotate-right"></i> Terapkan Perubahan</button>
@@ -1009,6 +1011,9 @@
             actions.forEach(el => el.style.display = 'none');
             controls.forEach(el => el.style.display = 'none');
             
+            // Scroll layar ke paling atas untuk menghindari offset dari scroll
+            window.scrollTo(0, 0);
+
             // Terapkan Class yang men-fix-kan lebar tampilan HTML ke 1240px agar rapi di kertas
             document.body.classList.add('exporting-pdf');
 
@@ -1016,8 +1021,8 @@
             let opt = {
                 margin:       [mt, ml, mb, mr], // html2pdf menggunakan urutan [top, left, bottom, right]
                 filename:     currentPdfFilename,
-                image:        { type: 'jpeg', quality: 0.99 },
-                html2canvas:  { scale: 2, useCORS: true, windowWidth: 1240, width: 1240, scrollX: 0, scrollY: 0 }, 
+                image:        { type: 'jpeg', quality: 1.0 },
+                html2canvas:  { scale: 2, useCORS: true, windowWidth: 1240, width: 1240, x: 0, y: 0, scrollX: 0, scrollY: 0 }, 
                 jsPDF:        { unit: 'mm', format: formatArr, orientation: orientation },
                 pagebreak:    { mode: ['css', 'class'], before: ['.page-break', '.html2pdf__page-break'] } 
             };
