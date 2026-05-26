@@ -761,6 +761,17 @@
                             <option value="portrait">Portrait (Berdiri)</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label>Skala Cetak (Zoom Ukuran)</label>
+                        <select id="pdf-scale" class="form-control" onchange="generatePdfPreview()">
+                            <option value="0.6">60% (Sangat Kecil)</option>
+                            <option value="0.75">75% (Kecil)</option>
+                            <option value="0.9">90% (Pas)</option>
+                            <option value="1" selected>100% (Normal)</option>
+                            <option value="1.1">110% (Besar)</option>
+                            <option value="1.25">125% (Sangat Besar)</option>
+                        </select>
+                    </div>
                     
                     <h4 style="margin-top: 25px; margin-bottom: 15px; font-size: 14px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">2. Margin Garis Tepi (mm)</h4>
                     <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -993,9 +1004,29 @@
             const mb = parseFloat(document.getElementById('pdf-margin-bottom').value) || 0;
             const ml = parseFloat(document.getElementById('pdf-margin-left').value) || 0;
             const mr = parseFloat(document.getElementById('pdf-margin-right').value) || 0;
+            const printScale = parseFloat(document.getElementById('pdf-scale').value) || 1;
             
             // Format mm untuk folio & a4
             const formatArr = paperSize === 'folio' ? [215, 330] : 'a4';
+
+            // Hitung lebar virtual berdasarkan skala cetak. 
+            // Semakin besar virtual width, elemen HTML terlihat semakin kecil di kertas secara proporsional.
+            const virtualWidth = Math.round(1240 / printScale);
+
+            // Terapkan dinamis lebar untuk override CSS fixed 1240px
+            let dynamicStyle = document.getElementById('dynamic-pdf-style');
+            if (!dynamicStyle) {
+                dynamicStyle = document.createElement('style');
+                dynamicStyle.id = 'dynamic-pdf-style';
+                document.head.appendChild(dynamicStyle);
+            }
+            dynamicStyle.innerHTML = `
+                .exporting-pdf, .exporting-pdf body, .exporting-pdf #main-content, .exporting-pdf .content-area, .exporting-pdf .kaldik-matrix-wrapper {
+                    width: ${virtualWidth}px !important;
+                    max-width: ${virtualWidth}px !important;
+                    min-width: ${virtualWidth}px !important;
+                }
+            `;
 
             // Ambil Element Target (Yang ada di belakang layer popup)
             let elementId = '';
@@ -1022,7 +1053,7 @@
                 margin:       [mt, ml, mb, mr], // html2pdf menggunakan urutan [top, left, bottom, right]
                 filename:     currentPdfFilename,
                 image:        { type: 'jpeg', quality: 1.0 },
-                html2canvas:  { scale: 2, useCORS: true, windowWidth: 1240, width: 1240, x: 0, y: 0, scrollX: 0, scrollY: 0 }, 
+                html2canvas:  { scale: 2, useCORS: true, windowWidth: virtualWidth, width: virtualWidth, x: 0, y: 0, scrollX: 0, scrollY: 0 }, 
                 jsPDF:        { unit: 'mm', format: formatArr, orientation: orientation },
                 pagebreak:    { mode: ['css', 'class'], before: ['.page-break', '.html2pdf__page-break'] } 
             };
