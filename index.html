@@ -2062,20 +2062,31 @@
             } else {
                 activeAgendas.forEach((a) => {
                     const dateStartObj = new Date(a.start);
+                    const dateEndObj = new Date(a.end);
                     const month = dateStartObj.getMonth();
                     
                     const isSem1 = (month >= 6 && month <= 11);
 
                     const labelBulanTahun = `${MONTH_NAMES[month].substring(0,3)} '${dateStartObj.getFullYear().toString().substring(2,4)}`;
-                    const labelTanggalFull = a.start === a.end ? formatDateIndo(a.start) : `${formatDateIndo(a.start)} s.d. ${formatDateIndo(a.end)}`;
+                    
+                    // Format tanggal rentang yang lebih ringkas
+                    let labelTanggalSingkat = '';
+                    if (a.start === a.end) {
+                        labelTanggalSingkat = formatDateIndo(a.start);
+                    } else {
+                        if (dateStartObj.getMonth() === dateEndObj.getMonth() && dateStartObj.getFullYear() === dateEndObj.getFullYear()) {
+                            labelTanggalSingkat = `${dateStartObj.getDate()} - ${dateEndObj.getDate()} ${MONTH_NAMES[dateStartObj.getMonth()]} ${dateStartObj.getFullYear()}`;
+                        } else {
+                            labelTanggalSingkat = `${formatDateIndo(a.start)} - ${formatDateIndo(a.end)}`;
+                        }
+                    }
 
                     const rowHTML = `
                         <tr class="hover:bg-gray-50">
                             <td class="py-1">${isSem1 ? countSem1++ : countSem2++}</td>
                             <td class="font-semibold text-brand-blue py-1">${labelBulanTahun}</td>
-                            <td class="text-left px-3 py-1.5">
-                                <div class="font-bold text-gray-800 text-[10px] leading-tight">${a.title}</div>
-                                <div class="text-[9px] text-gray-600 mt-0.5">${labelTanggalFull}</div>
+                            <td class="text-left px-3 py-1.5 text-[10px] leading-tight text-gray-800">
+                                <span class="font-bold">${a.title}</span> (${labelTanggalSingkat})
                             </td>
                         </tr>
                     `;
