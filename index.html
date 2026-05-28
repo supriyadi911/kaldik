@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Kalender Pendidikan</title>
+    <title>Sistem Kalender Pendidikan SD</title>
     
     <!-- Penanganan Error Global Sejak Awal Pemuatan -->
     <script>
@@ -148,6 +148,11 @@
                 </a>
                 <a href="#" onclick="switchView('stats')" id="nav-stats" class="nav-item flex items-center px-6 py-3 text-sm font-medium text-gray-300 hover:bg-blue-800 hover:text-white transition-colors">
                     <i class="fas fa-chart-bar w-6"></i> Statistik Hari Efektif
+                </a>
+                <!-- MENU BARU: ANALISIS ALOKASI WAKTU (TERKUNCI) -->
+                <a href="#" onclick="switchView('analisis-alokasi')" id="nav-analisis-alokasi" class="nav-item flex items-center justify-between px-6 py-3 text-sm font-medium text-gray-300 hover:bg-blue-800 hover:text-white transition-colors">
+                    <div class="flex items-center"><i class="fas fa-business-time w-6"></i> Analisis Alokasi Waktu</div>
+                    <i class="fas fa-lock text-xs text-gray-500 auth-lock"></i>
                 </a>
                 <a href="#" onclick="switchView('cetak-resmi')" id="nav-cetak-resmi" class="nav-item flex items-center justify-between px-6 py-3 text-sm font-medium text-gray-300 hover:bg-blue-800 hover:text-white transition-colors">
                     <div class="flex items-center"><i class="fas fa-print w-6"></i> Cetak Resmi</div>
@@ -866,7 +871,7 @@
             
             <div class="p-6 text-center">
                 <p class="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
-                    Fitur <span class="font-semibold text-brand-blue">Kalender Akademik, Manajemen Agenda, Cetak Resmi,</span> dan <span class="font-semibold text-brand-blue">Pengaturan Sekolah</span> hanya tersedia secara penuh.
+                    Fitur <span class="font-semibold text-brand-blue">Kalender Akademik, Manajemen Agenda, Analisis Alokasi Waktu, Cetak Resmi,</span> dan <span class="font-semibold text-brand-blue">Pengaturan Sekolah</span> hanya tersedia secara penuh.
                 </p>
                 
                 <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 relative overflow-hidden">
@@ -955,7 +960,8 @@
         // --- STATE AUTHENTICATION ---
         let appUsers = [];
         let currentUser = null;
-        const PROTECTED_VIEWS = ['calendar', 'agenda', 'cetak-resmi', 'settings', 'users'];
+        // MENAMBAHKAN 'analisis-alokasi' DALAM PROTECTED_VIEWS (HARUS LOGIN)
+        const PROTECTED_VIEWS = ['calendar', 'agenda', 'cetak-resmi', 'settings', 'users', 'analisis-alokasi'];
 
         // --- INISIALISASI ---
         function initApp() {
@@ -1050,7 +1056,6 @@
                         { id: generateId(), title: 'Penyerahan Buku Laporan Hasil Belajar (Raport) Kenaikan Kelas', start: '2027-06-18', end: '2027-06-18', type: 'akademik', pic: 'Wali Kelas', location: 'Ruang Kelas', desc: 'Pembagian Raport Kenaikan Kelas.' },
                         { id: generateId(), title: 'Libur Akhir Tahun Pelajaran', start: '2027-06-21', end: '2027-07-10', type: 'libur_semester', pic: 'Panitia PPDB', location: 'Luar Sekolah', desc: 'Libur akhir tahun pelajaran sekolah dasar.' }
                     ];
-                    // Dihapus agar tidak langsung menimpa database cloud saat pertama kali load
                     localStorage.setItem('kaldik_agendas', JSON.stringify(agendas));
                 }
             } catch (e) {
@@ -1153,6 +1158,12 @@
             if (PROTECTED_VIEWS.includes(viewId) && !currentUser) {
                 openPremiumModal();
                 return;
+            }
+
+            // PENANGANAN KHUSUS UNTUK MENU EKSTERNAL 'ANALISIS ALOKASI WAKTU'
+            if (viewId === 'analisis-alokasi') {
+                window.open('https://supriyadi911.github.io/analisis-alokasi-waktu/', '_blank');
+                return; // Batalkan pergantian halaman utama agar state tab sekarang tetap terjaga
             }
 
             // Proteksi Khusus Admin
@@ -2069,7 +2080,6 @@
 
                     const labelBulanTahun = `${MONTH_NAMES[month].substring(0,3)} '${dateStartObj.getFullYear().toString().substring(2,4)}`;
                     
-                    // Format tanggal rentang yang lebih ringkas
                     let labelTanggalSingkat = '';
                     if (a.start === a.end) {
                         labelTanggalSingkat = formatDateIndo(a.start);
@@ -2554,21 +2564,18 @@
             return dateStr;
         }
 
-        // Konversi DD/MM/YYYY atau ISO Date String dari cloud kembali menjadi YYYY-MM-DD (Aman dari Zona Waktu/Timezone)
+        // Konversi DD/MM/YYYY atau ISO Date String dari cloud kembali menjadi YYYY-MM-DD
         function parseFromDDMMYYYY(dateStr) {
             if (!dateStr) return dateStr;
             
-            // Jika Google Sheets secara otomatis merubahnya ke ISO Date String (cth: "2026-06-30T17:00:00.000Z")
             if (typeof dateStr === 'string' && dateStr.includes('T')) {
                 const dateObj = new Date(dateStr);
-                // Ambil nilai tanggal lokal pengguna agar tidak bergeser hari akibat timezone
                 const year = dateObj.getFullYear();
                 const month = String(dateObj.getMonth() + 1).padStart(2, '0');
                 const day = String(dateObj.getDate()).padStart(2, '0');
                 return `${year}-${month}-${day}`;
             }
             
-            // Jika ditarik murni sebagai string dengan garis miring (DD/MM/YYYY)
             if (typeof dateStr === 'string' && dateStr.includes('/')) {
                 const parts = dateStr.split('/');
                 if (parts.length === 3) {
@@ -2588,6 +2595,7 @@
             return [year, month, day].join('-');
         }
 
+        // Format tanggal ke Bahasa Indonesia (D MMMM YYYY)
         function formatDateIndo(dateStr) {
             if(!dateStr) return '';
             const d = new Date(dateStr);
