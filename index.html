@@ -114,11 +114,11 @@
         .col-total { width: 5.9% !important; } /* Total = 100% */
 
         /* Memaksa elemen melebar untuk PDF Generator (A4 Landscape) */
-        .pdf-export-mode { width: 1040px !important; max-width: none !important; padding: 0px !important; margin: 0 auto !important; background: white; }
+        .pdf-export-mode { width: 1020px !important; max-width: none !important; padding: 10px 15px !important; margin: 0 auto !important; background: white; box-sizing: border-box !important; }
         .pdf-page-break { page-break-before: always !important; break-before: page !important; height: 0px !important; margin: 0 !important; padding: 0 !important; }
         
         /* Penyesuaian ukuran elemen saat export PDF agar muat dalam 1 halaman dan tidak terpotong */
-        .pdf-export-mode .table-resmi th, .pdf-export-mode .table-resmi td { padding: 2.5px 0.5px !important; font-size: 8px !important; }
+        .pdf-export-mode .table-resmi th, .pdf-export-mode .table-resmi td { padding: 2px 0.5px !important; font-size: 7.5px !important; }
         .pdf-export-mode .col-bulan { width: 6.0% !important; }
         .pdf-export-mode .col-tgl { width: 2.12% !important; }
         .pdf-export-mode .col-jml { width: 4.5% !important; }
@@ -1769,6 +1769,7 @@
             openUserModal(id);
         }
 
+        // --- SISTEM KONTROL DI SCRIPT ---
         function closeAgendaModal() {
             document.getElementById('modal-agenda').classList.add('hidden');
         }
@@ -2226,7 +2227,7 @@
             if(confirm('PERINGATAN: Semua data agenda dan pengaturan akan dihapus. Lanjutkan?')) {
                 localStorage.removeItem('kaldik_settings');
                 localStorage.removeItem('kaldik_agendas');
-                showToast('Data direset, memuat ulang...', 'success');
+                showToast('Data direset, memulang...', 'success');
                 setTimeout(() => location.reload(), 1500);
             }
         }
@@ -2712,31 +2713,44 @@
             }, 1000);
         }
 
-        // --- SISTEM EKSPOR PDF ---
+        // --- SISTEM EKSPOR PDF CERDAS & INDEPENDEN ---
         function downloadPDF() {
             showToast('Sedang menyusun dokumen PDF, mohon tunggu...', 'info');
             const element = document.getElementById('cetak-area');
             
-            // Tambahkan kelas mode ekspor untuk memaksa rasio aspek A4 Landscape di layar sebelum ditangkap
+            // Simpan style inline asli (jika ada) untuk dikembalikan nanti
+            const originalStyle = element.getAttribute('style') || '';
+            
+            // MEMAKSA UKURAN AREA CETAK KE STANDAR VIRTUAL LANDSCAPE YANG TETAP (TIDAK PEDULI viewport sempit)
+            element.setAttribute('style', 'width: 1040px !important; max-width: none !important; min-width: 1040px !important; box-sizing: border-box !important;');
             element.classList.add('pdf-export-mode');
 
             const filenameStr = `Kaldik_Resmi_${schoolData.academicYear.replace('/', '-')}.pdf`;
 
-            // Opsi PDF presisi agar muat di area kertas A4 Landscape (297mm x 210mm) tanpa terpotong
             const opt = {
-                margin:       [6, 8, 6, 8], // Margin: Atas 6mm, Kanan 8mm, Bawah 6mm, Kiri 8mm
+                margin:       [8, 8, 8, 8], // Margin: Atas, Kanan, Bawah, Kiri dalam mm
                 filename:     filenameStr,
                 image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, windowWidth: 1040 }, // Menyesuaikan lebar virtual agar proporsional dengan kertas A4 landscape asli
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    logging: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: 1040 // Kunci lebar kanvas rendering agar pas dengan lebar kertas A4 Landscape
+                },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
                 pagebreak:    { mode: ['css', 'legacy'] }
             };
 
             // Menjalankan library html2pdf
             html2pdf().set(opt).from(element).save().then(() => {
+                // Kembalikan ke tampilan responsif awal sesudah konversi selesai
+                element.setAttribute('style', originalStyle);
                 element.classList.remove('pdf-export-mode');
                 showToast('Dokumen PDF berhasil diunduh!', 'success');
             }).catch(err => {
+                element.setAttribute('style', originalStyle);
                 element.classList.remove('pdf-export-mode');
                 console.error('Error saat export PDF:', err);
                 showToast('Gagal menghasilkan dokumen PDF.', 'error');
