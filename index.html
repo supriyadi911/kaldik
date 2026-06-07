@@ -671,66 +671,70 @@
                             <button onclick="downloadMatrixPDF()" class="bg-red-600 text-white px-4 py-2 rounded shadow-sm hover:bg-red-700 transition">
                                 <i class="fas fa-file-pdf mr-1"></i> Unduh PDF
                             </button>
+                            <button onclick="window.print()" class="bg-gray-800 text-white px-4 py-2 rounded shadow-sm hover:bg-gray-700 transition">
+                                <i class="fas fa-print mr-1"></i> Cetak
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Wadah Cetak Matrik -->
-                    <div id="cetak-matrik-area" class="w-full bg-white p-2 md:p-6 rounded-xl shadow-sm border border-gray-100">
-                        <div class="overflow-x-auto">
-                            <!-- MENYELARASKAN KOLOM HEADER DAN DATA MELALUI TAG COLGROUP -->
-                            <table id="matrix-table" class="w-full text-left text-sm whitespace-nowrap md:whitespace-normal">
-                                <colgroup>
-                                    <col style="width: 5%;">
-                                    <col style="width: 15%;">
-                                    <col style="width: 10%;">
-                                    <col style="width: 8%;">
-                                    <col style="width: 8%;">
-                                    <col style="width: 10%;">
-                                    <col style="width: 10%;">
-                                    <col style="width: 10%;">
-                                    <col style="width: 24%;">
-                                </colgroup>
-                                <thead class="print-break-inside-avoid">
-                                    <!-- JUDUL HEADER TABEL UNTUK UI, EXCEL, DAN PDF -->
-                                    <tr id="matrix-header-title" class="bg-white text-gray-800 border-none">
-                                        <th colspan="9" class="text-center py-6 border-none border-b-2 border-gray-800">
-                                            <div class="flex items-center justify-between px-2 md:px-8 mb-4">
-                                                <div class="w-12 md:w-20 shrink-0 flex justify-center">
-                                                    <img class="matrix-gov-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas">
+                    <div id="cetak-matrik-area" class="w-full">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <!-- MENYELARASKAN KOLOM HEADER DAN DATA MELALUI TAG COLGROUP -->
+                                <table id="matrix-table" class="w-full text-left text-sm whitespace-nowrap md:whitespace-normal">
+                                    <colgroup>
+                                        <col style="width: 5%;">
+                                        <col style="width: 15%;">
+                                        <col style="width: 10%;">
+                                        <col style="width: 8%;">
+                                        <col style="width: 8%;">
+                                        <col style="width: 10%;">
+                                        <col style="width: 10%;">
+                                        <col style="width: 10%;">
+                                        <col style="width: 24%;">
+                                    </colgroup>
+                                    <thead class="print-break-inside-avoid">
+                                        <!-- JUDUL HEADER TABEL UNTUK UI, EXCEL, DAN PDF -->
+                                        <tr id="matrix-header-title" class="bg-white text-gray-800 border-none">
+                                            <th colspan="9" class="text-center py-6 border-none border-b-2 border-gray-800">
+                                                <div class="flex items-center justify-between px-2 md:px-8 mb-4">
+                                                    <div class="w-12 md:w-20 shrink-0 flex justify-center">
+                                                        <img class="matrix-gov-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas">
+                                                    </div>
+                                                    <div class="flex-1 text-center px-4">
+                                                        <h1 class="text-sm md:text-base font-bold uppercase tracking-wider print-gov-name">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
+                                                        <h2 class="text-lg md:text-2xl font-bold uppercase mb-1 print-school-name">SD NEGERI 1 NUSANTARA</h2>
+                                                        <p class="text-xs md:text-sm text-gray-500 font-normal print-school-address">Jl. Pendidikan No. 1, Bandar Lampung</p>
+                                                    </div>
+                                                    <div class="w-12 md:w-20 shrink-0 flex justify-center">
+                                                        <img class="matrix-school-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Sekolah">
+                                                    </div>
                                                 </div>
-                                                <div class="flex-1 text-center px-4">
-                                                    <h1 class="text-sm md:text-base font-bold uppercase tracking-wider print-gov-name">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
-                                                    <h2 class="text-lg md:text-2xl font-bold uppercase mb-1 print-school-name">SD NEGERI 1 NUSANTARA</h2>
-                                                    <p class="text-xs md:text-sm text-gray-500 font-normal print-school-address">Jl. Pendidikan No. 1, Bandar Lampung</p>
-                                                </div>
-                                                <div class="w-12 md:w-20 shrink-0 flex justify-center">
-                                                    <img class="matrix-school-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Sekolah">
-                                                </div>
-                                            </div>
-                                            <h3 class="text-lg font-bold uppercase mt-2">MATRIK RINCIAN KALENDER PENDIDIKAN</h3>
-                                            <p class="text-sm font-medium mt-1">Tahun Ajaran <span class="print-academic-year">2026/2027</span></p>
-                                            <p class="text-xs font-semibold text-gray-500 mt-1 print-semester-info">Semua Semester</p>
-                                        </th>
-                                    </tr>
-                                    <tr class="bg-brand-blue text-white">
-                                        <th class="px-3 py-3 text-center border border-blue-900">No</th>
-                                        <th class="px-4 py-3 text-center border border-blue-900">Bulan</th>
-                                        <th class="px-3 py-3 text-center border border-blue-900">Jumlah Hari</th>
-                                        <th class="px-3 py-3 text-center border border-blue-900">HES</th>
-                                        <th class="px-3 py-3 text-center border border-blue-900">Jml Minggu</th>
-                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Semester</th>
-                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Umum</th>
-                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Khusus</th>
-                                        <th class="px-4 py-3 text-center border border-blue-900">Uraian Kegiatan / Agenda</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="matrix-tbody" class="divide-y divide-gray-200">
-                                    <!-- Diisi oleh JS -->
-                                </tbody>
-                                <tfoot class="bg-gray-100 font-bold" id="matrix-tfoot">
-                                    <!-- Diisi oleh JS -->
-                                </tfoot>
-                            </table>
+                                                <h3 class="text-lg font-bold uppercase mt-2">MATRIK RINCIAN KALENDER PENDIDIKAN</h3>
+                                                <p class="text-sm font-medium mt-1">Tahun Ajaran <span class="print-academic-year">2026/2027</span></p>
+                                                <p class="text-xs font-semibold text-gray-500 mt-1 print-semester-info">Semua Semester</p>
+                                            </th>
+                                        </tr>
+                                        <tr class="bg-brand-blue text-white">
+                                            <th class="px-3 py-3 text-center border border-blue-900">No</th>
+                                            <th class="px-4 py-3 text-center border border-blue-900">Bulan</th>
+                                            <th class="px-3 py-3 text-center border border-blue-900">Jumlah Hari</th>
+                                            <th class="px-3 py-3 text-center border border-blue-900">HES</th>
+                                            <th class="px-3 py-3 text-center border border-blue-900">Jml Minggu</th>
+                                            <th class="px-3 py-3 text-center border border-blue-900">Libur Semester</th>
+                                            <th class="px-3 py-3 text-center border border-blue-900">Libur Umum</th>
+                                            <th class="px-3 py-3 text-center border border-blue-900">Libur Khusus</th>
+                                            <th class="px-4 py-3 text-center border border-blue-900">Uraian Kegiatan / Agenda</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="matrix-tbody" class="divide-y divide-gray-200">
+                                        <!-- Diisi oleh JS -->
+                                    </tbody>
+                                    <tfoot class="bg-gray-100 font-bold" id="matrix-tfoot">
+                                        <!-- Diisi oleh JS -->
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
 
                         <!-- Blok Tanda Tangan Cetak Matrik -->
