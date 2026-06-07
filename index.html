@@ -307,34 +307,41 @@
             }
 
             /* --- CETAK MATRIK KALENDER (MENYELARASKAN HEADER DENGAN DATA) --- */
-            #view-matrix .bg-white { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+            #view-matrix .bg-white { border: none !important; border-radius: 0 !important; box-shadow: none !important; padding: 0 !important; }
             #view-matrix .overflow-x-auto { overflow: visible !important; display: block !important; width: 100% !important; }
+            #cetak-matrik-area { padding: 0 !important; margin: 0 !important; border: none !important; }
             
+            /* Enforce Table Display Properties */
             #matrix-table { 
                 display: table !important;
                 width: 100% !important; 
-                table-layout: fixed !important; /* Mengunci `<colgroup>` agar sejajar sempurna dengan kolom tabel */
+                table-layout: fixed !important; /* Menggunakan <colgroup> bawaan HTML untuk lebar */
                 border-collapse: collapse !important; 
-                border: 1.5px solid black !important;
-                margin-top: 5px !important;
+                border: 1px solid black !important;
+                margin-top: 0 !important;
             }
-            #matrix-table th:not([colspan="9"]), #matrix-table td { 
-                border: 1px solid #374151 !important; 
-                padding: 5px 3px !important; 
+            #matrix-table thead { display: table-header-group !important; }
+            #matrix-table tbody { display: table-row-group !important; }
+            #matrix-table tr { display: table-row !important; page-break-inside: avoid !important; }
+            
+            #matrix-table th, #matrix-table td { 
+                display: table-cell !important; /* Paksa sifat grid sel tabel */
+                border: 1px solid black !important; 
+                padding: 4px 2px !important; 
                 font-size: 9.5px !important; 
                 color: black !important;
                 white-space: normal !important;
                 word-wrap: break-word !important;
                 word-break: break-word !important;
-                overflow: hidden !important;
                 vertical-align: middle !important;
             }
-            #matrix-table thead tr:not(#matrix-header-title) th { 
+
+            /* Header Kolom (Biru Gelap) */
+            #matrix-table thead tr.bg-brand-blue th { 
                 background-color: #1e3a8a !important; 
                 color: white !important;
                 font-weight: bold !important; 
                 text-align: center !important;
-                border: 1px solid #1e3a8a !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
@@ -344,57 +351,24 @@
                 display: none !important; 
             }
             
-            #matrix-table tbody tr { background-color: white !important; page-break-inside: avoid; }
+            #matrix-table tbody tr { background-color: white !important; }
             #matrix-table tfoot td { 
                 background-color: #f3f4f6 !important; 
                 color: #1e3a8a !important; 
                 font-weight: bold !important; 
                 text-align: center !important; 
-                border: 1px solid #374151 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
-
-            /* Memaksa ukuran kolom secara absolut agar Header dan Data sejajar 100% (Bypass bug Colspan pada browser) */
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(1), #matrix-tbody td:nth-child(1) { width: 4% !important; }
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(2), #matrix-tbody td:nth-child(2) { width: 14% !important; }
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(3), #matrix-tbody td:nth-child(3) { width: 9% !important; }
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(4), #matrix-tbody td:nth-child(4) { width: 8% !important; }
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(5), #matrix-tbody td:nth-child(5) { width: 9% !important; }
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(6), #matrix-tbody td:nth-child(6) { width: 10% !important; }
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(7), #matrix-tbody td:nth-child(7) { width: 10% !important; }
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(8), #matrix-tbody td:nth-child(8) { width: 10% !important; }
-            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(9), #matrix-tbody td:nth-child(9) { width: 26% !important; }
 
             /* Alignment khusus untuk kolom tabel Matrik */
             #matrix-table td:nth-child(2), #matrix-table td:nth-child(9) {
                 text-align: left !important; 
             }
             
-            /* Memaksa Flexbox Kop Surat Matrik bekerja sempurna saat Cetak Browser */
-            #matrix-header-title .flex {
-                display: flex !important;
-                flex-direction: row !important;
-                align-items: center !important;
-                justify-content: space-between !important;
-                width: 100% !important;
-            }
-            #matrix-header-title .flex > div:first-child, #matrix-header-title .flex > div:last-child {
-                width: 70px !important;
-                flex-shrink: 0 !important;
-            }
-            #matrix-header-title .flex-1 {
-                flex: 1 !important;
-            }
-            .matrix-gov-logo, .matrix-school-logo { 
-                max-height: 55px !important; 
-                width: auto !important; 
-            }
-            #matrix-header-title h1.print-gov-name { font-size: 14px !important; margin-bottom: 2px !important; color: black !important; }
-            #matrix-header-title h2.print-school-name { font-size: 18px !important; margin-bottom: 2px !important; letter-spacing: 0.5px !important; color: black !important;}
-            #matrix-header-title p.print-school-address { font-size: 10px !important; margin-bottom: 0 !important; color: #4b5563 !important; }
-            
             /* Tanda Tangan Cetak Matrik */
-            #matrix-signature { margin-top: 30px !important; font-size: 11px !important; width: 100% !important; }
-            #matrix-signature .flex { display: flex !important; justify-content: space-between !important; width: 100% !important; }
+            #matrix-signature { margin-top: 25px !important; font-size: 11px !important; width: 100% !important; display: block !important; }
+            #matrix-signature .flex { display: flex !important; justify-content: space-between !important; width: 100% !important; page-break-inside: avoid; }
         }
     </style>
 </head>
