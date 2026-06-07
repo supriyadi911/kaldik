@@ -94,8 +94,8 @@
         .col-jml { width: 4.5% !important; } /* 5 x 4.5% = 22.5% */
         .col-total { width: 5.9% !important; } /* Total = 100% */
 
-        /* Memaksa elemen melebar untuk PDF Generator (A4 Landscape) */
-        .pdf-export-mode { width: 1040px !important; max-width: none !important; padding: 0px !important; margin: 0 auto !important; background: white; box-sizing: border-box !important; }
+        /* Memaksa elemen melebar untuk PDF Generator (A4 Landscape = 1122px) */
+        .pdf-export-mode { width: 1122px !important; max-width: 1122px !important; min-width: 1122px !important; padding: 0px !important; margin: 0 auto !important; background: white; box-sizing: border-box !important; }
         .pdf-page-break { page-break-before: always !important; break-before: page !important; height: 0px !important; margin: 0 !important; padding: 0 !important; }
         
         /* Penyesuaian ukuran elemen saat export PDF agar muat dalam 1 halaman dan tidak terpotong */
@@ -147,23 +147,24 @@
         }
 
         /* --- CSS KHUSUS EKSPOR PDF MATRIK --- */
-        .pdf-matrix-mode { width: 1040px !important; max-width: none !important; padding: 20px !important; margin: 0 auto !important; background: white; box-sizing: border-box !important; }
+        /* Memastikan lebar mutlak 1122px (standar A4 Landscape) agar kebal dari clipping iframe deploy */
+        .pdf-matrix-mode { width: 1122px !important; max-width: 1122px !important; min-width: 1122px !important; padding: 20px 30px !important; margin: 0 !important; background: white; box-sizing: border-box !important; position: relative; }
         .pdf-matrix-mode .print-only { display: block !important; }
         .pdf-matrix-mode .no-print { display: none !important; }
         .pdf-matrix-mode .bg-white.rounded-xl.shadow-sm { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
         .pdf-matrix-mode .overflow-x-auto { overflow: visible !important; display: block !important; width: 100% !important; }
-        .pdf-matrix-mode #matrix-table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; border: 1px solid black !important; margin-top: 5px !important; }
-        .pdf-matrix-mode #matrix-table th, .pdf-matrix-mode #matrix-table td { border: 1px solid black !important; padding: 6px 4px !important; font-size: 10px !important; color: black !important; white-space: normal !important; word-wrap: break-word !important; word-break: break-word !important; overflow: hidden !important; }
-        .pdf-matrix-mode #matrix-table thead th { background-color: #d1d5db !important; color: black !important; font-weight: bold !important; text-align: center !important; }
+        .pdf-matrix-mode #matrix-table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; margin-top: 5px !important; }
+        .pdf-matrix-mode #matrix-table th:not([colspan="9"]), .pdf-matrix-mode #matrix-table td { border: 1px solid #d1d5db !important; padding: 5px 3px !important; font-size: 9.5px !important; white-space: normal !important; word-wrap: break-word !important; word-break: break-word !important; overflow: hidden !important; }
+        .pdf-matrix-mode #matrix-table thead tr:not(#matrix-header-title) th { background-color: #1e3a8a !important; color: white !important; font-weight: bold !important; text-align: center !important; border-color: #1e3a8a !important; }
         .pdf-matrix-mode #matrix-table thead tr#matrix-header-title th { background-color: white !important; border: none !important; border-bottom: 2px solid black !important; padding-bottom: 15px !important; }
         .pdf-matrix-mode #matrix-table tbody tr { background-color: white !important; page-break-inside: avoid; }
-        .pdf-matrix-mode #matrix-table tfoot td { background-color: #e5e7eb !important; color: black !important; font-weight: bold !important; text-align: center !important; }
+        .pdf-matrix-mode #matrix-table tfoot td { background-color: #f3f4f6 !important; color: #1e3a8a !important; font-weight: bold !important; text-align: center !important; }
         .pdf-matrix-mode #matrix-table td:nth-child(2), .pdf-matrix-mode #matrix-table td:nth-child(9) { text-align: left !important; }
         
         /* Penyesuaian Kop Surat Matrik untuk PDF */
         .pdf-matrix-mode .matrix-gov-logo, .pdf-matrix-mode .matrix-school-logo { max-height: 45px !important; width: auto !important; }
-        .pdf-matrix-mode h1.print-gov-name { font-size: 12px !important; margin-bottom: 2px !important; }
-        .pdf-matrix-mode h2.print-school-name { font-size: 16px !important; margin-bottom: 2px !important; }
+        .pdf-matrix-mode h1.print-gov-name { font-size: 13px !important; margin-bottom: 2px !important; }
+        .pdf-matrix-mode h2.print-school-name { font-size: 17px !important; margin-bottom: 2px !important; }
         .pdf-matrix-mode p.print-school-address { font-size: 9px !important; margin-bottom: 0 !important; }
 
         /* KUSTOMISASI UNTUK CETAK VIA BROWSER KHUSUS (CTRL+P / PRINT) */
@@ -240,12 +241,6 @@
             .print-header-kop h1 { font-size: 18px; font-weight: bold; margin: 0; text-transform: uppercase; }
             .print-header-kop h2 { font-size: 14px; margin: 3px 0; }
             .print-header-kop p { margin: 0; font-size: 10px; }
-
-            /* Penyesuaian Kop Surat Matrik untuk Cetak Browser */
-            .matrix-gov-logo, .matrix-school-logo { max-height: 45px !important; width: auto !important; }
-            #matrix-header-title h1.print-gov-name { font-size: 12px !important; margin-bottom: 2px !important; }
-            #matrix-header-title h2.print-school-name { font-size: 16px !important; margin-bottom: 2px !important; }
-            #matrix-header-title p.print-school-address { font-size: 9px !important; margin-bottom: 0 !important; }
 
             /* --- CETAK KALENDER AKADEMIK (1 HALAMAN = 4 BULAN) --- */
             #view-calendar #full-year-grid {
@@ -339,23 +334,22 @@
                 width: 100% !important; 
                 table-layout: fixed !important; /* Wajib di-fixed agar header `<colgroup>` sejajar sempurna dengan kolom tabel */
                 border-collapse: collapse !important; 
-                border: 1px solid black !important; 
             }
-            #matrix-table th, #matrix-table td { 
-                border: 1px solid black !important; 
+            #matrix-table th:not([colspan="9"]), #matrix-table td { 
+                border: 1px solid #d1d5db !important; 
                 padding: 6px 4px !important; 
                 font-size: 10px !important; 
-                color: black !important; 
                 white-space: normal !important;
                 word-wrap: break-word !important;
                 word-break: break-word !important;
                 overflow: hidden !important;
             }
-            #matrix-table thead th { 
-                background-color: #d1d5db !important; 
-                color: black !important;
+            #matrix-table thead tr:not(#matrix-header-title) th { 
+                background-color: #1e3a8a !important; 
+                color: white !important;
                 font-weight: bold !important; 
                 text-align: center !important;
+                border-color: #1e3a8a !important;
             }
             #matrix-table thead tr#matrix-header-title th {
                 background-color: white !important;
@@ -364,7 +358,7 @@
                 padding-bottom: 15px !important;
             }
             #matrix-table tbody tr { background-color: white !important; page-break-inside: avoid; }
-            #matrix-table tfoot td { background-color: #e5e7eb !important; color: black !important; font-weight: bold !important; text-align: center !important; }
+            #matrix-table tfoot td { background-color: #f3f4f6 !important; color: #1e3a8a !important; font-weight: bold !important; text-align: center !important; }
 
             /* Alignment untuk kolom tertentu */
             #matrix-table td:nth-child(2) {
@@ -647,8 +641,8 @@
                                 <p>Mengetahui,</p>
                                 <p>Kepala Sekolah</p>
                                 <br><br><br>
-                                <p class="font-bold underline" id="print-ks-nama">Nama KS</p>
-                                <p>NIP. <span id="print-ks-nip">NIP KS</span></p>
+                                <p class="font-bold underline print-ks-nama">Nama KS</p>
+                                <p>NIP. <span class="print-ks-nip">NIP KS</span></p>
                             </div>
                             <div class="text-center">
                                 <p id="print-date-place">Bandar Lampung, 26 Mei 2026</p>
@@ -677,64 +671,63 @@
                         </div>
                     </div>
 
-                    <div id="cetak-matrik-area" class="w-full">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                            <div class="overflow-x-auto">
-                                <!-- MENYELARASKAN KOLOM HEADER DAN DATA MELALUI TAG COLGROUP -->
-                                <table id="matrix-table" class="w-full text-left text-sm whitespace-nowrap md:whitespace-normal">
-                                    <colgroup>
-                                        <col style="width: 5%;">
-                                        <col style="width: 15%;">
-                                        <col style="width: 10%;">
-                                        <col style="width: 8%;">
-                                        <col style="width: 8%;">
-                                        <col style="width: 10%;">
-                                        <col style="width: 10%;">
-                                        <col style="width: 10%;">
-                                        <col style="width: 24%;">
-                                    </colgroup>
-                                    <thead class="print-break-inside-avoid">
-                                        <!-- JUDUL HEADER TABEL UNTUK UI, EXCEL, DAN PDF -->
-                                        <tr id="matrix-header-title" class="bg-white text-gray-800 border-none">
-                                            <th colspan="9" class="text-center py-6 border-none border-b-2 border-gray-800">
-                                                <div class="flex items-center justify-between px-2 md:px-8 mb-4">
-                                                    <div class="w-12 md:w-20 shrink-0 flex justify-center">
-                                                        <img class="matrix-gov-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas">
-                                                    </div>
-                                                    <div class="flex-1 text-center px-4">
-                                                        <h1 class="text-sm md:text-base font-bold uppercase tracking-wider print-gov-name">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
-                                                        <h2 class="text-lg md:text-2xl font-bold uppercase mb-1 print-school-name">SD NEGERI 1 NUSANTARA</h2>
-                                                        <p class="text-xs md:text-sm text-gray-500 font-normal print-school-address">Jl. Pendidikan No. 1, Bandar Lampung</p>
-                                                    </div>
-                                                    <div class="w-12 md:w-20 shrink-0 flex justify-center">
-                                                        <img class="matrix-school-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Sekolah">
-                                                    </div>
+                    <!-- Wadah Cetak Matrik -->
+                    <div id="cetak-matrik-area" class="w-full bg-white p-2 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                        <div class="overflow-x-auto">
+                            <!-- MENYELARASKAN KOLOM HEADER DAN DATA MELALUI TAG COLGROUP -->
+                            <table id="matrix-table" class="w-full text-left text-sm whitespace-nowrap md:whitespace-normal">
+                                <colgroup>
+                                    <col style="width: 5%;">
+                                    <col style="width: 15%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 8%;">
+                                    <col style="width: 8%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 24%;">
+                                </colgroup>
+                                <thead class="print-break-inside-avoid">
+                                    <!-- JUDUL HEADER TABEL UNTUK UI, EXCEL, DAN PDF -->
+                                    <tr id="matrix-header-title" class="bg-white text-gray-800 border-none">
+                                        <th colspan="9" class="text-center py-6 border-none border-b-2 border-gray-800">
+                                            <div class="flex items-center justify-between px-2 md:px-8 mb-4">
+                                                <div class="w-12 md:w-20 shrink-0 flex justify-center">
+                                                    <img class="matrix-gov-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas">
                                                 </div>
-                                                <h3 class="text-lg font-bold uppercase mt-2">MATRIK RINCIAN KALENDER PENDIDIKAN</h3>
-                                                <p class="text-sm font-medium mt-1">Tahun Ajaran <span class="print-academic-year">2026/2027</span></p>
-                                                <p class="text-xs font-semibold text-gray-500 mt-1 print-semester-info">Semua Semester</p>
-                                            </th>
-                                        </tr>
-                                        <tr class="bg-brand-blue text-white">
-                                            <th class="px-3 py-3 text-center border border-blue-900">No</th>
-                                            <th class="px-4 py-3 text-center border border-blue-900">Bulan</th>
-                                            <th class="px-3 py-3 text-center border border-blue-900">Jumlah Hari</th>
-                                            <th class="px-3 py-3 text-center border border-blue-900">HES</th>
-                                            <th class="px-3 py-3 text-center border border-blue-900">Jml Minggu</th>
-                                            <th class="px-3 py-3 text-center border border-blue-900">Libur Semester</th>
-                                            <th class="px-3 py-3 text-center border border-blue-900">Libur Umum</th>
-                                            <th class="px-3 py-3 text-center border border-blue-900">Libur Khusus</th>
-                                            <th class="px-4 py-3 text-center border border-blue-900">Uraian Kegiatan / Agenda</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="matrix-tbody" class="divide-y divide-gray-200">
-                                        <!-- Diisi oleh JS -->
-                                    </tbody>
-                                    <tfoot class="bg-gray-100 font-bold" id="matrix-tfoot">
-                                        <!-- Diisi oleh JS -->
-                                    </tfoot>
-                                </table>
-                            </div>
+                                                <div class="flex-1 text-center px-4">
+                                                    <h1 class="text-sm md:text-base font-bold uppercase tracking-wider print-gov-name">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
+                                                    <h2 class="text-lg md:text-2xl font-bold uppercase mb-1 print-school-name">SD NEGERI 1 NUSANTARA</h2>
+                                                    <p class="text-xs md:text-sm text-gray-500 font-normal print-school-address">Jl. Pendidikan No. 1, Bandar Lampung</p>
+                                                </div>
+                                                <div class="w-12 md:w-20 shrink-0 flex justify-center">
+                                                    <img class="matrix-school-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Sekolah">
+                                                </div>
+                                            </div>
+                                            <h3 class="text-lg font-bold uppercase mt-2">MATRIK RINCIAN KALENDER PENDIDIKAN</h3>
+                                            <p class="text-sm font-medium mt-1">Tahun Ajaran <span class="print-academic-year">2026/2027</span></p>
+                                            <p class="text-xs font-semibold text-gray-500 mt-1 print-semester-info">Semua Semester</p>
+                                        </th>
+                                    </tr>
+                                    <tr class="bg-brand-blue text-white">
+                                        <th class="px-3 py-3 text-center border border-blue-900">No</th>
+                                        <th class="px-4 py-3 text-center border border-blue-900">Bulan</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Jumlah Hari</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">HES</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Jml Minggu</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Semester</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Umum</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Khusus</th>
+                                        <th class="px-4 py-3 text-center border border-blue-900">Uraian Kegiatan / Agenda</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="matrix-tbody" class="divide-y divide-gray-200">
+                                    <!-- Diisi oleh JS -->
+                                </tbody>
+                                <tfoot class="bg-gray-100 font-bold" id="matrix-tfoot">
+                                    <!-- Diisi oleh JS -->
+                                </tfoot>
+                            </table>
                         </div>
 
                         <!-- Blok Tanda Tangan Cetak Matrik -->
@@ -862,9 +855,9 @@
                                 <img id="cetak-gov-logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas" class="max-w-full h-auto hidden pdf-logo-img">
                             </div>
                             <div class="flex-1 text-center px-4">
-                                <h1 class="text-xl md:text-2xl font-bold uppercase tracking-wider" id="cetak-dinas">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
-                                <h2 class="text-lg md:text-xl font-bold uppercase" id="cetak-namasek">SD NEGERI 1 NUSANTARA</h2>
-                                <p class="text-xs md:text-sm" id="cetak-alamatsek">Jl. Pendidikan No. 1, Bandar Lampung</p>
+                                <h1 class="text-xl md:text-2xl font-bold uppercase tracking-wider text-center" id="cetak-dinas">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
+                                <h2 class="text-lg md:text-xl font-bold uppercase text-center" id="cetak-namasek">SD NEGERI 1 NUSANTARA</h2>
+                                <p class="text-xs md:text-sm text-center" id="cetak-alamatsek">Jl. Pendidikan No. 1, Bandar Lampung</p>
                             </div>
                             <div class="w-20 md:w-24 shrink-0 flex justify-center pdf-logo-box">
                                 <img id="cetak-logo" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo" class="max-w-full h-auto hidden pdf-logo-img">
@@ -873,8 +866,8 @@
 
                         <!-- HALAMAN 1: TABEL MATRIK KALENDER -->
                         <div class="text-center mb-6">
-                            <h3 class="text-lg font-bold underline uppercase">KALENDER PENDIDIKAN TAHUN AJARAN <span id="cetak-ta"></span></h3>
-                            <p class="text-sm">Nomor: <span id="cetak-nosurat">-</span></p>
+                            <h3 class="text-lg font-bold underline uppercase text-center">KALENDER PENDIDIKAN TAHIAN AJARAN <span id="cetak-ta"></span></h3>
+                            <p class="text-sm text-center">Nomor: <span id="cetak-nosurat">-</span></p>
                         </div>
 
                         <div class="print-landscape-force">
@@ -928,8 +921,8 @@
                                     <p>Mengetahui,</p>
                                     <p>Kepala Sekolah</p>
                                     <br><br><br><br>
-                                    <p class="font-bold underline uppercase" id="cetak-ks-nama">NAMA KEPSEK</p>
-                                    <p>NIP. <span id="cetak-ks-nip">-</span></p>
+                                    <p class="font-bold underline uppercase print-ks-nama" id="cetak-ks-nama">NAMA KEPSEK</p>
+                                    <p>NIP. <span class="print-ks-nip" id="cetak-ks-nip">-</span></p>
                                 </div>
                                 <div class="text-center text-sm">
                                     <p id="cetak-tanggal-ttd">Bandar Lampung, 15 Juli 2026</p>
@@ -1022,7 +1015,7 @@
                                 </div>
 
                                 <div class="flex justify-end pt-4 border-t">
-                                    <button type="button" onclick="resetData()" class="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg mr-2 transition">Reset Data Aplikasi</button>
+                                    <button type="button" onclick="triggerResetData()" class="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg mr-2 transition">Reset Data Aplikasi</button>
                                     <button type="submit" class="bg-brand-blue text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition">
                                         <i class="fas fa-save mr-2"></i> Simpan Pengaturan
                                     </button>
@@ -1063,6 +1056,112 @@
 
             </div>
         </main>
+    </div>
+
+    <!-- MODAL: KONFIRMASI CUSTOM -->
+    <div id="modal-confirm" class="fixed inset-0 bg-black bg-opacity-50 z-[100] hidden flex items-center justify-center fade-in backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm mx-4 overflow-hidden border border-gray-200">
+            <div class="bg-brand-blue p-4 text-white text-center flex flex-col items-center">
+                <i class="fas fa-question-circle text-4xl text-brand-gold mb-2"></i>
+                <h3 class="font-bold text-lg">Konfirmasi Tindakan</h3>
+            </div>
+            <div class="p-6">
+                <p id="confirm-message" class="text-gray-700 text-sm mb-6 text-center leading-relaxed">Apakah Anda yakin ingin melakukan tindakan ini?</p>
+                <div class="flex justify-center gap-3">
+                    <button id="btn-confirm-cancel" class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50 transition w-24 font-medium">Batal</button>
+                    <button id="btn-confirm-yes" class="bg-brand-blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition shadow w-24 font-bold">Ya</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: TAMBAH/EDIT AGENDA -->
+    <div id="modal-agenda" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-5" id="modal-agenda-content">
+            <div class="flex justify-between items-center bg-gray-50 px-6 py-4 border-b">
+                <h3 class="font-bold text-gray-800" id="modal-agenda-title">Tambah Agenda Baru</h3>
+                <button onclick="closeAgendaModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-lg"></i></button>
+            </div>
+            <form id="form-agenda" onsubmit="saveAgenda(event)" class="p-6">
+                <input type="hidden" id="agenda-id">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kegiatan *</label>
+                    <input type="text" id="agenda-title" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Mulai *</label>
+                        <input type="date" id="agenda-start" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Selesai *</label>
+                        <input type="date" id="agenda-end" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Kategori *</label>
+                    <select id="agenda-type" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
+                        <!-- Diisi oleh JS -->
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Penanggung Jawab</label>
+                        <input type="text" id="agenda-pic" placeholder="Cth: Panitia PPDB" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
+                        <input type="text" id="agenda-location" placeholder="Cth: Aula Sekolah" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
+                    </div>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Keterangan / Deskripsi</label>
+                    <textarea id="agenda-desc" rows="2" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none"></textarea>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="closeAgendaModal()" class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50 transition">Batal</button>
+                    <button type="submit" class="bg-brand-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: PENAWARAN PREMIUM -->
+    <div id="modal-premium" class="fixed inset-0 bg-black bg-opacity-60 z-[60] hidden flex items-center justify-center fade-in backdrop-blur-sm px-4">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm md:max-w-md overflow-hidden relative">
+            <div class="bg-gradient-to-r from-brand-blue to-blue-600 p-6 text-center text-white relative overflow-hidden">
+                <div class="absolute -right-4 -top-4 w-24 h-24 bg-white opacity-10 rounded-full"></div>
+                <div class="absolute -left-4 -bottom-4 w-16 h-16 bg-brand-gold opacity-20 rounded-full"></div>
+                <i class="fas fa-crown text-5xl mb-3 text-brand-gold drop-shadow-md"></i>
+                <h3 class="font-bold text-2xl tracking-wide">Fitur Terkunci</h3>
+                <p class="text-sm text-blue-100 mt-1 opacity-90">Tingkatkan ke versi Full Fitur sekarang!</p>
+            </div>
+            
+            <div class="p-6 text-center">
+                <p class="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
+                    Fitur <span class="font-semibold text-brand-blue">Kalender Akademik, Manajemen Agenda, Analisis Alokasi Waktu, Cetak Resmi,</span> dan <span class="font-semibold text-brand-blue">Pengaturan Sekolah</span> hanya tersedia secara penuh.
+                </p>
+                
+                <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 relative overflow-hidden">
+                    <i class="fas fa-rocket absolute -right-2 -bottom-2 text-6xl text-blue-200 opacity-30"></i>
+                    <h4 class="font-bold text-brand-blue text-sm mb-1 relative z-10">Dapatkan Aplikasi Full Versi</h4>
+                    <p class="text-xs text-gray-600 mb-4 relative z-10">Nikmati kemudahan menyusun Kaldik otomatis, cetak laporan langsung, tanpa batasan, dan dukungan penuh dari pengembang.</p>
+                    
+                    <a href="https://wa.me/6282371962881?text=Halo%20Mas%20Supriyadi,%20saya%20tertarik%20untuk%20menggunakan%20Aplikasi%20Kaldik%20SD%20Full%20Fitur." target="_blank" class="relative z-10 block w-full bg-[#25D366] hover:bg-[#1ebe57] text-white font-bold py-3 px-4 rounded-lg shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center">
+                        <i class="fab fa-whatsapp text-2xl mr-2"></i> Hubungi Pengembang
+                    </a>
+                </div>
+
+                <div class="flex flex-col gap-3 mt-2">
+                    <button onclick="closePremiumModal(); openLoginModal();" class="text-sm font-semibold text-brand-blue hover:text-blue-800 hover:underline transition">
+                        Sudah punya akun? Login di sini
+                    </button>
+                    <button onclick="closePremiumModal()" class="text-xs text-gray-400 hover:text-gray-600 mt-2 transition">
+                        Tutup Jendela Ini
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- MODAL: LOGIN -->
@@ -1138,96 +1237,6 @@
         </div>
     </div>
 
-    <!-- MODAL: TAMBAH/EDIT AGENDA -->
-    <div id="modal-agenda" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center backdrop-blur-sm">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-5" id="modal-agenda-content">
-            <div class="flex justify-between items-center bg-gray-50 px-6 py-4 border-b">
-                <h3 class="font-bold text-gray-800" id="modal-agenda-title">Tambah Agenda Baru</h3>
-                <button onclick="closeAgendaModal()" class="text-gray-400 hover:text-gray-600"><i class="fas fa-times text-lg"></i></button>
-            </div>
-            <form id="form-agenda" onsubmit="saveAgenda(event)" class="p-6">
-                <input type="hidden" id="agenda-id">
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kegiatan *</label>
-                    <input type="text" id="agenda-title" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Mulai *</label>
-                        <input type="date" id="agenda-start" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Selesai *</label>
-                        <input type="date" id="agenda-end" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Kategori *</label>
-                    <select id="agenda-type" required class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
-                        <!-- Diisi oleh JS -->
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Penanggung Jawab</label>
-                        <input type="text" id="agenda-pic" placeholder="Cth: Panitia PPDB" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
-                        <input type="text" id="agenda-location" placeholder="Cth: Aula Sekolah" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none">
-                    </div>
-                </div>
-                <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Keterangan / Deskripsi</label>
-                    <textarea id="agenda-desc" rows="2" class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-blue outline-none"></textarea>
-                </div>
-                <div class="flex justify-end gap-2">
-                    <button type="button" onclick="closeAgendaModal()" class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-50 transition">Batal</button>
-                    <button type="submit" class="bg-brand-blue text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: PENAWARAN PREMIUM -->
-    <div id="modal-premium" class="fixed inset-0 bg-black bg-opacity-60 z-[60] hidden flex items-center justify-center fade-in backdrop-blur-sm px-4">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm md:max-w-md overflow-hidden relative">
-            <!-- Header Animasi / Banner -->
-            <div class="bg-gradient-to-r from-brand-blue to-blue-600 p-6 text-center text-white relative overflow-hidden">
-                <div class="absolute -right-4 -top-4 w-24 h-24 bg-white opacity-10 rounded-full"></div>
-                <div class="absolute -left-4 -bottom-4 w-16 h-16 bg-brand-gold opacity-20 rounded-full"></div>
-                <i class="fas fa-crown text-5xl mb-3 text-brand-gold drop-shadow-md"></i>
-                <h3 class="font-bold text-2xl tracking-wide">Fitur Terkunci</h3>
-                <p class="text-sm text-blue-100 mt-1 opacity-90">Tingkatkan ke versi Full Fitur sekarang!</p>
-            </div>
-            
-            <div class="p-6 text-center">
-                <p class="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
-                    Fitur <span class="font-semibold text-brand-blue">Kalender Akademik, Manajemen Agenda, Analisis Alokasi Waktu, Cetak Resmi,</span> dan <span class="font-semibold text-brand-blue">Pengaturan Sekolah</span> hanya tersedia secara penuh.
-                </p>
-                
-                <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 relative overflow-hidden">
-                    <i class="fas fa-rocket absolute -right-2 -bottom-2 text-6xl text-blue-200 opacity-30"></i>
-                    <h4 class="font-bold text-brand-blue text-sm mb-1 relative z-10">Dapatkan Aplikasi Full Versi</h4>
-                    <p class="text-xs text-gray-600 mb-4 relative z-10">Nikmati kemudahan menyusun Kaldik otomatis, cetak laporan langsung, tanpa batasan, dan dukungan penuh dari pengembang.</p>
-                    
-                    <a href="https://wa.me/6282371962881?text=Halo%20Mas%20Supriyadi,%20saya%20tertarik%20untuk%20menggunakan%20Aplikasi%20Kaldik%20SD%20Full%20Fitur." target="_blank" class="relative z-10 block w-full bg-[#25D366] hover:bg-[#1ebe57] text-white font-bold py-3 px-4 rounded-lg shadow-md transition transform hover:-translate-y-0.5 flex items-center justify-center">
-                        <i class="fab fa-whatsapp text-2xl mr-2"></i> Hubungi Pengembang
-                    </a>
-                </div>
-
-                <div class="flex flex-col gap-3 mt-2">
-                    <button onclick="closePremiumModal(); openLoginModal();" class="text-sm font-semibold text-brand-blue hover:text-blue-800 hover:underline transition">
-                        Sudah punya akun? Login di sini
-                    </button>
-                    <button onclick="closePremiumModal()" class="text-xs text-gray-400 hover:text-gray-600 mt-2 transition">
-                        Tutup Jendela Ini
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- WADAH TOAST NOTIFIKASI -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
 
@@ -1294,6 +1303,23 @@
         let currentUser = null;
         // MENAMBAHKAN 'analisis-alokasi' DALAM PROTECTED_VIEWS (HARUS LOGIN)
         const PROTECTED_VIEWS = ['calendar', 'agenda', 'cetak-resmi', 'settings', 'users', 'analisis-alokasi'];
+
+        // --- SISTEM MODAL KONFIRMASI CUSTOM ---
+        let confirmCallback = null;
+        function showConfirm(message, callback) {
+            document.getElementById('confirm-message').textContent = message;
+            confirmCallback = callback;
+            document.getElementById('modal-confirm').classList.remove('hidden');
+        }
+        function closeConfirm() {
+            document.getElementById('modal-confirm').classList.add('hidden');
+            confirmCallback = null;
+        }
+        document.getElementById('btn-confirm-cancel').addEventListener('click', closeConfirm);
+        document.getElementById('btn-confirm-yes').addEventListener('click', () => {
+            if (confirmCallback) confirmCallback();
+            closeConfirm();
+        });
 
         // --- INISIALISASI ---
         function initApp() {
@@ -1431,27 +1457,104 @@
 
             const sbSchoolName = document.getElementById('sb-school-name');
             if (sbSchoolName) sbSchoolName.textContent = schoolData.schoolName;
-            document.getElementById('set-no-surat').value = schoolData.noSurat || '';
-            document.getElementById('set-wali-kelas').value = schoolData.waliKelas || '';
-            document.getElementById('set-nip-wali').value = schoolData.nipWali || '';
+
+            const dashSchoolName = document.getElementById('dash-school-name');
+            if (dashSchoolName) dashSchoolName.textContent = `${schoolData.schoolName} - Tahun Ajaran ${schoolData.academicYear}`;
+
+            const dashInfoYear = document.getElementById('dash-info-year');
+            if (dashInfoYear) dashInfoYear.textContent = schoolData.academicYear;
+            
+            const sbSchoolLogo = document.getElementById('sb-school-logo');
+            const sbSchoolIcon = document.getElementById('sb-school-icon');
+            if (schoolData.logo) {
+                if (sbSchoolIcon) sbSchoolIcon.classList.add('hidden');
+                if (sbSchoolLogo) {
+                    sbSchoolLogo.src = schoolData.logo;
+                    sbSchoolLogo.classList.remove('hidden');
+                }
+            } else {
+                if (sbSchoolLogo) sbSchoolLogo.classList.add('hidden');
+                if (sbSchoolIcon) sbSchoolIcon.classList.remove('hidden');
+            }
+
+            // Menyiapkan formulir pengaturan
+            const setSchoolName = document.getElementById('set-school-name');
+            if (setSchoolName) setSchoolName.value = schoolData.schoolName;
+
+            const setSchoolLogo = document.getElementById('set-school-logo');
+            if (setSchoolLogo) setSchoolLogo.value = schoolData.logo || '';
+
+            const setGovName = document.getElementById('set-gov-name');
+            if (setGovName) setGovName.value = schoolData.govName || '';
+
+            const setGovLogo = document.getElementById('set-gov-logo');
+            if (setGovLogo) setGovLogo.value = schoolData.govLogo || '';
+
+            const setSchoolAddress = document.getElementById('set-school-address');
+            if (setSchoolAddress) setSchoolAddress.value = schoolData.schoolAddress;
+
+            const setHeadmaster = document.getElementById('set-headmaster');
+            if (setHeadmaster) setHeadmaster.value = schoolData.headmaster;
+
+            const setNip = document.getElementById('set-nip');
+            if (setNip) setNip.value = schoolData.nip;
+
+            const setAcademicYear = document.getElementById('set-academic-year');
+            if (setAcademicYear) setAcademicYear.value = schoolData.academicYear;
+
+            const setWorkDays = document.getElementById('set-work-days');
+            if (setWorkDays) setWorkDays.value = schoolData.workDays;
+
+            const setStartDate = document.getElementById('set-start-date');
+            if (setStartDate) setStartDate.value = schoolData.startDate;
+
+            const setEndDate = document.getElementById('set-end-date');
+            if (setEndDate) setEndDate.value = schoolData.endDate;
+
+            const setNoSurat = document.getElementById('set-no-surat');
+            if (setNoSurat) setNoSurat.value = schoolData.noSurat || '';
+
+            const setWaliKelas = document.getElementById('set-wali-kelas');
+            if (setWaliKelas) setWaliKelas.value = schoolData.waliKelas || '';
+
+            const setNipWali = document.getElementById('set-nip-wali');
+            if (setNipWali) setNipWali.value = schoolData.nipWali || '';
 
             // Menyiapkan kategori pada dropdown
             const selectType = document.getElementById('agenda-type');
             const filterType = document.getElementById('filter-agenda-cat');
-            selectType.innerHTML = '';
-            
-            for (const [key, val] of Object.entries(CATEGORIES)) {
-                selectType.innerHTML += `<option value="${key}">${val.label}</option>`;
-                filterType.innerHTML += `<option value="${key}">${val.label}</option>`;
+            if (selectType) {
+                selectType.innerHTML = '';
+                for (const [key, val] of Object.entries(CATEGORIES)) {
+                    selectType.innerHTML += `<option value="${key}">${val.label}</option>`;
+                }
+            }
+            if (filterType) {
+                filterType.innerHTML = `<option value="all">Semua Kategori</option>`;
+                for (const [key, val] of Object.entries(CATEGORIES)) {
+                    filterType.innerHTML += `<option value="${key}">${val.label}</option>`;
+                }
             }
 
             // Keterangan Warna
             const legendContainer = document.getElementById('calendar-legend');
-            legendContainer.innerHTML = `<div class="flex items-center"><span class="w-3 h-3 rounded-full bg-blue-100 border border-blue-300 mr-1"></span> Hari Efektif</div>
-                                         <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-100 border border-red-300 mr-1"></span> Hari Minggu / Libur Default</div>`;
-            for (const [key, val] of Object.entries(CATEGORIES)) {
-                legendContainer.innerHTML += `<div class="flex items-center"><span class="w-3 h-3 rounded-full ${val.color} mr-1"></span> ${val.label}</div>`;
+            if (legendContainer) {
+                legendContainer.innerHTML = `<div class="flex items-center"><span class="w-3 h-3 rounded-full bg-blue-100 border border-blue-300 mr-1"></span> Hari Efektif</div>
+                                             <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-100 border border-red-300 mr-1"></span> Hari Minggu / Libur Default</div>`;
+                for (const [key, val] of Object.entries(CATEGORIES)) {
+                    legendContainer.innerHTML += `<div class="flex items-center"><span class="w-3 h-3 rounded-full ${val.color} mr-1"></span> ${val.label}</div>`;
+                }
             }
+
+            // Sinkronkan tempat dan tanggal cetak
+            const startD = new Date(schoolData.startDate);
+            const dateStrFormatted = `${startD.getDate()} ${MONTH_NAMES[startD.getMonth()]} ${startD.getFullYear()}`;
+            
+            const printDatePlace = document.getElementById('print-date-place');
+            if (printDatePlace) printDatePlace.textContent = `Bandar Lampung, ${dateStrFormatted}`;
+            
+            const printMatrixDatePlace = document.getElementById('print-matrix-date-place');
+            if (printMatrixDatePlace) printMatrixDatePlace.textContent = `Bandar Lampung, ${dateStrFormatted}`;
         }
 
         // --- SISTEM FILTER SEMESTER ---
@@ -1459,10 +1562,8 @@
             currentSemester = value;
             
             // Mengatur informasi pada kop cetak berdasarkan semester
-            const printSem = document.getElementById('print-semester-info');
-            if (value === 'all') printSem.textContent = "Semua Semester";
-            else if (value === '1') printSem.textContent = "Semester 1 (Ganjil)";
-            else if (value === '2') printSem.textContent = "Semester 2 (Genap)";
+            const semText = value === 'all' ? "Semua Semester" : (value === '1' ? "Semester 1 (Ganjil)" : "Semester 2 (Genap)");
+            document.querySelectorAll('.print-semester-info').forEach(el => el.textContent = semText);
 
             // Memuat ulang tampilan yang sedang aktif
             const activeNav = document.querySelector('.nav-item.bg-blue-800');
@@ -1495,7 +1596,7 @@
             // PENANGANAN KHUSUS UNTUK MENU EKSTERNAL 'ANALISIS ALOKASI WAKTU'
             if (viewId === 'analisis-alokasi') {
                 window.open('https://supriyadi911.github.io/analisis-alokasi-waktu/', '_blank');
-                return; // Batalkan pergantian halaman utama agar state tab sekarang tetap terjaga
+                return;
             }
 
             // Proteksi Khusus Admin
@@ -1705,8 +1806,9 @@
             const monthDiv = document.createElement('div');
             monthDiv.className = 'cal-month-grid bg-white p-4 rounded-xl shadow-sm border border-gray-100 print-break-inside-avoid flex flex-col justify-start';
             
+            // Nama bulan diposisikan secara mutlak dan tegas berada di atas tanggal (Struktur Header)
             const title = document.createElement('h4');
-            title.className = 'text-center font-bold text-brand-blue mb-3 text-lg border-b pb-2';
+            title.className = 'text-center font-bold text-brand-blue mb-3 text-lg border-b pb-2 tracking-wide uppercase';
             title.textContent = `${MONTH_NAMES[month]} ${year}`;
             monthDiv.appendChild(title);
 
@@ -1817,6 +1919,7 @@
         // --- TABEL MATRIK KALENDER ---
         function renderMatrix() {
             const tbody = document.getElementById('matrix-tbody');
+            if(!tbody) return;
             tbody.innerHTML = '';
             
             const startD = new Date(schoolData.startDate);
@@ -1911,15 +2014,15 @@
 
                 tbody.innerHTML += `
                     <tr>
-                        <td class="px-3 py-2 text-center border-b border-r border-gray-200">${no++}</td>
-                        <td class="px-4 py-2 border-b border-r border-gray-200 font-semibold text-brand-blue">${MONTH_NAMES[month]} ${year}</td>
-                        <td class="px-3 py-2 text-center border-b border-r border-gray-200 font-semibold text-gray-700">${daysInMonth}</td>
-                        <td class="px-3 py-2 text-center border-b border-r border-gray-200 font-semibold text-blue-600">${hes}</td>
-                        <td class="px-3 py-2 text-center border-b border-r border-gray-200">${libur_minggu}</td>
-                        <td class="px-3 py-2 text-center border-b border-r border-gray-200 text-orange-600">${libur_semester}</td>
-                        <td class="px-3 py-2 text-center border-b border-r border-gray-200 text-red-600">${libur_umum}</td>
-                        <td class="px-3 py-2 text-center border-b border-r border-gray-200 text-emerald-600">${libur_khusus}</td>
-                        <td class="px-4 py-2 border-b border-r border-gray-200 text-xs text-left">${agendaStr}</td>
+                        <td class="px-3 py-2 text-center border border-gray-300 md:border-r">${no++}</td>
+                        <td class="px-4 py-2 border border-gray-300 md:border-r font-semibold text-brand-blue">${MONTH_NAMES[month]} ${year}</td>
+                        <td class="px-3 py-2 text-center border border-gray-300 md:border-r font-semibold text-gray-700">${daysInMonth}</td>
+                        <td class="px-3 py-2 text-center border border-gray-300 md:border-r font-semibold text-blue-600">${hes}</td>
+                        <td class="px-3 py-2 text-center border border-gray-300 md:border-r">${libur_minggu}</td>
+                        <td class="px-3 py-2 text-center border border-gray-300 md:border-r text-orange-600">${libur_semester}</td>
+                        <td class="px-3 py-2 text-center border border-gray-300 md:border-r text-red-600">${libur_umum}</td>
+                        <td class="px-3 py-2 text-center border border-gray-300 md:border-r text-emerald-600">${libur_khusus}</td>
+                        <td class="px-4 py-2 border border-gray-300 md:border-r text-xs text-left">${agendaStr}</td>
                     </tr>
                 `;
 
@@ -1933,18 +2036,21 @@
                 currD.setMonth(currD.getMonth() + 1);
             }
 
-            document.getElementById('matrix-tfoot').innerHTML = `
-                <tr>
-                    <td colspan="2" class="px-4 py-3 text-right">TOTAL</td>
-                    <td class="px-3 py-3 text-center">${totalHari}</td>
-                    <td class="px-3 py-3 text-center text-blue-700">${totalHES}</td>
-                    <td class="px-3 py-3 text-center text-red-700">${totalMinggu}</td>
-                    <td class="px-3 py-3 text-center text-orange-700">${totalLiburSem}</td>
-                    <td class="px-3 py-3 text-center text-red-900">${totalLiburUmum}</td>
-                    <td class="px-3 py-3 text-center text-emerald-700">${totalLiburKhusus}</td>
-                    <td class="px-4 py-3"></td>
-                </tr>
-            `;
+            const tfoot = document.getElementById('matrix-tfoot');
+            if(tfoot) {
+                tfoot.innerHTML = `
+                    <tr>
+                        <td colspan="2" class="px-4 py-3 text-right border border-gray-300">TOTAL</td>
+                        <td class="px-3 py-3 text-center border border-gray-300">${totalHari}</td>
+                        <td class="px-3 py-3 text-center text-blue-700 border border-gray-300">${totalHES}</td>
+                        <td class="px-3 py-3 text-center text-red-700 border border-gray-300">${totalMinggu}</td>
+                        <td class="px-3 py-3 text-center text-orange-700 border border-gray-300">${totalLiburSem}</td>
+                        <td class="px-3 py-3 text-center text-red-900 border border-gray-300">${totalLiburUmum}</td>
+                        <td class="px-3 py-3 text-center text-emerald-700 border border-gray-300">${totalLiburKhusus}</td>
+                        <td class="px-4 py-3 border border-gray-300"></td>
+                    </tr>
+                `;
+            }
         }
 
         // --- MANAJEMEN AGENDA ---
@@ -2074,12 +2180,12 @@
         }
 
         function deleteAgenda(id) {
-            if(confirm('Apakah Anda yakin ingin menghapus agenda ini?')) {
+            showConfirm('Apakah Anda yakin ingin menghapus agenda ini?', () => {
                 agendas = agendas.filter(a => a.id !== id);
                 saveToStorage();
                 showToast('Agenda dihapus.', 'success');
                 renderAgendaList();
-            }
+            });
         }
 
         // --- STATISTIK HARI EFEKTIF ---
@@ -2489,13 +2595,13 @@
         }
 
         // --- RESET DATA ---
-        function resetData() {
-            if(confirm('PERINGATAN: Semua data agenda dan pengaturan akan dihapus. Lanjutkan?')) {
+        function triggerResetData() {
+            showConfirm('PERINGATAN: Semua data agenda dan pengaturan akan dihapus secara permanen. Apakah Anda yakin?', () => {
                 localStorage.removeItem('kaldik_settings');
                 localStorage.removeItem('kaldik_agendas');
                 showToast('Data direset, memuat ulang...', 'success');
                 setTimeout(() => location.reload(), 1500);
-            }
+            });
         }
 
         // --- SISTEM AUTHENTICATION & MANAJEMEN USER ---
@@ -2521,45 +2627,57 @@
                 document.getElementById('user-info').classList.remove('hidden');
                 document.getElementById('user-info').classList.add('flex');
                 
-                document.getElementById('auth-username').textContent = currentUser.username;
-                document.getElementById('auth-role').textContent = currentUser.role === 'admin' ? 'Administrator' : 'User Biasa';
+                const authUsername = document.getElementById('auth-username');
+                if (authUsername) authUsername.textContent = currentUser.username;
+
+                const authRole = document.getElementById('auth-role');
+                if (authRole) authRole.textContent = currentUser.role === 'admin' ? 'Administrator' : 'User Biasa';
             } else {
-                document.getElementById('btn-login').classList.remove('hidden');
-                document.getElementById('user-info').classList.add('hidden');
-                document.getElementById('user-info').classList.remove('flex');
+                const btnLogin = document.getElementById('btn-login');
+                if (btnLogin) btnLogin.classList.remove('hidden');
+
+                const userInfo = document.getElementById('user-info');
+                if (userInfo) userInfo.classList.add('hidden');
             }
         }
 
         function openLoginModal() {
-            document.getElementById('form-login').reset();
-            document.getElementById('modal-login').classList.remove('hidden');
+            const formLogin = document.getElementById('form-login');
+            if (formLogin) formLogin.reset();
+            const modalLogin = document.getElementById('modal-login');
+            if (modalLogin) modalLogin.classList.remove('hidden');
         }
 
         function closeLoginModal() {
-            document.getElementById('modal-login').classList.add('hidden');
+            const modalLogin = document.getElementById('modal-login');
+            if (modalLogin) modalLogin.classList.add('hidden');
         }
 
         // --- MANAJEMEN MODAL PREMIUM ---
         function openPremiumModal() {
-            document.getElementById('modal-premium').classList.remove('hidden');
+            const modalPremium = document.getElementById('modal-premium');
+            if (modalPremium) modalPremium.classList.remove('hidden');
         }
 
         function closePremiumModal() {
-            document.getElementById('modal-premium').classList.add('hidden');
+            const modalPremium = document.getElementById('modal-premium');
+            if (modalPremium) modalPremium.classList.add('hidden');
         }
 
         function togglePasswordVisibility() {
             const passInput = document.getElementById('login-password');
             const eyeIcon = document.getElementById('eye-icon');
             
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                eyeIcon.classList.remove('fa-eye');
-                eyeIcon.classList.add('fa-eye-slash');
-            } else {
-                passInput.type = 'password';
-                eyeIcon.classList.remove('fa-eye-slash');
-                eyeIcon.classList.add('fa-eye');
+            if (passInput && eyeIcon) {
+                if (passInput.type === 'password') {
+                    passInput.type = 'text';
+                    eyeIcon.classList.remove('fa-eye');
+                    eyeIcon.classList.add('fa-eye-slash');
+                } else {
+                    passInput.type = 'password';
+                    eyeIcon.classList.remove('fa-eye-slash');
+                    eyeIcon.classList.add('fa-eye');
+                }
             }
         }
 
@@ -2597,7 +2715,8 @@
             
             if (currentUser.schoolName) {
                 schoolData.schoolName = currentUser.schoolName;
-                document.getElementById('set-school-name').value = currentUser.schoolName;
+                const setSchoolName = document.getElementById('set-school-name');
+                if (setSchoolName) setSchoolName.value = currentUser.schoolName;
                 localStorage.setItem('kaldik_settings', JSON.stringify(schoolData));
                 setupUI();
             }
@@ -2616,7 +2735,7 @@
         }
 
         function handleLogout() {
-            if (confirm('Yakin ingin keluar dari sistem?')) {
+            showConfirm('Yakin ingin keluar dari sistem?', () => {
                 currentUser = null;
                 localStorage.removeItem('kaldik_current_user');
                 showToast('Anda telah logout, memuat ulang...', 'success');
@@ -2624,12 +2743,13 @@
                 setTimeout(() => {
                     window.location.reload();
                 }, 800);
-            }
+            });
         }
 
         // --- CRUD MANAJEMEN USER ---
         function renderUsers() {
             const tbody = document.getElementById('users-tbody');
+            if (!tbody) return;
             tbody.innerHTML = '';
             
             appUsers.forEach(u => {
@@ -2656,30 +2776,37 @@
 
         function openUserModal(id = null) {
             const modal = document.getElementById('modal-user');
+            if (!modal) return;
             const form = document.getElementById('form-user');
+            if (form) form.reset();
             const title = document.getElementById('modal-user-title');
             
-            form.reset();
-            document.getElementById('user-id').value = '';
+            const userId = document.getElementById('user-id');
+            if (userId) userId.value = '';
 
             if (id) {
-                title.textContent = 'Edit User';
+                if (title) title.textContent = 'Edit User';
                 const user = appUsers.find(u => u.id === id);
                 if(user) {
-                    document.getElementById('user-id').value = user.id;
-                    document.getElementById('user-username').value = user.username;
-                    document.getElementById('user-password').value = user.password;
-                    document.getElementById('user-role').value = user.role;
-                    document.getElementById('user-school').value = user.schoolName;
+                    if (userId) userId.value = user.id;
+                    const userUsername = document.getElementById('user-username');
+                    if (userUsername) userUsername.value = user.username;
+                    const userPassword = document.getElementById('user-password');
+                    if (userPassword) userPassword.value = user.password;
+                    const userRole = document.getElementById('user-role');
+                    if (userRole) userRole.value = user.role;
+                    const userSchool = document.getElementById('user-school');
+                    if (userSchool) userSchool.value = user.schoolName;
                 }
             } else {
-                title.textContent = 'Tambah User Baru';
+                if (title) title.textContent = 'Tambah User Baru';
             }
             modal.classList.remove('hidden');
         }
 
         function closeUserModal() {
-            document.getElementById('modal-user').classList.add('hidden');
+            const modal = document.getElementById('modal-user');
+            if (modal) modal.classList.add('hidden');
         }
 
         // --- PENYIMPANAN USER ---
@@ -2727,12 +2854,12 @@
                 showToast('Super Admin tidak boleh dihapus!', 'error');
                 return;
             }
-            if(confirm('Apakah Anda yakin ingin menghapus akun user ini?')) {
+            showConfirm('Apakah Anda yakin ingin menghapus akun user ini?', () => {
                 appUsers = appUsers.filter(u => u.id !== id);
                 saveToStorage(); 
                 showToast('Akun User berhasil dihapus.', 'success');
                 renderUsers();
-            }
+            });
         }
 
         // --- UTILS DAN PENYIMPANAN ---
@@ -2944,6 +3071,7 @@
 
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
+            if (!container) return; // Mencegah error jika wadah toast tidak ada
             const toast = document.createElement('div');
             
             const colorClass = type === 'success' ? 'bg-green-500' : (type === 'error' ? 'bg-red-500' : 'bg-brand-blue');
@@ -2975,7 +3103,8 @@
         function startClock() {
             setInterval(() => {
                 const now = new Date();
-                document.getElementById('realtime-clock').textContent = now.toLocaleTimeString('id-ID');
+                const clock = document.getElementById('realtime-clock');
+                if (clock) clock.textContent = now.toLocaleTimeString('id-ID');
             }, 1000);
         }
 
@@ -2983,6 +3112,20 @@
         function downloadPDF() {
             showToast('Sedang menyusun dokumen PDF, mohon tunggu...', 'info');
             const element = document.getElementById('cetak-area');
+            if (!element) return;
+            
+            // Mencabut batasan overflow dari body dan container utama selama proses render PDF
+            const body = document.body;
+            const appContainer = document.getElementById('app-container');
+            const mainContent = document.querySelector('main');
+            
+            const originalBodyOverflow = body.style.overflow;
+            const originalAppContainerOverflow = appContainer ? appContainer.style.overflow : '';
+            const originalMainOverflow = mainContent ? mainContent.style.overflow : '';
+            
+            body.style.overflow = 'visible';
+            if (appContainer) appContainer.style.overflow = 'visible';
+            if (mainContent) mainContent.style.overflow = 'visible';
             
             // Simpan style inline asli (jika ada) untuk dikembalikan nanti
             const originalStyle = element.getAttribute('style') || '';
@@ -3014,10 +3157,20 @@
                 // Kembalikan ke tampilan responsif awal sesudah konversi selesai
                 element.setAttribute('style', originalStyle);
                 element.classList.remove('pdf-export-mode');
+                
+                body.style.overflow = originalBodyOverflow;
+                if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
+                if (mainContent) mainContent.style.overflow = originalMainOverflow;
+                
                 showToast('Dokumen PDF berhasil diunduh!', 'success');
             }).catch(err => {
                 element.setAttribute('style', originalStyle);
                 element.classList.remove('pdf-export-mode');
+                
+                body.style.overflow = originalBodyOverflow;
+                if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
+                if (mainContent) mainContent.style.overflow = originalMainOverflow;
+                
                 console.error('Error saat export PDF:', err);
                 showToast('Gagal menghasilkan dokumen PDF.', 'error');
             });
@@ -3027,6 +3180,20 @@
         function downloadMatrixPDF() {
             showToast('Sedang menyusun PDF Matrik, mohon tunggu...', 'info');
             const element = document.getElementById('cetak-matrik-area');
+            if (!element) return;
+            
+            // Mencabut batasan overflow dari body dan container utama selama proses render PDF
+            const body = document.body;
+            const appContainer = document.getElementById('app-container');
+            const mainContent = document.querySelector('main');
+            
+            const originalBodyOverflow = body.style.overflow;
+            const originalAppContainerOverflow = appContainer ? appContainer.style.overflow : '';
+            const originalMainOverflow = mainContent ? mainContent.style.overflow : '';
+            
+            body.style.overflow = 'visible';
+            if (appContainer) appContainer.style.overflow = 'visible';
+            if (mainContent) mainContent.style.overflow = 'visible';
             
             // Simpan style inline asli (jika ada) untuk dikembalikan nanti
             const originalStyle = element.getAttribute('style') || '';
@@ -3058,10 +3225,20 @@
                 // Kembalikan ke tampilan responsif awal sesudah konversi selesai
                 element.setAttribute('style', originalStyle);
                 element.classList.remove('pdf-matrix-mode');
+                
+                body.style.overflow = originalBodyOverflow;
+                if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
+                if (mainContent) mainContent.style.overflow = originalMainOverflow;
+                
                 showToast('Matrik PDF berhasil diunduh!', 'success');
             }).catch(err => {
                 element.setAttribute('style', originalStyle);
                 element.classList.remove('pdf-matrix-mode');
+                
+                body.style.overflow = originalBodyOverflow;
+                if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
+                if (mainContent) mainContent.style.overflow = originalMainOverflow;
+                
                 console.error('Error saat export PDF Matrik:', err);
                 showToast('Gagal menghasilkan dokumen PDF Matrik.', 'error');
             });
@@ -3069,6 +3246,7 @@
 
         function exportToExcel(tableID, filename = 'Matrik_Kaldik') {
             let table = document.getElementById(tableID);
+            if (!table) return;
             let wb = XLSX.utils.table_to_book(table, {sheet: "Matrik"});
             XLSX.writeFile(wb, `${filename}_${schoolData.academicYear.replace('/','-')}.xlsx`);
         }
