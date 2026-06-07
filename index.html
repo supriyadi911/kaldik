@@ -338,13 +338,12 @@
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            #matrix-table thead tr#matrix-header-title th {
-                background-color: white !important;
-                border: none !important;
-                border-bottom: 3px double black !important;
-                padding-bottom: 15px !important;
-                color: black !important;
+            
+            /* --- HAPUS KOP SURAT & HEADER DI MENU CETAK MATRIK --- */
+            #matrix-table thead tr#matrix-header-title {
+                display: none !important; 
             }
+            
             #matrix-table tbody tr { background-color: white !important; page-break-inside: avoid; }
             #matrix-table tfoot td { 
                 background-color: #f3f4f6 !important; 
