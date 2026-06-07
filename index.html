@@ -146,6 +146,26 @@
             margin-bottom: 12px !important;
         }
 
+        /* --- CSS KHUSUS EKSPOR PDF MATRIK --- */
+        .pdf-matrix-mode { width: 1040px !important; max-width: none !important; padding: 20px !important; margin: 0 auto !important; background: white; box-sizing: border-box !important; }
+        .pdf-matrix-mode .print-only { display: block !important; }
+        .pdf-matrix-mode .no-print { display: none !important; }
+        .pdf-matrix-mode .bg-white.rounded-xl.shadow-sm { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
+        .pdf-matrix-mode .overflow-x-auto { overflow: visible !important; display: block !important; width: 100% !important; }
+        .pdf-matrix-mode #matrix-table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; border: 1px solid black !important; margin-top: 5px !important; }
+        .pdf-matrix-mode #matrix-table th, .pdf-matrix-mode #matrix-table td { border: 1px solid black !important; padding: 6px 4px !important; font-size: 10px !important; color: black !important; white-space: normal !important; word-wrap: break-word !important; word-break: break-word !important; overflow: hidden !important; }
+        .pdf-matrix-mode #matrix-table thead th { background-color: #d1d5db !important; color: black !important; font-weight: bold !important; text-align: center !important; }
+        .pdf-matrix-mode #matrix-table thead tr#matrix-header-title th { background-color: white !important; border: none !important; border-bottom: 2px solid black !important; padding-bottom: 15px !important; }
+        .pdf-matrix-mode #matrix-table tbody tr { background-color: white !important; page-break-inside: avoid; }
+        .pdf-matrix-mode #matrix-table tfoot td { background-color: #e5e7eb !important; color: black !important; font-weight: bold !important; text-align: center !important; }
+        .pdf-matrix-mode #matrix-table td:nth-child(2), .pdf-matrix-mode #matrix-table td:nth-child(9) { text-align: left !important; }
+        
+        /* Penyesuaian Kop Surat Matrik untuk PDF */
+        .pdf-matrix-mode .matrix-gov-logo, .pdf-matrix-mode .matrix-school-logo { max-height: 45px !important; width: auto !important; }
+        .pdf-matrix-mode h1.print-gov-name { font-size: 12px !important; margin-bottom: 2px !important; }
+        .pdf-matrix-mode h2.print-school-name { font-size: 16px !important; margin-bottom: 2px !important; }
+        .pdf-matrix-mode p.print-school-address { font-size: 9px !important; margin-bottom: 0 !important; }
+
         /* KUSTOMISASI UNTUK CETAK VIA BROWSER KHUSUS (CTRL+P / PRINT) */
         .print-only { display: none; }
         @media print {
@@ -220,6 +240,12 @@
             .print-header-kop h1 { font-size: 18px; font-weight: bold; margin: 0; text-transform: uppercase; }
             .print-header-kop h2 { font-size: 14px; margin: 3px 0; }
             .print-header-kop p { margin: 0; font-size: 10px; }
+
+            /* Penyesuaian Kop Surat Matrik untuk Cetak Browser */
+            .matrix-gov-logo, .matrix-school-logo { max-height: 45px !important; width: auto !important; }
+            #matrix-header-title h1.print-gov-name { font-size: 12px !important; margin-bottom: 2px !important; }
+            #matrix-header-title h2.print-school-name { font-size: 16px !important; margin-bottom: 2px !important; }
+            #matrix-header-title p.print-school-address { font-size: 9px !important; margin-bottom: 0 !important; }
 
             /* --- CETAK KALENDER AKADEMIK (1 HALAMAN = 4 BULAN) --- */
             #view-calendar #full-year-grid {
@@ -331,8 +357,14 @@
                 font-weight: bold !important; 
                 text-align: center !important;
             }
+            #matrix-table thead tr#matrix-header-title th {
+                background-color: white !important;
+                border: none !important;
+                border-bottom: 2px solid black !important;
+                padding-bottom: 15px !important;
+            }
             #matrix-table tbody tr { background-color: white !important; page-break-inside: avoid; }
-            #matrix-table tfoot td { background-color: #e5e7eb !important; color: black !important; font-weight: bold !important; }
+            #matrix-table tfoot td { background-color: #e5e7eb !important; color: black !important; font-weight: bold !important; text-align: center !important; }
 
             /* Alignment untuk kolom tertentu */
             #matrix-table td:nth-child(2) {
@@ -481,11 +513,11 @@
 
             <!-- KOP SURAT UMUM BAWAAN -->
             <div class="print-only print-header-kop w-full mt-4">
-                <h1 id="print-school-name" class="text-2xl font-bold uppercase mb-1">Nama Sekolah</h1>
-                <p id="print-school-address" class="text-sm mb-2">Alamat Sekolah</p>
+                <h1 class="print-school-name text-2xl font-bold uppercase mb-1">Nama Sekolah</h1>
+                <p class="print-school-address text-sm mb-2">Alamat Sekolah</p>
                 <h2 id="print-doc-title" class="text-lg font-semibold uppercase mt-4">Kalender Pendidikan</h2>
-                <p class="text-sm font-medium">Tahun Ajaran <span id="print-academic-year">2026/2027</span></p>
-                <p class="text-xs font-semibold text-gray-600 mt-1" id="print-semester-info">Semua Semester</p>
+                <p class="text-sm font-medium">Tahun Ajaran <span class="print-academic-year">2026/2027</span></p>
+                <p class="text-xs font-semibold text-gray-600 mt-1 print-semester-info">Semua Semester</p>
             </div>
 
             <!-- Wadah Tampilan Halaman -->
@@ -636,26 +668,60 @@
                             <button onclick="exportToExcel('matrix-table', 'Matrik_Kaldik')" class="bg-green-600 text-white px-4 py-2 rounded shadow-sm hover:bg-green-700 transition">
                                 <i class="fas fa-file-excel mr-1"></i> Excel
                             </button>
-                            <button onclick="window.print()" class="bg-gray-800 text-white px-4 py-2 rounded shadow-sm hover:bg-gray-700 transition">
-                                <i class="fas fa-print mr-1"></i> Cetak
+                            <button onclick="downloadMatrixPDF()" class="bg-red-600 text-white px-4 py-2 rounded shadow-sm hover:bg-red-700 transition">
+                                <i class="fas fa-file-pdf mr-1"></i> Unduh PDF
                             </button>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <!-- Wadah Cetak Matrik -->
+                    <div id="cetak-matrik-area" class="w-full bg-white p-2 md:p-6 rounded-xl shadow-sm border border-gray-100">
                         <div class="overflow-x-auto">
+                            <!-- MENYELARASKAN KOLOM HEADER DAN DATA MELALUI TAG COLGROUP -->
                             <table id="matrix-table" class="w-full text-left text-sm whitespace-nowrap md:whitespace-normal">
-                                <thead class="bg-brand-blue text-white print-break-inside-avoid">
-                                    <tr>
-                                        <th class="px-3 py-3 text-center border-b border-r border-blue-900 w-12">No</th>
-                                        <th class="px-4 py-3 border-b border-r border-blue-900 w-32">Bulan</th>
-                                        <th class="px-3 py-3 text-center border-b border-r border-blue-900 w-24">Jumlah Hari</th>
-                                        <th class="px-3 py-3 text-center border-b border-r border-blue-900 w-20">HES</th>
-                                        <th class="px-3 py-3 text-center border-b border-r border-blue-900 w-24">Jml Minggu</th>
-                                        <th class="px-3 py-3 text-center border-b border-r border-blue-900 w-24">Libur Semester</th>
-                                        <th class="px-3 py-3 text-center border-b border-r border-blue-900 w-24">Libur Umum</th>
-                                        <th class="px-3 py-3 text-center border-b border-r border-blue-900 w-24">Libur Khusus</th>
-                                        <th class="px-4 py-3 border-b border-r border-blue-900">Uraian Kegiatan / Agenda</th>
+                                <colgroup>
+                                    <col style="width: 5%;">
+                                    <col style="width: 15%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 8%;">
+                                    <col style="width: 8%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 10%;">
+                                    <col style="width: 24%;">
+                                </colgroup>
+                                <thead class="print-break-inside-avoid">
+                                    <!-- JUDUL HEADER TABEL UNTUK UI, EXCEL, DAN PDF -->
+                                    <tr id="matrix-header-title" class="bg-white text-gray-800 border-none">
+                                        <th colspan="9" class="text-center py-6 border-none border-b-2 border-gray-800">
+                                            <div class="flex items-center justify-between px-2 md:px-8 mb-4">
+                                                <div class="w-12 md:w-20 shrink-0 flex justify-center">
+                                                    <img class="matrix-gov-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas">
+                                                </div>
+                                                <div class="flex-1 text-center px-4">
+                                                    <h1 class="text-sm md:text-base font-bold uppercase tracking-wider print-gov-name">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
+                                                    <h2 class="text-lg md:text-2xl font-bold uppercase mb-1 print-school-name">SD NEGERI 1 NUSANTARA</h2>
+                                                    <p class="text-xs md:text-sm text-gray-500 font-normal print-school-address">Jl. Pendidikan No. 1, Bandar Lampung</p>
+                                                </div>
+                                                <div class="w-12 md:w-20 shrink-0 flex justify-center">
+                                                    <img class="matrix-school-logo max-w-full h-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Sekolah">
+                                                </div>
+                                            </div>
+                                            <h3 class="text-lg font-bold uppercase mt-2">MATRIK RINCIAN KALENDER PENDIDIKAN</h3>
+                                            <p class="text-sm font-medium mt-1">Tahun Ajaran <span class="print-academic-year">2026/2027</span></p>
+                                            <p class="text-xs font-semibold text-gray-500 mt-1 print-semester-info">Semua Semester</p>
+                                        </th>
+                                    </tr>
+                                    <tr class="bg-brand-blue text-white">
+                                        <th class="px-3 py-3 text-center border border-blue-900">No</th>
+                                        <th class="px-4 py-3 text-center border border-blue-900">Bulan</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Jumlah Hari</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">HES</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Jml Minggu</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Semester</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Umum</th>
+                                        <th class="px-3 py-3 text-center border border-blue-900">Libur Khusus</th>
+                                        <th class="px-4 py-3 text-center border border-blue-900">Uraian Kegiatan / Agenda</th>
                                     </tr>
                                 </thead>
                                 <tbody id="matrix-tbody" class="divide-y divide-gray-200">
@@ -665,6 +731,26 @@
                                     <!-- Diisi oleh JS -->
                                 </tfoot>
                             </table>
+                        </div>
+
+                        <!-- Blok Tanda Tangan Cetak Matrik -->
+                        <div class="print-only mt-10 w-full" id="matrix-signature">
+                            <div class="flex justify-between px-10">
+                                <div class="text-center text-sm">
+                                    <p>Mengetahui,</p>
+                                    <p>Kepala Sekolah</p>
+                                    <br><br><br>
+                                    <p class="font-bold underline uppercase print-ks-nama">NAMA KEPSEK</p>
+                                    <p>NIP. <span class="print-ks-nip">-</span></p>
+                                </div>
+                                <div class="text-center text-sm">
+                                    <p id="print-matrix-date-place">Bandar Lampung, 26 Mei 2026</p>
+                                    <p>Wali Kelas</p>
+                                    <br><br><br>
+                                    <p class="font-bold underline uppercase print-wk-nama">NAMA WALI KELAS</p>
+                                    <p>NIP. <span class="print-wk-nip">-</span></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1308,39 +1394,39 @@
 
         // Mengatur elemen UI
         function setupUI() {
-            document.getElementById('sb-school-name').textContent = schoolData.schoolName;
-            document.getElementById('dash-school-name').textContent = `${schoolData.schoolName} - Tahun Ajaran ${schoolData.academicYear}`;
-            document.getElementById('dash-info-year').textContent = schoolData.academicYear;
+            // Sinkronisasi seluruh Kop Surat Sekolah di berbagai halaman print
+            document.querySelectorAll('.print-school-name').forEach(el => el.textContent = schoolData.schoolName);
+            document.querySelectorAll('.print-school-address').forEach(el => el.textContent = schoolData.schoolAddress);
+            document.querySelectorAll('.print-academic-year').forEach(el => el.textContent = schoolData.academicYear);
+            document.querySelectorAll('.print-ks-nama').forEach(el => el.textContent = schoolData.headmaster);
+            document.querySelectorAll('.print-ks-nip').forEach(el => el.textContent = schoolData.nip ? schoolData.nip : "-");
             
-            if(schoolData.logo) {
-                document.getElementById('sb-school-icon').classList.add('hidden');
-                const img = document.getElementById('sb-school-logo');
-                img.src = schoolData.logo;
-                img.classList.remove('hidden');
-            } else {
-                document.getElementById('sb-school-logo').classList.add('hidden');
-                document.getElementById('sb-school-icon').classList.remove('hidden');
-            }
+            // Tambahan sinkronisasi khusus Matrik Kalender
+            document.querySelectorAll('.print-gov-name').forEach(el => el.textContent = schoolData.govName || 'PEMERINTAH KOTA BANDAR LAMPUNG');
+            document.querySelectorAll('.print-wk-nama').forEach(el => el.textContent = schoolData.waliKelas || '-');
+            document.querySelectorAll('.print-wk-nip').forEach(el => el.textContent = schoolData.nipWali || '-');
 
-            // Menyiapkan data cetak umum
-            document.getElementById('print-school-name').textContent = schoolData.schoolName;
-            document.getElementById('print-school-address').textContent = schoolData.schoolAddress;
-            document.getElementById('print-academic-year').textContent = schoolData.academicYear;
-            document.getElementById('print-ks-nama').textContent = schoolData.headmaster;
-            document.getElementById('print-ks-nip').textContent = schoolData.nip;
+            // Sinkronisasi Gambar Logo di Header Matrik
+            document.querySelectorAll('.matrix-gov-logo').forEach(img => {
+                if (schoolData.govLogo) {
+                    img.src = schoolData.govLogo;
+                    img.classList.remove('hidden');
+                } else {
+                    img.classList.add('hidden');
+                }
+            });
 
-            // Menyiapkan formulir pengaturan
-            document.getElementById('set-school-name').value = schoolData.schoolName;
-            document.getElementById('set-school-logo').value = schoolData.logo || '';
-            document.getElementById('set-gov-name').value = schoolData.govName || '';
-            document.getElementById('set-gov-logo').value = schoolData.govLogo || '';
-            document.getElementById('set-school-address').value = schoolData.schoolAddress;
-            document.getElementById('set-headmaster').value = schoolData.headmaster;
-            document.getElementById('set-nip').value = schoolData.nip;
-            document.getElementById('set-academic-year').value = schoolData.academicYear;
-            document.getElementById('set-work-days').value = schoolData.workDays;
-            document.getElementById('set-start-date').value = schoolData.startDate;
-            document.getElementById('set-end-date').value = schoolData.endDate;
+            document.querySelectorAll('.matrix-school-logo').forEach(img => {
+                if (schoolData.logo) {
+                    img.src = schoolData.logo;
+                    img.classList.remove('hidden');
+                } else {
+                    img.classList.add('hidden');
+                }
+            });
+
+            const sbSchoolName = document.getElementById('sb-school-name');
+            if (sbSchoolName) sbSchoolName.textContent = schoolData.schoolName;
             document.getElementById('set-no-surat').value = schoolData.noSurat || '';
             document.getElementById('set-wali-kelas').value = schoolData.waliKelas || '';
             document.getElementById('set-nip-wali').value = schoolData.nipWali || '';
@@ -2930,6 +3016,50 @@
                 element.classList.remove('pdf-export-mode');
                 console.error('Error saat export PDF:', err);
                 showToast('Gagal menghasilkan dokumen PDF.', 'error');
+            });
+        }
+
+        // --- SISTEM EKSPOR PDF MATRIK ---
+        function downloadMatrixPDF() {
+            showToast('Sedang menyusun PDF Matrik, mohon tunggu...', 'info');
+            const element = document.getElementById('cetak-matrik-area');
+            
+            // Simpan style inline asli (jika ada) untuk dikembalikan nanti
+            const originalStyle = element.getAttribute('style') || '';
+            
+            // MEMAKSA UKURAN AREA CETAK KE STANDAR VIRTUAL LANDSCAPE YANG TETAP
+            element.setAttribute('style', 'width: 1040px !important; max-width: none !important; min-width: 1040px !important; box-sizing: border-box !important;');
+            element.classList.add('pdf-matrix-mode');
+
+            const filenameStr = `Matrik_Kaldik_${schoolData.academicYear.replace('/', '-')}.pdf`;
+
+            const opt = {
+                margin:       [10, 8, 10, 8], // Margin Atas Bawah 10mm, Kiri Kanan 8mm
+                filename:     filenameStr,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    logging: false,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: 1040 
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
+                pagebreak:    { mode: ['css', 'legacy'] }
+            };
+
+            // Menjalankan library html2pdf
+            html2pdf().set(opt).from(element).save().then(() => {
+                // Kembalikan ke tampilan responsif awal sesudah konversi selesai
+                element.setAttribute('style', originalStyle);
+                element.classList.remove('pdf-matrix-mode');
+                showToast('Matrik PDF berhasil diunduh!', 'success');
+            }).catch(err => {
+                element.setAttribute('style', originalStyle);
+                element.classList.remove('pdf-matrix-mode');
+                console.error('Error saat export PDF Matrik:', err);
+                showToast('Gagal menghasilkan dokumen PDF Matrik.', 'error');
             });
         }
 
