@@ -351,48 +351,7 @@
                 display: none !important; 
             }
             
-            /* --- TAMPILKAN KOP SURAT FORMAL MANDIRI DI ATAS TABEL --- */
-            #matrix-print-kop {
-                display: block !important;
-                width: 100% !important;
-                border-bottom: 3px solid black !important;
-                padding-bottom: 10px !important;
-                margin-bottom: 15px !important;
-                position: relative;
-            }
-            #matrix-print-kop::after {
-                content: '';
-                position: absolute;
-                bottom: -4px;
-                left: 0;
-                width: 100%;
-                border-bottom: 1px solid black !important;
-            }
-            #matrix-print-kop .kop-table {
-                display: table !important;
-                width: 100% !important;
-            }
-            #matrix-print-kop .kop-cell {
-                display: table-cell !important;
-                vertical-align: middle !important;
-            }
-            #matrix-print-kop .kop-logo {
-                width: 15% !important;
-                text-align: center !important;
-            }
-            #matrix-print-kop .matrix-gov-logo, #matrix-print-kop .matrix-school-logo {
-                display: inline-block !important;
-                max-height: 70px !important;
-                width: auto !important;
-            }
-            #matrix-print-kop .kop-text {
-                text-align: center !important;
-                width: 70% !important;
-            }
-            #matrix-print-kop h1.print-gov-name { font-size: 15px !important; margin: 0 0 4px 0 !important; font-weight: bold !important; color: black !important; text-transform: uppercase !important; }
-            #matrix-print-kop h2.print-school-name { font-size: 22px !important; margin: 0 0 4px 0 !important; font-weight: bold !important; letter-spacing: 0.5px !important; color: black !important; text-transform: uppercase !important; }
-            #matrix-print-kop p.print-school-address { font-size: 12px !important; margin: 0 !important; color: black !important; font-weight: normal !important; }
-            
+            /* --- TAMPILKAN JUDUL FORMAL MANDIRI DI ATAS TABEL --- */
             #matrix-print-title {
                 display: block !important;
                 text-align: center !important;
@@ -723,22 +682,7 @@
                     <!-- Wadah Cetak Matrik -->
                     <div id="cetak-matrik-area" class="w-full bg-white p-2 md:p-6 rounded-xl shadow-sm border border-gray-100">
                         
-                        <!-- Kop Surat Resmi Matrik Kalender (Hanya Muncul saat Cetak / Print Browser) -->
-                        <div class="print-only" id="matrix-print-kop">
-                            <div class="kop-table w-full">
-                                <div class="kop-cell kop-logo">
-                                    <img class="matrix-gov-logo hidden mx-auto" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas">
-                                </div>
-                                <div class="kop-cell kop-text px-4">
-                                    <h1 class="print-gov-name">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
-                                    <h2 class="print-school-name">SD NEGERI 1 NUSANTARA</h2>
-                                    <p class="print-school-address">Jl. Pendidikan No. 1, Bandar Lampung</p>
-                                </div>
-                                <div class="kop-cell kop-logo">
-                                    <img class="matrix-school-logo hidden mx-auto" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Sekolah">
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Judul Matrik Kalender (Hanya Muncul saat Cetak / Print Browser) -->
                         <div class="print-only" id="matrix-print-title">
                             <h3>MATRIK RINCIAN KALENDER PENDIDIKAN</h3>
                             <p>Tahun Ajaran <span class="print-academic-year">2026/2027</span> - <span class="print-semester-info">Semua Semester</span></p>
