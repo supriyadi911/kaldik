@@ -355,25 +355,51 @@
             #matrix-print-kop {
                 display: block !important;
                 width: 100% !important;
-                border-bottom: 4px double black !important;
-                padding-bottom: 12px !important;
+                border-bottom: 3px solid black !important;
+                padding-bottom: 10px !important;
                 margin-bottom: 15px !important;
+                position: relative;
             }
-            #matrix-print-kop .flex {
-                display: flex !important;
-                flex-direction: row !important;
-                align-items: center !important;
-                justify-content: space-between !important;
+            #matrix-print-kop::after {
+                content: '';
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+                width: 100%;
+                border-bottom: 1px solid black !important;
+            }
+            #matrix-print-kop .kop-table {
+                display: table !important;
                 width: 100% !important;
             }
+            #matrix-print-kop .kop-cell {
+                display: table-cell !important;
+                vertical-align: middle !important;
+            }
+            #matrix-print-kop .kop-logo {
+                width: 15% !important;
+                text-align: center !important;
+            }
             #matrix-print-kop .matrix-gov-logo, #matrix-print-kop .matrix-school-logo {
-                display: block !important;
-                max-height: 55px !important;
+                display: inline-block !important;
+                max-height: 70px !important;
                 width: auto !important;
             }
-            #matrix-print-kop h1.print-gov-name { font-size: 13px !important; margin-bottom: 2px !important; font-weight: bold !important; color: black !important; }
-            #matrix-print-kop h2.print-school-name { font-size: 18px !important; margin-bottom: 2px !important; font-weight: bold !important; letter-spacing: 0.5px !important; color: black !important; }
-            #matrix-print-kop p.print-school-address { font-size: 10px !important; margin-bottom: 0 !important; color: #374151 !important; font-weight: normal !important; }
+            #matrix-print-kop .kop-text {
+                text-align: center !important;
+                width: 70% !important;
+            }
+            #matrix-print-kop h1.print-gov-name { font-size: 15px !important; margin: 0 0 4px 0 !important; font-weight: bold !important; color: black !important; text-transform: uppercase !important; }
+            #matrix-print-kop h2.print-school-name { font-size: 22px !important; margin: 0 0 4px 0 !important; font-weight: bold !important; letter-spacing: 0.5px !important; color: black !important; text-transform: uppercase !important; }
+            #matrix-print-kop p.print-school-address { font-size: 12px !important; margin: 0 !important; color: black !important; font-weight: normal !important; }
+            
+            #matrix-print-title {
+                display: block !important;
+                text-align: center !important;
+                margin-bottom: 15px !important;
+            }
+            #matrix-print-title h3 { font-size: 16px !important; font-weight: bold !important; text-transform: uppercase !important; text-decoration: underline !important; margin: 0 0 5px 0 !important; color: black !important; }
+            #matrix-print-title p { font-size: 12px !important; margin: 0 !important; color: black !important; font-weight: bold !important; }
             
             #matrix-table tbody tr { background-color: white !important; }
             #matrix-table tfoot td { 
@@ -698,24 +724,24 @@
                     <div id="cetak-matrik-area" class="w-full bg-white p-2 md:p-6 rounded-xl shadow-sm border border-gray-100">
                         
                         <!-- Kop Surat Resmi Matrik Kalender (Hanya Muncul saat Cetak / Print Browser) -->
-                        <div class="print-only mb-6 border-b-4 border-double border-black pb-4 text-black" id="matrix-print-kop">
-                            <div class="flex items-center justify-between">
-                                <div class="w-20 shrink-0 flex justify-center">
-                                    <img class="matrix-gov-logo max-h-[55px] w-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas">
+                        <div class="print-only" id="matrix-print-kop">
+                            <div class="kop-table w-full">
+                                <div class="kop-cell kop-logo">
+                                    <img class="matrix-gov-logo hidden mx-auto" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Dinas">
                                 </div>
-                                <div class="flex-1 text-center px-4">
-                                    <h1 class="text-sm md:text-base font-bold uppercase tracking-wider print-gov-name">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
-                                    <h2 class="text-lg md:text-2xl font-bold uppercase mb-1 print-school-name">SD NEGERI 1 NUSANTARA</h2>
-                                    <p class="text-xs md:text-sm text-gray-500 font-normal print-school-address">Jl. Pendidikan No. 1, Bandar Lampung</p>
+                                <div class="kop-cell kop-text px-4">
+                                    <h1 class="print-gov-name">PEMERINTAH KOTA BANDAR LAMPUNG</h1>
+                                    <h2 class="print-school-name">SD NEGERI 1 NUSANTARA</h2>
+                                    <p class="print-school-address">Jl. Pendidikan No. 1, Bandar Lampung</p>
                                 </div>
-                                <div class="w-20 shrink-0 flex justify-center">
-                                    <img class="matrix-school-logo max-h-[55px] w-auto hidden" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Sekolah">
+                                <div class="kop-cell kop-logo">
+                                    <img class="matrix-school-logo hidden mx-auto" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Logo Sekolah">
                                 </div>
                             </div>
-                            <div class="text-center mt-4">
-                                <h3 class="text-md md:text-lg font-bold uppercase text-center underline">MATRIK RINCIAN KALENDER PENDIDIKAN</h3>
-                                <p class="text-xs md:text-sm font-semibold text-center mt-1">Tahun Ajaran <span class="print-academic-year">2026/2027</span> - <span class="print-semester-info">Semua Semester</span></p>
-                            </div>
+                        </div>
+                        <div class="print-only" id="matrix-print-title">
+                            <h3>MATRIK RINCIAN KALENDER PENDIDIKAN</h3>
+                            <p>Tahun Ajaran <span class="print-academic-year">2026/2027</span> - <span class="print-semester-info">Semua Semester</span></p>
                         </div>
 
                         <div class="overflow-x-auto">
