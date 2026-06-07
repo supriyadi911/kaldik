@@ -354,6 +354,17 @@
                 border: 1px solid #374151 !important;
             }
 
+            /* Memaksa ukuran kolom secara absolut agar Header dan Data sejajar 100% (Bypass bug Colspan pada browser) */
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(1), #matrix-tbody td:nth-child(1) { width: 4% !important; }
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(2), #matrix-tbody td:nth-child(2) { width: 14% !important; }
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(3), #matrix-tbody td:nth-child(3) { width: 9% !important; }
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(4), #matrix-tbody td:nth-child(4) { width: 8% !important; }
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(5), #matrix-tbody td:nth-child(5) { width: 9% !important; }
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(6), #matrix-tbody td:nth-child(6) { width: 10% !important; }
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(7), #matrix-tbody td:nth-child(7) { width: 10% !important; }
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(8), #matrix-tbody td:nth-child(8) { width: 10% !important; }
+            #matrix-table thead tr:not(#matrix-header-title) th:nth-child(9), #matrix-tbody td:nth-child(9) { width: 26% !important; }
+
             /* Alignment khusus untuk kolom tabel Matrik */
             #matrix-table td:nth-child(2), #matrix-table td:nth-child(9) {
                 text-align: left !important; 
@@ -1652,12 +1663,12 @@
                 document.getElementById('sidebar').classList.add('-translate-x-full');
             }
 
-            // Sembunyikan kop cetak umum bawaan jika di halaman Cetak Resmi, dan ubah judul jika di Matrik
+            // Sembunyikan kop cetak umum bawaan jika di halaman Cetak Resmi dan Matrik Kalender
             const printHeaderKop = document.querySelector('.print-header-kop');
             const printDocTitle = document.getElementById('print-doc-title');
             
             if (printHeaderKop) {
-                if (viewId === 'cetak-resmi') {
+                if (viewId === 'cetak-resmi' || viewId === 'matrix') {
                     printHeaderKop.classList.remove('print-only');
                     printHeaderKop.classList.add('hidden');
                 } else {
@@ -1665,7 +1676,7 @@
                     printHeaderKop.classList.remove('hidden');
                     
                     if (printDocTitle) {
-                        printDocTitle.textContent = viewId === 'matrix' ? 'MATRIK KALENDER PENDIDIKAN' : 'KALENDER PENDIDIKAN';
+                        printDocTitle.textContent = 'KALENDER PENDIDIKAN';
                     }
                 }
             }
