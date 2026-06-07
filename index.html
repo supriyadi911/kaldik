@@ -225,20 +225,22 @@
             #view-calendar #full-year-grid {
                 display: flex !important;
                 flex-wrap: wrap !important;
-                justify-content: space-between !important;
-                gap: 0 !important;
+                justify-content: flex-start !important;
+                gap: 1.5% !important;
                 width: 100% !important;
             }
             #view-calendar .cal-month-grid {
-                width: 32.5% !important; /* 3 kolom proporsional */
-                margin-bottom: 1.5% !important;
-                break-inside: avoid-page !important;
+                width: 32.33% !important; /* 3 kolom proporsional */
+                margin-bottom: 15px !important;
+                display: flex !important;
+                flex-direction: column !important; /* Memastikan elemen (judul, tabel, agenda) berjejer ke bawah */
+                break-inside: avoid !important;
                 page-break-inside: avoid !important;
-                padding: 8px !important; 
-                border: 1px solid #000000 !important; /* 1 kotak rapi yang membungkus semuanya */
-                border-radius: 6px !important;
-                box-shadow: none !important;
+                padding: 10px !important; 
+                border: 1px solid #d1d5db !important; /* Kotak rapi abu-abu persis UI aplikasi */
+                border-radius: 8px !important;
                 box-sizing: border-box !important;
+                background-color: white !important;
             }
             /* Menambahkan page break setiap kelipatan 6 bulan agar 1 lembar pas 6 bulan */
             #view-calendar .cal-month-grid:nth-child(6n) {
@@ -247,12 +249,20 @@
             }
             /* Modifikasi ukuran font dan sel khusus cetak kalender agar proporsional secara vertikal */
             #view-calendar .cal-month-grid h4 {
-                font-size: 12px !important;
+                display: block !important;
+                width: 100% !important;
+                font-size: 13px !important;
+                margin-top: 0 !important;
                 margin-bottom: 6px !important;
                 padding-bottom: 4px !important;
                 text-align: center !important;
                 font-weight: bold !important;
                 border-bottom: 1px solid #e5e7eb !important;
+                color: #1e3a8a !important; /* Menjaga warna biru pada judul bulan */
+            }
+            #view-calendar .cal-month-grid table {
+                width: 100% !important;
+                margin-bottom: auto !important; /* Mendorong agenda ke bagian paling bawah */
             }
             #view-calendar .cal-month-grid table th {
                 padding: 2px !important;
@@ -263,20 +273,23 @@
                 padding: 1px !important;
             }
             #view-calendar .cal-month-grid td span {
+                display: block !important;
                 font-size: 10px !important; /* Angka tanggal */
             }
             #view-calendar .cal-month-grid .cal-indicator {
-                width: 3.5px !important;
-                height: 3.5px !important;
+                width: 4px !important;
+                height: 4px !important;
                 margin: 0.5px !important;
             }
             /* Keterangan agenda di bawah bulan (di dalam grid kalender kotak) */
             #view-calendar .cal-month-grid .text-\\[11px\\] {
+                display: block !important;
+                width: 100% !important;
                 font-size: 8px !important;
                 line-height: 1.2 !important;
-                margin-top: 6px !important;
-                padding-top: 4px !important;
-                border-top: 1px dashed #e5e7eb !important;
+                margin-top: 8px !important;
+                padding-top: 6px !important;
+                border-top: 1px dashed #d1d5db !important;
             }
             /* Legend warna kalender */
             #calendar-legend {
@@ -294,7 +307,7 @@
 
             /* --- CETAK MATRIK KALENDER (MENYELARASKAN HEADER DENGAN DATA) --- */
             #view-matrix .bg-white { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
-            #view-matrix .overflow-x-auto { overflow: visible !important; }
+            #view-matrix .overflow-x-auto { overflow: visible !important; display: block !important; width: 100% !important; }
             #matrix-table { 
                 width: 100% !important; 
                 table-layout: fixed !important; /* Wajib di-fixed agar header sejajar sempurna dengan kolom tabel */
@@ -316,8 +329,26 @@
                 font-weight: bold !important; 
                 text-align: center !important;
             }
-            #matrix-table tbody tr { background-color: white !important; }
+            #matrix-table tbody tr { background-color: white !important; page-break-inside: avoid; }
             #matrix-table tfoot td { background-color: #e5e7eb !important; color: black !important; font-weight: bold !important; }
+
+            /* Paksa ukuran kolom secara absolut agar Header dan Data sejajar 100% */
+            #matrix-table thead th:nth-child(1), #matrix-tbody td:nth-child(1) { width: 4% !important; }
+            #matrix-table thead th:nth-child(2), #matrix-tbody td:nth-child(2) { width: 14% !important; }
+            #matrix-table thead th:nth-child(3), #matrix-tbody td:nth-child(3) { width: 9% !important; }
+            #matrix-table thead th:nth-child(4), #matrix-tbody td:nth-child(4) { width: 8% !important; }
+            #matrix-table thead th:nth-child(5), #matrix-tbody td:nth-child(5) { width: 9% !important; }
+            #matrix-table thead th:nth-child(6), #matrix-tbody td:nth-child(6) { width: 10% !important; }
+            #matrix-table thead th:nth-child(7), #matrix-tbody td:nth-child(7) { width: 10% !important; }
+            #matrix-table thead th:nth-child(8), #matrix-tbody td:nth-child(8) { width: 10% !important; }
+            #matrix-table thead th:nth-child(9), #matrix-tbody td:nth-child(9) { width: 26% !important; }
+
+            #matrix-table td:nth-child(2) {
+                text-align: left !important; /* Kolom nama bulan tetap kiri */
+            }
+            #matrix-table td:nth-child(9) {
+                text-align: left !important; /* Kolom uraian tetap kiri */
+            }
         }
     </style>
 </head>
