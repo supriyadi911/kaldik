@@ -146,27 +146,6 @@
             margin-bottom: 12px !important;
         }
 
-        /* --- CSS KHUSUS EKSPOR PDF MATRIK --- */
-        /* Memastikan lebar mutlak 1040px (standar A4 Landscape) agar kebal dari clipping iframe deploy */
-        .pdf-matrix-mode { width: 1040px !important; max-width: 1040px !important; min-width: 1040px !important; padding: 20px 20px !important; margin: 0 !important; background: white; box-sizing: border-box !important; position: relative; }
-        .pdf-matrix-mode .print-only { display: block !important; }
-        .pdf-matrix-mode .no-print { display: none !important; }
-        .pdf-matrix-mode .bg-white.rounded-xl.shadow-sm { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
-        .pdf-matrix-mode .overflow-x-auto { overflow: visible !important; display: block !important; width: 100% !important; }
-        .pdf-matrix-mode #matrix-table { width: 100% !important; table-layout: fixed !important; border-collapse: collapse !important; margin-top: 5px !important; }
-        .pdf-matrix-mode #matrix-table th:not([colspan="9"]), .pdf-matrix-mode #matrix-table td { border: 1px solid #d1d5db !important; padding: 5px 3px !important; font-size: 9.5px !important; white-space: normal !important; word-wrap: break-word !important; word-break: break-word !important; overflow: hidden !important; }
-        .pdf-matrix-mode #matrix-table thead tr:not(#matrix-header-title) th { background-color: #1e3a8a !important; color: white !important; font-weight: bold !important; text-align: center !important; border-color: #1e3a8a !important; }
-        .pdf-matrix-mode #matrix-table thead tr#matrix-header-title th { background-color: white !important; border: none !important; border-bottom: 2px solid black !important; padding-bottom: 15px !important; }
-        .pdf-matrix-mode #matrix-table tbody tr { background-color: white !important; page-break-inside: avoid; }
-        .pdf-matrix-mode #matrix-table tfoot td { background-color: #f3f4f6 !important; color: #1e3a8a !important; font-weight: bold !important; text-align: center !important; }
-        .pdf-matrix-mode #matrix-table td:nth-child(2), .pdf-matrix-mode #matrix-table td:nth-child(9) { text-align: left !important; }
-        
-        /* Penyesuaian Kop Surat Matrik untuk PDF */
-        .pdf-matrix-mode .matrix-gov-logo, .pdf-matrix-mode .matrix-school-logo { max-height: 45px !important; width: auto !important; }
-        .pdf-matrix-mode h1.print-gov-name { font-size: 13px !important; margin-bottom: 2px !important; }
-        .pdf-matrix-mode h2.print-school-name { font-size: 17px !important; margin-bottom: 2px !important; }
-        .pdf-matrix-mode p.print-school-address { font-size: 9px !important; margin-bottom: 0 !important; }
-
         /* KUSTOMISASI UNTUK CETAK VIA BROWSER KHUSUS (CTRL+P / PRINT) */
         .print-only { display: none; }
         @media print {
@@ -662,8 +641,8 @@
                             <button onclick="exportToExcel('matrix-table', 'Matrik_Kaldik')" class="bg-green-600 text-white px-4 py-2 rounded shadow-sm hover:bg-green-700 transition">
                                 <i class="fas fa-file-excel mr-1"></i> Excel
                             </button>
-                            <button onclick="downloadMatrixPDF()" class="bg-red-600 text-white px-4 py-2 rounded shadow-sm hover:bg-red-700 transition">
-                                <i class="fas fa-file-pdf mr-1"></i> Unduh PDF
+                            <button onclick="downloadMatrixWord()" class="bg-blue-600 text-white px-4 py-2 rounded shadow-sm hover:bg-blue-700 transition">
+                                <i class="fas fa-file-word mr-1"></i> Unduh Word
                             </button>
                             <button onclick="window.print()" class="bg-gray-800 text-white px-4 py-2 rounded shadow-sm hover:bg-gray-700 transition">
                                 <i class="fas fa-print mr-1"></i> Cetak
@@ -3181,77 +3160,129 @@
             });
         }
 
-        // --- SISTEM EKSPOR PDF MATRIK ---
-        function downloadMatrixPDF() {
-            showToast('Sedang menyusun PDF Matrik, mohon tunggu...', 'info');
-            const element = document.getElementById('cetak-matrik-area');
-            if (!element) return;
+        // --- SISTEM EKSPOR WORD MATRIK ---
+        function downloadMatrixWord() {
+            showToast('Sedang menyusun dokumen Word, mohon tunggu...', 'info');
             
-            // Mencabut batasan overflow dari body dan container utama selama proses render PDF
-            const body = document.body;
-            const appContainer = document.getElementById('app-container');
-            const mainContent = document.querySelector('main');
-            const viewContainer = document.getElementById('view-container');
-            
-            const originalBodyOverflow = body.style.overflow;
-            const originalAppContainerOverflow = appContainer ? appContainer.style.overflow : '';
-            const originalMainOverflow = mainContent ? mainContent.style.overflow : '';
-            const originalViewContainerOverflow = viewContainer ? viewContainer.style.overflow : '';
-            
-            body.style.overflow = 'visible';
-            if (appContainer) appContainer.style.overflow = 'visible';
-            if (mainContent) mainContent.style.overflow = 'visible';
-            if (viewContainer) viewContainer.style.overflow = 'visible';
-            
-            // Simpan style inline asli (jika ada) untuk dikembalikan nanti
-            const originalStyle = element.getAttribute('style') || '';
-            
-            // MEMAKSA UKURAN AREA CETAK KE STANDAR VIRTUAL LANDSCAPE YANG TETAP
-            element.setAttribute('style', 'width: 1040px !important; max-width: 1040px !important; min-width: 1040px !important; box-sizing: border-box !important;');
-            element.classList.add('pdf-matrix-mode');
+            const table = document.getElementById('matrix-table');
+            if (!table) return;
 
-            const filenameStr = `Matrik_Kaldik_${schoolData.academicYear.replace('/', '-')}.pdf`;
-
-            const opt = {
-                margin:       [10, 8, 10, 8], // Margin Atas Bawah 10mm, Kiri Kanan 8mm
-                filename:     filenameStr,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { 
-                    scale: 2, 
-                    useCORS: true, 
-                    logging: false,
-                    scrollX: 0,
-                    scrollY: 0,
-                    windowWidth: 1040 
-                },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'landscape' },
-                pagebreak:    { mode: ['css', 'legacy'] }
-            };
-
-            // Menjalankan library html2pdf
-            html2pdf().set(opt).from(element).save().then(() => {
-                // Kembalikan ke tampilan responsif awal sesudah konversi selesai
-                element.setAttribute('style', originalStyle);
-                element.classList.remove('pdf-matrix-mode');
-                
-                body.style.overflow = originalBodyOverflow;
-                if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
-                if (mainContent) mainContent.style.overflow = originalMainOverflow;
-                if (viewContainer) viewContainer.style.overflow = originalViewContainerOverflow;
-                
-                showToast('Matrik PDF berhasil diunduh!', 'success');
-            }).catch(err => {
-                element.setAttribute('style', originalStyle);
-                element.classList.remove('pdf-matrix-mode');
-                
-                body.style.overflow = originalBodyOverflow;
-                if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
-                if (mainContent) mainContent.style.overflow = originalMainOverflow;
-                if (viewContainer) viewContainer.style.overflow = originalViewContainerOverflow;
-                
-                console.error('Error saat export PDF Matrik:', err);
-                showToast('Gagal menghasilkan dokumen PDF Matrik.', 'error');
+            // Clone tabel agar tidak merusak UI asli di aplikasi
+            const cloneTable = table.cloneNode(true);
+            
+            // Konversi styling Tailwind ke Inline CSS agar terbaca oleh MS Word
+            cloneTable.style.width = '100%';
+            cloneTable.style.borderCollapse = 'collapse';
+            cloneTable.style.fontFamily = 'Arial, sans-serif';
+            cloneTable.style.fontSize = '11pt';
+            
+            // Hapus elemen gambar (logo) karena base64 bisa bermasalah di MS Word lawas
+            const logos = cloneTable.querySelectorAll('img');
+            logos.forEach(img => img.remove());
+            
+            // Styling presisi untuk header tabel (Kop dan Kolom)
+            const ths = cloneTable.querySelectorAll('th');
+            ths.forEach(th => {
+                if(th.closest('#matrix-header-title')) {
+                     th.style.textAlign = 'center';
+                     th.style.paddingBottom = '15px';
+                     th.style.border = 'none';
+                     th.style.borderBottom = '2px solid black';
+                } else {
+                     th.style.border = '1px solid black';
+                     th.style.padding = '8px';
+                     th.style.backgroundColor = '#1e3a8a';
+                     th.style.color = '#ffffff';
+                     th.style.fontWeight = 'bold';
+                     th.style.textAlign = 'center';
+                }
             });
+            
+            // Styling presisi untuk isi sel (data matrik)
+            const tds = cloneTable.querySelectorAll('td');
+            tds.forEach(td => {
+                td.style.border = '1px solid black';
+                td.style.padding = '6px 4px';
+                td.style.textAlign = 'center';
+                td.style.verticalAlign = 'middle';
+            });
+
+            // Pastikan kolom bulan (2) dan agenda (9) rata kiri mengikuti estetika awal
+            const rows = cloneTable.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                if(row.children[1]) row.children[1].style.textAlign = 'left';
+                if(row.children[8]) row.children[8].style.textAlign = 'left';
+            });
+            
+            // Styling Footer tabel (Total)
+            const tfoottds = cloneTable.querySelectorAll('tfoot td');
+            tfoottds.forEach(td => {
+                td.style.backgroundColor = '#f3f4f6';
+                td.style.color = '#1e3a8a';
+                td.style.fontWeight = 'bold';
+            });
+
+            // Rancang Struktur Tanda Tangan Menggunakan Tabel agar sejajar Kiri Kanan di Word
+            const startDObj = new Date(schoolData.startDate);
+            const ttdDate = `Bandar Lampung, ${startDObj.getDate()} ${MONTH_NAMES[startDObj.getMonth()]} ${startDObj.getFullYear()}`;
+            
+            const sigHtml = `
+                <br><br>
+                <table style="width: 100%; border: none; font-family: Arial, sans-serif; font-size: 11pt;">
+                    <tr>
+                        <td style="width: 50%; text-align: center; border: none;">
+                            <p style="margin:2px;">Mengetahui,</p>
+                            <p style="margin:2px;">Kepala Sekolah</p>
+                            <br><br><br><br>
+                            <p style="margin:2px;"><b><u>${(schoolData.headmaster || 'NAMA KEPSEK').toUpperCase()}</u></b></p>
+                            <p style="margin:2px;">NIP. ${schoolData.nip || '-'}</p>
+                        </td>
+                        <td style="width: 50%; text-align: center; border: none;">
+                            <p style="margin:2px;">${ttdDate}</p>
+                            <p style="margin:2px;">Wali Kelas</p>
+                            <br><br><br><br>
+                            <p style="margin:2px;"><b><u>${(schoolData.waliKelas || 'NAMA WALI KELAS').toUpperCase()}</u></b></p>
+                            <p style="margin:2px;">NIP. ${schoolData.nipWali || '-'}</p>
+                        </td>
+                    </tr>
+                </table>
+            `;
+
+            // Rangkai dan definisikan namespace skema XML standar MS Office Word
+            const html = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head>
+                    <meta charset='utf-8'>
+                    <title>Matrik Kalender Pendidikan</title>
+                </head>
+                <body>
+                    ${cloneTable.outerHTML}
+                    ${sigHtml}
+                </body>
+                </html>
+            `;
+
+            // Generate sebagai BLOB dengan MIME Type spesifik Word DOC
+            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+            const filename = `Matrik_Kaldik_${schoolData.academicYear.replace('/', '-')}.doc`;
+            
+            const downloadLink = document.createElement("a");
+            document.body.appendChild(downloadLink);
+            
+            if (navigator.msSaveOrOpenBlob) {
+                // Untuk IE/Edge Legacy
+                navigator.msSaveOrOpenBlob(blob, filename);
+            } else {
+                // Untuk Browser Modern (Chrome, Safari, Firefox)
+                const url = URL.createObjectURL(blob);
+                downloadLink.href = url;
+                downloadLink.download = filename;
+                downloadLink.click();
+                URL.revokeObjectURL(url);
+            }
+            
+            document.body.removeChild(downloadLink);
+            showToast('Dokumen Word berhasil diunduh!', 'success');
         }
 
         function exportToExcel(tableID, filename = 'Matrik_Kaldik') {
