@@ -94,8 +94,8 @@
         .col-jml { width: 4.5% !important; } /* 5 x 4.5% = 22.5% */
         .col-total { width: 5.9% !important; } /* Total = 100% */
 
-        /* Memaksa elemen melebar untuk PDF Generator (A4 Landscape = 1122px) */
-        .pdf-export-mode { width: 1122px !important; max-width: 1122px !important; min-width: 1122px !important; padding: 0px !important; margin: 0 auto !important; background: white; box-sizing: border-box !important; }
+        /* Memaksa elemen melebar untuk PDF Generator (A4 Landscape = 1040px) */
+        .pdf-export-mode { width: 1040px !important; max-width: 1040px !important; min-width: 1040px !important; padding: 0px !important; margin: 0 auto !important; background: white; box-sizing: border-box !important; }
         .pdf-page-break { page-break-before: always !important; break-before: page !important; height: 0px !important; margin: 0 !important; padding: 0 !important; }
         
         /* Penyesuaian ukuran elemen saat export PDF agar muat dalam 1 halaman dan tidak terpotong */
@@ -147,8 +147,8 @@
         }
 
         /* --- CSS KHUSUS EKSPOR PDF MATRIK --- */
-        /* Memastikan lebar mutlak 1122px (standar A4 Landscape) agar kebal dari clipping iframe deploy */
-        .pdf-matrix-mode { width: 1122px !important; max-width: 1122px !important; min-width: 1122px !important; padding: 20px 30px !important; margin: 0 !important; background: white; box-sizing: border-box !important; position: relative; }
+        /* Memastikan lebar mutlak 1040px (standar A4 Landscape) agar kebal dari clipping iframe deploy */
+        .pdf-matrix-mode { width: 1040px !important; max-width: 1040px !important; min-width: 1040px !important; padding: 20px 20px !important; margin: 0 !important; background: white; box-sizing: border-box !important; position: relative; }
         .pdf-matrix-mode .print-only { display: block !important; }
         .pdf-matrix-mode .no-print { display: none !important; }
         .pdf-matrix-mode .bg-white.rounded-xl.shadow-sm { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
@@ -3114,24 +3114,27 @@
             const element = document.getElementById('cetak-area');
             if (!element) return;
             
-            // Mencabut batasan overflow dari body dan container utama selama proses render PDF
+            // Mencabut batasan overflow dari body dan container utama selama proses render PDF untuk menghindari PDF terpotong di iframe
             const body = document.body;
             const appContainer = document.getElementById('app-container');
             const mainContent = document.querySelector('main');
+            const viewContainer = document.getElementById('view-container');
             
             const originalBodyOverflow = body.style.overflow;
             const originalAppContainerOverflow = appContainer ? appContainer.style.overflow : '';
             const originalMainOverflow = mainContent ? mainContent.style.overflow : '';
+            const originalViewContainerOverflow = viewContainer ? viewContainer.style.overflow : '';
             
             body.style.overflow = 'visible';
             if (appContainer) appContainer.style.overflow = 'visible';
             if (mainContent) mainContent.style.overflow = 'visible';
+            if (viewContainer) viewContainer.style.overflow = 'visible';
             
             // Simpan style inline asli (jika ada) untuk dikembalikan nanti
             const originalStyle = element.getAttribute('style') || '';
             
             // MEMAKSA UKURAN AREA CETAK KE STANDAR VIRTUAL LANDSCAPE YANG TETAP (TIDAK PEDULI viewport sempit)
-            element.setAttribute('style', 'width: 1040px !important; max-width: none !important; min-width: 1040px !important; box-sizing: border-box !important;');
+            element.setAttribute('style', 'width: 1040px !important; max-width: 1040px !important; min-width: 1040px !important; box-sizing: border-box !important;');
             element.classList.add('pdf-export-mode');
 
             const filenameStr = `Kaldik_Resmi_${schoolData.academicYear.replace('/', '-')}.pdf`;
@@ -3161,6 +3164,7 @@
                 body.style.overflow = originalBodyOverflow;
                 if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
                 if (mainContent) mainContent.style.overflow = originalMainOverflow;
+                if (viewContainer) viewContainer.style.overflow = originalViewContainerOverflow;
                 
                 showToast('Dokumen PDF berhasil diunduh!', 'success');
             }).catch(err => {
@@ -3170,6 +3174,7 @@
                 body.style.overflow = originalBodyOverflow;
                 if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
                 if (mainContent) mainContent.style.overflow = originalMainOverflow;
+                if (viewContainer) viewContainer.style.overflow = originalViewContainerOverflow;
                 
                 console.error('Error saat export PDF:', err);
                 showToast('Gagal menghasilkan dokumen PDF.', 'error');
@@ -3186,20 +3191,23 @@
             const body = document.body;
             const appContainer = document.getElementById('app-container');
             const mainContent = document.querySelector('main');
+            const viewContainer = document.getElementById('view-container');
             
             const originalBodyOverflow = body.style.overflow;
             const originalAppContainerOverflow = appContainer ? appContainer.style.overflow : '';
             const originalMainOverflow = mainContent ? mainContent.style.overflow : '';
+            const originalViewContainerOverflow = viewContainer ? viewContainer.style.overflow : '';
             
             body.style.overflow = 'visible';
             if (appContainer) appContainer.style.overflow = 'visible';
             if (mainContent) mainContent.style.overflow = 'visible';
+            if (viewContainer) viewContainer.style.overflow = 'visible';
             
             // Simpan style inline asli (jika ada) untuk dikembalikan nanti
             const originalStyle = element.getAttribute('style') || '';
             
             // MEMAKSA UKURAN AREA CETAK KE STANDAR VIRTUAL LANDSCAPE YANG TETAP
-            element.setAttribute('style', 'width: 1040px !important; max-width: none !important; min-width: 1040px !important; box-sizing: border-box !important;');
+            element.setAttribute('style', 'width: 1040px !important; max-width: 1040px !important; min-width: 1040px !important; box-sizing: border-box !important;');
             element.classList.add('pdf-matrix-mode');
 
             const filenameStr = `Matrik_Kaldik_${schoolData.academicYear.replace('/', '-')}.pdf`;
@@ -3229,6 +3237,7 @@
                 body.style.overflow = originalBodyOverflow;
                 if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
                 if (mainContent) mainContent.style.overflow = originalMainOverflow;
+                if (viewContainer) viewContainer.style.overflow = originalViewContainerOverflow;
                 
                 showToast('Matrik PDF berhasil diunduh!', 'success');
             }).catch(err => {
@@ -3238,6 +3247,7 @@
                 body.style.overflow = originalBodyOverflow;
                 if (appContainer) appContainer.style.overflow = originalAppContainerOverflow;
                 if (mainContent) mainContent.style.overflow = originalMainOverflow;
+                if (viewContainer) viewContainer.style.overflow = originalViewContainerOverflow;
                 
                 console.error('Error saat export PDF Matrik:', err);
                 showToast('Gagal menghasilkan dokumen PDF Matrik.', 'error');
