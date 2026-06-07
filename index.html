@@ -215,84 +215,106 @@
             }
             tr { page-break-inside: avoid; page-break-after: auto; }
             
-            /* --- KOP SURAT UMUM (CETAK BROWSER) --- */
+            /* Kop Surat Umum (Diluar Cetak Resmi) */
             .print-header-kop { text-align: center; border-bottom: 3px solid black; padding-bottom: 10px; margin-bottom: 15px; }
             .print-header-kop h1 { font-size: 18px; font-weight: bold; margin: 0; text-transform: uppercase; }
             .print-header-kop h2 { font-size: 14px; margin: 3px 0; }
             .print-header-kop p { margin: 0; font-size: 10px; }
 
-            /* --- CETAK KALENDER AKADEMIK (1 HALAMAN = 4 BULAN) --- */
+            /* --- CETAK KALENDER AKADEMIK (1 HALAMAN = 6 BULAN) --- */
             #view-calendar #full-year-grid {
-                display: grid !important;
-                grid-template-columns: repeat(2, 1fr) !important; /* Memaksa 2 kolom agar jadi format 2x2 */
-                gap: 12px !important; 
-                align-items: start !important;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                justify-content: space-between !important;
+                gap: 0 !important;
+                width: 100% !important;
             }
             #view-calendar .cal-month-grid {
-                break-inside: avoid !important;
+                width: 32.5% !important; /* 3 kolom proporsional */
+                margin-bottom: 1.5% !important;
+                break-inside: avoid-page !important;
                 page-break-inside: avoid !important;
                 padding: 8px !important; 
-                border: 1px solid #e5e7eb !important;
+                border: 1px solid #000000 !important; /* 1 kotak rapi yang membungkus semuanya */
+                border-radius: 6px !important;
                 box-shadow: none !important;
+                box-sizing: border-box !important;
             }
-            /* Menambahkan page break setiap kelipatan 4 bulan agar 1 lembar pas 4 bulan */
-            #view-calendar .cal-month-grid:nth-child(4n) {
+            /* Menambahkan page break setiap kelipatan 6 bulan agar 1 lembar pas 6 bulan */
+            #view-calendar .cal-month-grid:nth-child(6n) {
                 page-break-after: always !important;
                 break-after: page !important;
             }
+            /* Modifikasi ukuran font dan sel khusus cetak kalender agar proporsional secara vertikal */
             #view-calendar .cal-month-grid h4 {
                 font-size: 12px !important;
-                margin-bottom: 4px !important;
-                padding-bottom: 2px !important;
+                margin-bottom: 6px !important;
+                padding-bottom: 4px !important;
+                text-align: center !important;
+                font-weight: bold !important;
+                border-bottom: 1px solid #e5e7eb !important;
             }
             #view-calendar .cal-month-grid table th {
                 padding: 2px !important;
-                font-size: 10px !important;
+                font-size: 9px !important;
             }
             #view-calendar .cal-month-grid td {
-                height: 32px !important; /* Membatasi tinggi agar muat di kertas A4 */
+                height: 28px !important; /* Membatasi tinggi agar muat di kertas A4 */
                 padding: 1px !important;
             }
             #view-calendar .cal-month-grid td span {
-                font-size: 11px !important;
+                font-size: 10px !important; /* Angka tanggal */
             }
             #view-calendar .cal-month-grid .cal-indicator {
-                width: 4px !important;
-                height: 4px !important;
+                width: 3.5px !important;
+                height: 3.5px !important;
                 margin: 0.5px !important;
             }
+            /* Keterangan agenda di bawah bulan (di dalam grid kalender kotak) */
             #view-calendar .cal-month-grid .text-\\[11px\\] {
                 font-size: 8px !important;
-                line-height: 1.1 !important;
-                margin-top: 4px !important;
+                line-height: 1.2 !important;
+                margin-top: 6px !important;
                 padding-top: 4px !important;
+                border-top: 1px dashed #e5e7eb !important;
             }
+            /* Legend warna kalender */
             #calendar-legend {
                 margin-bottom: 10px !important;
                 padding: 5px !important;
                 font-size: 9px !important;
             }
+            /* Tanda Tangan Cetak Kalender */
             #view-calendar .print-only.mt-10 {
                 margin-top: 20px !important;
                 font-size: 11px !important;
                 page-break-inside: avoid !important;
+                width: 100% !important;
             }
 
-            /* --- CETAK MATRIK KALENDER --- */
+            /* --- CETAK MATRIK KALENDER (MENYELARASKAN HEADER DENGAN DATA) --- */
             #view-matrix .bg-white { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
             #view-matrix .overflow-x-auto { overflow: visible !important; }
-            #matrix-table { width: 100% !important; border-collapse: collapse !important; table-layout: auto !important; border: 1px solid black !important; }
+            #matrix-table { 
+                width: 100% !important; 
+                table-layout: fixed !important; /* Wajib di-fixed agar header sejajar sempurna dengan kolom tabel */
+                border-collapse: collapse !important; 
+                border: 1px solid black !important; 
+            }
             #matrix-table th, #matrix-table td { 
                 border: 1px solid black !important; 
                 padding: 6px 4px !important; 
                 font-size: 10px !important; 
                 color: black !important; 
                 white-space: normal !important;
+                word-wrap: break-word !important;
+                overflow: hidden !important;
             }
             #matrix-table thead th { 
                 background-color: #d1d5db !important; 
                 color: black !important;
                 font-weight: bold !important; 
+                text-align: center !important;
             }
             #matrix-table tbody tr { background-color: white !important; }
             #matrix-table tfoot td { background-color: #e5e7eb !important; color: black !important; font-weight: bold !important; }
