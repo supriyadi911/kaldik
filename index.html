@@ -789,7 +789,11 @@
                                 <thead class="bg-gray-50 border-b">
                                     <tr>
                                         <th class="px-6 py-3 font-semibold text-gray-600">Kegiatan</th>
-                                        <th class="px-6 py-3 font-semibold text-gray-600">Tanggal</th>
+                                        <th class="px-6 py-3 font-semibold text-gray-600 cursor-pointer hover:bg-gray-100 transition select-none" onclick="toggleAgendaSort()" title="Klik untuk mengurutkan berdasarkan tanggal">
+                                            <div class="flex items-center">
+                                                Tanggal <i id="agenda-sort-icon" class="fas fa-sort-down ml-2 text-brand-blue"></i>
+                                            </div>
+                                        </th>
                                         <th class="px-6 py-3 font-semibold text-gray-600">Kategori</th>
                                         <th class="px-6 py-3 font-semibold text-gray-600">PIC / Lokasi</th>
                                         <th class="px-6 py-3 font-semibold text-gray-600 text-right">Aksi</th>
@@ -1310,6 +1314,7 @@
         let currentYearOffset = 0; // Navigasi tahun kalender
         let currentSemester = 'all'; // Filter Semester: 'all', '1', '2'
         let autoRefreshInterval = null; // Menyimpan interval auto-refresh
+        let agendaSortDirection = 'desc'; // Default urutan agenda (descending / terbaru ke terlama)
         
         // --- STATE AUTHENTICATION ---
         let appUsers = [];
@@ -2085,7 +2090,12 @@
                 return matchSearch && matchCat && matchSem;
             });
 
-            filtered.sort((a, b) => b.start.localeCompare(a.start));
+            // Logika Sortir berdasarkan tanggal
+            if (agendaSortDirection === 'desc') {
+                filtered.sort((a, b) => b.start.localeCompare(a.start)); // Terbaru di atas
+            } else {
+                filtered.sort((a, b) => a.start.localeCompare(b.start)); // Terlama di atas
+            }
 
             if (filtered.length === 0) {
                 emptyState.classList.remove('hidden');
@@ -2117,6 +2127,25 @@
                     `;
                 });
             }
+        }
+
+        function toggleAgendaSort() {
+            // Ubah arah sortir
+            agendaSortDirection = agendaSortDirection === 'desc' ? 'asc' : 'desc';
+            
+            // Ubah ikon indikator
+            const icon = document.getElementById('agenda-sort-icon');
+            if (icon) {
+                if (agendaSortDirection === 'desc') {
+                    icon.className = 'fas fa-sort-down ml-2 text-brand-blue';
+                } else {
+                    icon.className = 'fas fa-sort-up ml-2 text-brand-blue';
+                }
+            }
+            
+            // Render ulang tabel
+            renderAgendaList();
+            showToast(agendaSortDirection === 'desc' ? 'Diurutkan dari Terbaru' : 'Diurutkan dari Terlama', 'success');
         }
 
         function openAgendaModal(id = null) {
