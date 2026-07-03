@@ -1277,7 +1277,7 @@
         // --- KONSTANTA & DATA STANDAR ---
         const CATEGORIES = {
             'akademik': { label: 'Akademik', color: 'bg-blue-500', hex: '#3b82f6' },
-            'libur_nasional': { label: 'Libur Nasional', color: 'bg-red-500', hex: '#ef4444' },
+            'libur_umum': { label: 'Libur Umum', color: 'bg-red-500', hex: '#ef4444' },
             'libur_semester': { label: 'Libur Semester', color: 'bg-orange-400', hex: '#fb923c' },
             'ujian': { label: 'Ujian / Asesmen', color: 'bg-yellow-500', hex: '#eab308' },
             'rapat': { label: 'Rapat Dinas', color: 'bg-purple-500', hex: '#a855f7' },
@@ -1398,37 +1398,42 @@
                 const savedAgendas = localStorage.getItem('kaldik_agendas');
                 if (savedAgendas) {
                     agendas = JSON.parse(savedAgendas);
+                    // Migrasi data lama dari libur_nasional ke libur_umum
+                    agendas = agendas.map(a => {
+                        if (a.type === 'libur_nasional') a.type = 'libur_umum';
+                        return a;
+                    });
                 } else {
                     agendas = [
                         // --- SEMESTER 1 (GANJIL) ---
                         { id: generateId(), title: 'Hari Pertama Masuk Sekolah & MPLS', start: '2026-07-13', end: '2026-07-15', type: 'akademik', pic: 'Panitia MPLS', location: 'Lingkungan Sekolah', desc: 'Masa Pengenalan Lingkungan Sekolah untuk siswa baru kelas 1.' },
-                        { id: generateId(), title: 'Tahun Baru Islam 1448 H', start: '2026-07-16', end: '2026-07-16', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Hari Besar Keagamaan' },
-                        { id: generateId(), title: 'Proklamasi Hari Kemerdekaan RI', start: '2026-08-17', end: '2026-08-17', type: 'libur_nasional', pic: 'Kesiswaan', location: 'Lapangan Upacara', desc: 'Upacara Bendera peringatan HUT Kemerdekaan RI.' },
-                        { id: generateId(), title: 'Maulid Nabi Muhammad SAW', start: '2026-09-15', end: '2026-09-15', type: 'libur_nasional', pic: 'Guru Agama', location: 'Masjid Sekolah', desc: 'Peringatan kelahiran Nabi Muhammad SAW.' },
+                        { id: generateId(), title: 'Tahun Baru Islam 1448 H', start: '2026-07-16', end: '2026-07-16', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Hari Besar Keagamaan' },
+                        { id: generateId(), title: 'Proklamasi Hari Kemerdekaan RI', start: '2026-08-17', end: '2026-08-17', type: 'libur_umum', pic: 'Kesiswaan', location: 'Lapangan Upacara', desc: 'Upacara Bendera peringatan HUT Kemerdekaan RI.' },
+                        { id: generateId(), title: 'Maulid Nabi Muhammad SAW', start: '2026-09-15', end: '2026-09-15', type: 'libur_umum', pic: 'Guru Agama', location: 'Masjid Sekolah', desc: 'Peringatan kelahiran Nabi Muhammad SAW.' },
                         { id: generateId(), title: 'Penilaian Tengah Semester (PTS) Ganjil', start: '2026-09-21', end: '2026-09-26', type: 'ujian', pic: 'Kurikulum', location: 'Ruang Kelas', desc: 'Evaluasi tengah semester ganjil.' },
                         { id: generateId(), title: 'Hari Pahlawan (Upacara Sekolah)', start: '2026-11-10', end: '2026-11-10', type: 'akademik', pic: 'Kesiswaan', location: 'Lapangan Sekolah', desc: 'Upacara peringatan Hari Pahlawan.' },
                         { id: generateId(), title: 'Penilaian Akhir Semester (PAS) Ganjil', start: '2026-11-30', end: '2026-12-05', type: 'ujian', pic: 'Panitia PAS', location: 'Ruang Kelas', desc: 'Evaluasi akhir semester ganjil.' },
                         { id: generateId(), title: 'Penyerahan Buku Laporan Hasil Belajar (Raport) Ganjil', start: '2026-12-18', end: '2026-12-18', type: 'akademik', pic: 'Wali Kelas', location: 'Ruang Kelas', desc: 'Pembagian Raport Semester Ganjil.' },
-                        { id: generateId(), title: 'Hari Raya Natal', start: '2026-12-25', end: '2026-12-25', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Keagamaan Nasional' },
+                        { id: generateId(), title: 'Hari Raya Natal', start: '2026-12-25', end: '2026-12-25', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Keagamaan Umum' },
                         { id: generateId(), title: 'Libur Akhir Semester Ganjil', start: '2026-12-21', end: '2026-12-31', type: 'libur_semester', pic: 'Kurikulum', location: 'Luar Sekolah', desc: 'Libur jeda semester.' },
                         
                         // --- SEMESTER 2 (GENAP) ---
-                        { id: generateId(), title: 'Tahun Baru Masehi 2027', start: '2027-01-01', end: '2027-01-01', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Tahun Baru.' },
+                        { id: generateId(), title: 'Tahun Baru Masehi 2027', start: '2027-01-01', end: '2027-01-01', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Tahun Baru.' },
                         { id: generateId(), title: 'Hari Pertama Masuk Semester Genap', start: '2027-01-04', end: '2027-01-04', type: 'akademik', pic: 'Kurikulum', location: 'Sekolah', desc: 'Awal kegiatan belajar mengajar Semester 2.' },
-                        { id: generateId(), title: 'Isra Mi’raj Nabi Muhammad SAW', start: '2027-02-05', end: '2027-02-05', type: 'libur_nasional', pic: 'Guru Agama', location: 'Masjid Sekolah', desc: 'Peringatan Isra Mi\'raj.' },
-                        { id: generateId(), title: 'Tahun Baru Imlek 2578', start: '2027-02-06', end: '2027-02-06', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Tahun Baru Imlek.' },
+                        { id: generateId(), title: 'Isra Mi’raj Nabi Muhammad SAW', start: '2027-02-05', end: '2027-02-05', type: 'libur_umum', pic: 'Guru Agama', location: 'Masjid Sekolah', desc: 'Peringatan Isra Mi\'raj.' },
+                        { id: generateId(), title: 'Tahun Baru Imlek 2578', start: '2027-02-06', end: '2027-02-06', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Tahun Baru Imlek.' },
                         { id: generateId(), title: 'Penilaian Tengah Semester (PTS) Genap', start: '2027-03-01', end: '2027-03-06', type: 'ujian', pic: 'Kurikulum', location: 'Ruang Kelas', desc: 'Evaluasi tengah semester genap.' },
-                        { id: generateId(), title: 'Hari Raya Nyepi (Tahun Baru Saka 1949)', start: '2027-03-08', end: '2027-03-08', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Nyepi.' },
+                        { id: generateId(), title: 'Hari Raya Nyepi (Tahun Baru Saka 1949)', start: '2027-03-08', end: '2027-03-08', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Nyepi.' },
                         { id: generateId(), title: 'Perkiraan Libur Awal Puasa Ramadhan 1448 H', start: '2027-03-09', end: '2027-03-11', type: 'keagamaan', pic: 'Guru Agama', location: 'Rumah Masing-masing', desc: 'Libur awal bulan suci Ramadhan.' },
-                        { id: generateId(), title: 'Wafat Yesus Kristus', start: '2027-03-26', end: '2027-03-26', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Peringatan Wafat Yesus Kristus.' },
-                        { id: generateId(), title: 'Libur Sekitar Hari Raya Idul Fitri 1448 H (Lebaran)', start: '2027-04-05', end: '2027-04-14', type: 'libur_nasional', pic: 'Humas', location: 'Luar Sekolah', desc: 'Libur nasional dan cuti bersama Idul Fitri.' },
-                        { id: generateId(), title: 'Hari Buruh Internasional', start: '2027-05-01', end: '2027-05-01', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Hari Buruh.' },
-                        { id: generateId(), title: 'Hari Raya Waisak 2571', start: '2027-05-20', end: '2027-05-20', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Hari Raya Waisak.' },
+                        { id: generateId(), title: 'Wafat Yesus Kristus', start: '2027-03-26', end: '2027-03-26', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Peringatan Wafat Yesus Kristus.' },
+                        { id: generateId(), title: 'Libur Sekitar Hari Raya Idul Fitri 1448 H (Lebaran)', start: '2027-04-05', end: '2027-04-14', type: 'libur_umum', pic: 'Humas', location: 'Luar Sekolah', desc: 'Libur umum dan cuti bersama Idul Fitri.' },
+                        { id: generateId(), title: 'Hari Buruh Internasional', start: '2027-05-01', end: '2027-05-01', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Hari Buruh.' },
+                        { id: generateId(), title: 'Hari Raya Waisak 2571', start: '2027-05-20', end: '2027-05-20', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Hari Raya Waisak.' },
                         { id: generateId(), title: 'Hari Kebangkitan Nasional (Upacara Sekolah)', start: '2027-05-20', end: '2027-05-20', type: 'akademik', pic: 'Kesiswaan', location: 'Lapangan Sekolah', desc: 'Upacara peringatan Harkitnas.' },
-                        { id: generateId(), title: 'Kenaikan Yesus Kristus', start: '2027-05-27', end: '2027-05-27', type: 'libur_nasional', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Kenaikan.' },
-                        { id: generateId(), title: 'Hari Lahir Pancasila', start: '2027-06-01', end: '2027-06-01', type: 'libur_nasional', pic: 'Humas', location: 'Lapangan Sekolah', desc: 'Upacara Nasional Hari Lahir Pancasila.' },
+                        { id: generateId(), title: 'Kenaikan Yesus Kristus', start: '2027-05-27', end: '2027-05-27', type: 'libur_umum', pic: 'Humas', location: 'Rumah Masing-masing', desc: 'Libur Kenaikan.' },
+                        { id: generateId(), title: 'Hari Lahir Pancasila', start: '2027-06-01', end: '2027-06-01', type: 'libur_umum', pic: 'Humas', location: 'Lapangan Sekolah', desc: 'Upacara Umum Hari Lahir Pancasila.' },
                         { id: generateId(), title: 'Penilaian Akhir Tahun (PAT) / Asesmen Akhir', start: '2027-06-07', end: '2027-06-12', type: 'ujian', pic: 'Panitia PAT', location: 'Ruang Kelas', desc: 'Asesmen Sumatif Akhir Jenjang / Kelas.' },
-                        { id: generateId(), title: 'Hari Raya Idul Adha 1448 H', start: '2027-06-16', end: '2027-06-16', type: 'libur_nasional', pic: 'Panitia Qurban', location: 'Halaman Sekolah', desc: 'Libur Hari Raya Idul Adha dan penyembelihan hewan qurban.' },
+                        { id: generateId(), title: 'Hari Raya Idul Adha 1448 H', start: '2027-06-16', end: '2027-06-16', type: 'libur_umum', pic: 'Panitia Qurban', location: 'Halaman Sekolah', desc: 'Libur Hari Raya Idul Adha dan penyembelihan hewan qurban.' },
                         { id: generateId(), title: 'Penyerahan Buku Laporan Hasil Belajar (Raport) Kenaikan Kelas', start: '2027-06-18', end: '2027-06-18', type: 'akademik', pic: 'Wali Kelas', location: 'Ruang Kelas', desc: 'Pembagian Raport Kenaikan Kelas.' },
                         { id: generateId(), title: 'Libur Akhir Tahun Pelajaran', start: '2027-06-21', end: '2027-07-10', type: 'libur_semester', pic: 'Panitia PPDB', location: 'Luar Sekolah', desc: 'Libur akhir tahun pelajaran sekolah dasar.' }
                     ];
@@ -1699,7 +1704,7 @@
             let totalAgenda = 0;
 
             const workDaysAllowed = parseInt(schoolData.workDays);
-            const holidayTypes = ['libur_nasional', 'libur_semester', 'keagamaan'];
+            const holidayTypes = ['libur_umum', 'libur_semester', 'keagamaan'];
 
             let curr = new Date(start);
             while (curr <= end) {
@@ -1867,7 +1872,7 @@
                         let bgClass = isWeekend ? 'bg-red-50 text-red-600 font-medium rounded' : 'bg-blue-50 text-gray-800 rounded cal-day cursor-pointer';
                         
                         let dayAgendas = agendas.filter(a => fullDate >= a.start && fullDate <= a.end);
-                        let isHolidayAgenda = dayAgendas.some(a => ['libur_nasional', 'libur_semester'].includes(a.type));
+                        let isHolidayAgenda = dayAgendas.some(a => ['libur_umum', 'libur_semester'].includes(a.type));
                         
                         if (isHolidayAgenda) bgClass = 'bg-red-100 text-red-600 font-bold rounded cal-day cursor-pointer';
 
@@ -1999,13 +2004,13 @@
 
                     let dAgendas = agendas.filter(a => a.start <= dStr && a.end >= dStr);
                     
-                    let hasLiburNasional = dAgendas.some(a => a.type === 'libur_nasional');
+                    let hasLiburUmum = dAgendas.some(a => a.type === 'libur_umum');
                     let hasLiburSemester = dAgendas.some(a => a.type === 'libur_semester');
                     let hasLiburKhusus = dAgendas.some(a => a.type === 'keagamaan');
 
                     if (isSunday) {
                         libur_minggu++; 
-                    } else if (hasLiburNasional) {
+                    } else if (hasLiburUmum) {
                         libur_umum++; 
                     } else if (hasLiburSemester) {
                         libur_semester++; 
@@ -2277,7 +2282,7 @@
                     
                     let isWeekend = (dObj.getDay() === 0) || (workDaysAllowed === 5 && dObj.getDay() === 6);
                     let dAgendas = agendas.filter(a => a.start <= dStr && a.end >= dStr);
-                    let isLibur = isWeekend || dAgendas.some(a => ['libur_nasional', 'libur_semester', 'keagamaan'].includes(a.type));
+                    let isLibur = isWeekend || dAgendas.some(a => ['libur_umum', 'libur_semester', 'keagamaan'].includes(a.type));
                     
                     if (isLibur) hl++; else he++;
                 }
@@ -2362,7 +2367,7 @@
             leg.innerHTML = `<div class="flex items-center"><div class="w-3 h-3 bg-red-500 border border-red-700 mr-1"></div> M/L (Minggu)</div>`;
             for (const [key, val] of Object.entries(CATEGORIES)) {
                 let colorClass = val.color;
-                if (key === 'libur_nasional') colorClass = 'bg-red-200';
+                if (key === 'libur_umum') colorClass = 'bg-red-200';
                 leg.innerHTML += `<div class="flex items-center"><div class="w-3 h-3 ${colorClass} mr-1 border border-gray-400"></div> ${val.label}</div>`;
             }
 
@@ -2466,14 +2471,14 @@
                         bgClass = "bg-gray-200"; 
                     } else {
                         let dAgendas = agendas.filter(a => a.start <= dStr && a.end >= dStr);
-                        let hasLiburNasional = dAgendas.some(a => a.type === 'libur_nasional');
+                        let hasLiburUmum = dAgendas.some(a => a.type === 'libur_umum');
                         let hasLiburSemester = dAgendas.some(a => a.type === 'libur_semester');
                         let hasLiburKhusus = dAgendas.some(a => a.type === 'keagamaan');
 
                         if (isSunday) {
                             bgClass = "bg-red-500 text-white font-bold";
                             monthStats.minggu++;
-                        } else if (hasLiburNasional) {
+                        } else if (hasLiburUmum) {
                             bgClass = "bg-red-200"; 
                             monthStats.libur_umum++;
                         } else if (hasLiburSemester) {
@@ -2972,7 +2977,11 @@
                         schoolData.endDate = parseFromDDMMYYYY(schoolData.endDate);
                     }
                     if (data.agendas && data.agendas.length > 0) {
-                        agendas = data.agendas;
+                        agendas = data.agendas.map(a => {
+                            // Migrasi data lama dari cloud libur_nasional ke libur_umum
+                            if (a.type === 'libur_nasional') a.type = 'libur_umum';
+                            return a;
+                        });
                     }
                     
                     if (data.users && data.users.length > 0) {
