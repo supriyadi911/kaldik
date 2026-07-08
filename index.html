@@ -445,6 +445,10 @@
                     <div class="flex items-center"><i class="fas fa-cogs w-6"></i> CP, TP & ATP Generator</div>
                     <i class="fas fa-lock text-xs text-gray-500 auth-lock"></i>
                 </a>
+                <a href="#" onclick="switchView('rpm-generator')" id="nav-rpm-generator" class="nav-item flex items-center justify-between px-6 py-3 text-sm font-medium text-gray-300 hover:bg-blue-800 hover:text-white transition-colors">
+                    <div class="flex items-center"><i class="fas fa-file-contract w-6"></i> RPM Generator</div>
+                    <i class="fas fa-lock text-xs text-gray-500 auth-lock"></i>
+                </a>
 
                 <!-- KATEGORI: SISTEM -->
                 <div class="px-6 py-2 mt-2 text-[10px] font-bold text-blue-300 uppercase tracking-wider">Sistem</div>
@@ -1343,7 +1347,7 @@
         let appUsers = [];
         let currentUser = null;
         // MENAMBAHKAN MENU EKSTERNAL DALAM PROTECTED_VIEWS (HARUS LOGIN)
-        const PROTECTED_VIEWS = ['calendar', 'agenda', 'cetak-resmi', 'settings', 'users', 'analisis-alokasi', 'prota-promes', 'cptpatp-generator'];
+        const PROTECTED_VIEWS = ['calendar', 'agenda', 'cetak-resmi', 'settings', 'users', 'analisis-alokasi', 'prota-promes', 'cptpatp-generator', 'rpm-generator'];
 
         // --- SISTEM MODAL KONFIRMASI CUSTOM ---
         let confirmCallback = null;
@@ -1650,6 +1654,10 @@
             }
             if (viewId === 'cptpatp-generator') {
                 window.open('https://share.gemini.google/3nXNLRzZ1bZC', '_blank');
+                return;
+            }
+            if (viewId === 'rpm-generator') {
+                window.open('https://gemini.google.com/share/2f585680c47c', '_blank');
                 return;
             }
 
