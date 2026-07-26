@@ -1299,6 +1299,36 @@
          * Vanilla JavaScript
          */
 
+        // --- SISTEM PENGAMANAN APLIKASI (ANTI-INSPECT & OBFUSCATION) ---
+        // 1. Blokir Klik Kanan (Context Menu)
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+
+        // 2. Blokir Shortcut Keyboard Developer Tools
+        document.addEventListener('keydown', function(e) {
+            // Blokir F12
+            if (e.keyCode === 123) {
+                e.preventDefault();
+            }
+            // Blokir Ctrl+Shift+I (Windows) atau Cmd+Opt+I (Mac)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                e.preventDefault();
+            }
+            // Blokir Ctrl+Shift+J (Windows) atau Cmd+Opt+J (Mac)
+            if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+                e.preventDefault();
+            }
+            // Blokir Ctrl+U (View Source)
+            if (e.ctrlKey && e.keyCode === 85) {
+                e.preventDefault();
+            }
+            // Blokir Ctrl+S (Save As)
+            if (e.ctrlKey && e.keyCode === 83) {
+                e.preventDefault();
+            }
+        });
+
         // Menangkap error unhandled promise rejections (sering terjadi dari eksternal script/iframe)
         window.addEventListener('unhandledrejection', function(e) {
             console.warn('Unhandled Promise Rejection terdeteksi dan diabaikan secara aman:', e.reason);
@@ -1319,8 +1349,10 @@
 
         const MONTH_NAMES = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
-        // --- KONFIGURASI DATABASE GOOGLE SHEETS ---
-        const GAS_URL = 'https://script.google.com/macros/s/AKfycbxjafkwZ3JTjlFCqzsl11EyXTHCWKEK9R-OxFZcGVbwOL5fFTlKee98RHHkN8Yb9Nw/exec';
+        // --- KONFIGURASI DATABASE GOOGLE SHEETS (OBFUSCATED BYTE ARRAY) ---
+        // Link asli dienkripsi menjadi urutan angka ASCII agar tidak terbaca bot/sniffer
+        const _0xUrlBytes = [104, 116, 116, 112, 115, 58, 47, 47, 115, 99, 114, 105, 112, 116, 46, 103, 111, 111, 103, 108, 101, 46, 99, 111, 109, 47, 109, 97, 99, 114, 111, 115, 47, 115, 47, 65, 75, 102, 121, 99, 98, 120, 106, 97, 102, 107, 119, 90, 51, 74, 84, 106, 108, 70, 67, 113, 122, 115, 108, 49, 49, 69, 121, 88, 84, 72, 67, 87, 75, 69, 75, 57, 82, 45, 79, 120, 70, 90, 99, 71, 86, 98, 119, 79, 76, 53, 102, 70, 84, 108, 75, 101, 101, 57, 56, 82, 72, 72, 107, 78, 56, 89, 98, 57, 78, 119, 47, 101, 120, 101, 99];
+        const GAS_URL = String.fromCharCode.apply(null, _0xUrlBytes);
 
         const DEFAULT_SETTINGS = {
             schoolName: 'SD Negeri 1 Nusantara',
